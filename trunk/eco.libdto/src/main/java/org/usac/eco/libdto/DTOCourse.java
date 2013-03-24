@@ -22,6 +22,51 @@ package org.usac.eco.libdto;
  */
 public class DTOCourse {
     
+    private int courseId;
+    
+    private String courseName;
+    
+    private int subscribers;
+    
+    private int connected;
+    
+    private int URI;
+    
+    private DTOUser professor;
+
+    public DTOCourse(int courseId, String courseName, int subscribers, int connected, int URI, DTOUser professor) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.subscribers = subscribers;
+        this.connected = connected;
+        this.URI = URI;
+        this.professor = professor;
+    }
+
+    public int getConnected() {
+        return connected;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public DTOUser getProfessor() {
+        return professor;
+    }
+
+    public int getSubscribers() {
+        return subscribers;
+    }
+
+    public int getURI() {
+        return URI;
+    }
+    
     
     
 }
