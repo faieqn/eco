@@ -16,12 +16,16 @@
  */
 package org.usac.eco.professor.controller;
 
+import java.util.List;
+
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public enum VideoDeviceMessage {
+public interface IVideoController {
     
-    ERROR_UNKNOWN
+    public void listWebcam(List<VideoDevice> devices);
+    
+    public void listDesktop(List<VideoDevice> devices);
     
 }
