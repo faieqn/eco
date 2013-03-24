@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Zodiac Innovation
+ * Copyright (C) 2013 USAC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,9 +31,9 @@ import org.usac.eco.professor.Log;
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class RobotDevice extends AbstractVideoDevice {
+public class RobotWideScreenDevice extends AbstractVideoDevice {
 
-    public RobotDevice() {
+    public RobotWideScreenDevice() {
         fireOnOpen(new VideoDeviceEvent(this));
     }
     
