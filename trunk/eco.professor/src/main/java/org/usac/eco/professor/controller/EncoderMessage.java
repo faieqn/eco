@@ -26,7 +26,8 @@ public enum EncoderMessage {
     
     ERROR_OPEN_OUTPUT_CONTAINER,
     ERROR_AUDIO_DATALINE,
-    ERROR_LOGO_NOT_FOUND
+    ERROR_LOGO_NOT_FOUND,
+    ERROR_CONNECTION_LOST
     
     
 }
