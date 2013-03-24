@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 USAC
+ * Copyright (C) 2013 Zodiac Innovation
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,18 +16,16 @@
  */
 package org.usac.eco.professor.controller;
 
+import java.util.EventObject;
+
 /**
  *
  * @author brian
  */
-public interface EncoderListener {
-    
-    public void onStart(EncoderEvent ee);
-    
-    public void onError(EncoderEvent ee, EncoderMessage em);
-    
-    public void onTerminated(EncoderEvent ee);
-    
-    public void onSizeChange(EncoderEvent ee, int size);
+public class VideoDeviceEvent extends EventObject {
+
+    public VideoDeviceEvent(Object source) {
+        super(source);
+    }
     
 }

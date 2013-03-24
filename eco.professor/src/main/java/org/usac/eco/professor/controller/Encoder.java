@@ -16,11 +16,17 @@
  */
 package org.usac.eco.professor.controller;
 
+import com.xuggle.ferry.IBuffer;
+import com.xuggle.xuggler.IAudioSamples;
 import com.xuggle.xuggler.IContainer;
 import com.xuggle.xuggler.IContainerFormat;
+import com.xuggle.xuggler.IPacket;
+import com.xuggle.xuggler.IPixelFormat;
 import com.xuggle.xuggler.IStream;
 import com.xuggle.xuggler.IStreamCoder;
+import com.xuggle.xuggler.IVideoPicture;
 import com.xuggle.xuggler.video.ConverterFactory;
+import com.xuggle.xuggler.video.IConverter;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -71,18 +77,16 @@ public class Encoder extends Thread {
     
     @Override
     public void run() {
-        System.out.println("Init RTMP Container...");
         IContainer rtmpContainer = IContainer.make();
         IContainerFormat containerFormat = IContainerFormat.make();
         containerFormat.setOutputFormat("flv", URI, null);
-        System.out.println("Connected " + URI);
         rtmpContainer.setInputBufferLength(0);
         
         int retVal;
         retVal = rtmpContainer.open(URI, IContainer.Type.WRITE, containerFormat);
         if (retVal < 0) {
             Log.fatal("Could not open output container for live streaming in " + URI);
-            fireOnError(EncoderMessage.ERROR_OPEN_OUTPUT_CONTAINER);
+            fireOnError(new EncoderEvent(this), EncoderMessage.ERROR_OPEN_OUTPUT_CONTAINER);
             return;
         }
         
@@ -104,7 +108,6 @@ public class Encoder extends Thread {
         videoCoder.open(EncoderConstants.getVideoOptions(), 
                         EncoderConstants.getVideoUnsetOptions());
         
-        System.out.println("Setting conf for audio codec...");
         IStream audioStream = rtmpContainer.addNewStream(EncoderConstants.AUDIO_CODEC);
         IStreamCoder audioCoder = audioStream.getStreamCoder();
         
@@ -118,16 +121,14 @@ public class Encoder extends Thread {
         audioCoder.open(EncoderConstants.getAudioOptions(), 
                         EncoderConstants.getAudioUnsetOptions());
         
-        System.out.println("Writing container header...");
         rtmpContainer.writeHeader();
         
-        System.out.println("Loading logo usac...");
         BufferedImage logo = null;
         try {
             logo = ImageIO.read(new File(EncoderConstants.VIDEO_LOGO));
         } catch (IOException ex) {
-            Log.error("Log not found: " + EncoderConstants.VIDEO_LOGO);
-            fireOnError(EncoderMessage.ERROR_LOGO_NOT_FOUND);
+            Log.error("Log not found: " + EncoderConstants.VIDEO_LOGO, ex);
+            fireOnError(new EncoderEvent(this), EncoderMessage.ERROR_LOGO_NOT_FOUND);
         }
         
         AudioFormat audioFormat = new AudioFormat(EncoderConstants.AUDIO_BIT_RATE, 
@@ -139,7 +140,7 @@ public class Encoder extends Thread {
             targetDataLine = (TargetDataLine)AudioSystem.getLine(audioInfo);
         } catch (LineUnavailableException ex) {
             Log.fatal("Could not get Audio Info from Microphone", ex);
-            fireOnError(EncoderMessage.ERROR_AUDIO_DATALINE);
+            fireOnError(new EncoderEvent(this), EncoderMessage.ERROR_AUDIO_DATALINE);
             return;
         }
         
@@ -149,7 +150,7 @@ public class Encoder extends Thread {
             targetDataLine.open(audioFormat);
         } catch (LineUnavailableException ex) {
             Log.error("Could not get Audio Info from Microphone", ex);
-            fireOnError(EncoderMessage.ERROR_AUDIO_DATALINE);
+            fireOnError(new EncoderEvent(this), EncoderMessage.ERROR_AUDIO_DATALINE);
             return;
         }
         targetDataLine.start();
@@ -157,8 +158,15 @@ public class Encoder extends Thread {
         long timeStart = System.currentTimeMillis();
         int size = 0;
         
-        System.out.println("Start capture...");
+        boolean firstIteration = true;
+        fireOnStart(new EncoderEvent(this));
         while(true){
+            if(this.isInterrupted()){
+                rtmpContainer.close();
+                fireOnTerminate(new EncoderEvent(this));
+                return;
+            }
+            
             long timeNow = System.currentTimeMillis();
             long timeStampMedia = (timeNow - timeStart) * 1000;
             
@@ -170,14 +178,87 @@ public class Encoder extends Thread {
                     g.dispose();
             }
             
+            IConverter converter = ConverterFactory.createConverter(frameImage,
+                                                                    EncoderConstants.VIDEO_PIXELFORMAT_TYPE);
             
+            IVideoPicture frame = converter.toPicture(frameImage, timeStampMedia);
+            frame.setKeyFrame(firstIteration);
+            frame.setQuality(0);
+            
+            firstIteration = false;
+            
+            IPacket videoPacket = IPacket.make();
+            videoCoder.encodeVideo(videoPacket, frame, 0);
+            if(videoPacket.isComplete()){
+                size+=videoPacket.getSize();
+                fireOnSizeChange(new EncoderEvent(this), size);
+                rtmpContainer.writePacket(videoPacket, true);
+            }
+            if(videoPacket != null){
+                videoPacket.delete();
+            }
+            
+            if (targetDataLine.available() == 88200) {
+                int nBytesRead = targetDataLine.read(audioBuffer, 0, targetDataLine.available());
+                if (nBytesRead>0) {
+                   IBuffer iBuf = IBuffer.make(null, audioBuffer, 0, nBytesRead);
+                   IAudioSamples audioSamples = IAudioSamples.make(iBuf, EncoderConstants.AUDIO_CHANNEL_COUNT, 
+                           IAudioSamples.Format.FMT_S16);
+
+                   if (audioSamples!=null) {
+                       long numSample = nBytesRead/audioSamples.getSampleSize();
+                       audioSamples.setComplete(true, numSample, (int) audioFormat.getSampleRate(), 
+                                                audioFormat.getChannels(), IAudioSamples.Format.FMT_S16, 
+                                                timeStampMedia);
+                       audioSamples.put(audioBuffer, 1, 0, targetDataLine.available());
+
+                       for(int consumed = 0; consumed < audioSamples.getNumSamples();) {
+                           IPacket audioPacket = IPacket.make();
+                           int retval = audioCoder.encodeAudio(audioPacket, audioSamples, consumed);
+                           consumed += retval;
+
+                           if(audioPacket.isComplete()){
+                               size+=audioPacket.getSize();
+                               fireOnSizeChange(new EncoderEvent(this), size);
+                               rtmpContainer.writePacket(audioPacket, true);
+                           }
+                           if(audioPacket != null) {
+                               audioPacket.delete();
+                           }
+                       }
+                   }
+               }
+           }
+            
+           rtmpContainer.flushPackets();
         }
     }
     
-    private void fireOnError(EncoderMessage em){
+    private void fireOnStart(EncoderEvent ee){
         Iterator<EncoderListener> iterator = listener.iterator();
         while(iterator.hasNext()){
-            iterator.next().onError(em);
+            iterator.next().onStart(ee);
+        }
+    }
+    
+    private void fireOnError(EncoderEvent ee, EncoderMessage em){
+        Iterator<EncoderListener> iterator = listener.iterator();
+        while(iterator.hasNext()){
+            iterator.next().onError(ee, em);
+        }
+    }
+    
+    private void fireOnTerminate(EncoderEvent ee){
+        Iterator<EncoderListener> iterator = listener.iterator();
+        while(iterator.hasNext()){
+            iterator.next().onTerminated(ee);
+        }
+    }
+    
+    private void fireOnSizeChange(EncoderEvent ee, int size){
+        Iterator<EncoderListener> iterator = listener.iterator();
+        while(iterator.hasNext()){
+            iterator.next().onSizeChange(ee, size);
         }
     }
         
