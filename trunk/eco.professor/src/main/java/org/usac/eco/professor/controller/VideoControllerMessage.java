@@ -16,19 +16,13 @@
  */
 package org.usac.eco.professor.controller;
 
-import java.util.List;
-import org.usac.eco.libdto.DTOCourse;
-
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public interface IVideoController {
+public enum VideoControllerMessage {
     
-    public void listWebcam(List<VideoDevice> devices);
-    
-    public void listDesktop(List<VideoDevice> devices);
-    
-    public void onError(DTOCourse dtoCourse, VideoControllerMessage vcm);
+    ERROR_ON_PUBLISH,
+    ERROR_ON_UNPUBLISH
     
 }
