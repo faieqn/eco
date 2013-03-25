@@ -151,6 +151,7 @@ public class LoginFrame extends MainFrame implements ActionListener
                     super.getController().ValidateSession(dtoUser);
                 } catch (Exception ex) {
                     Log.fatal("Could not validateSession in LoginFrame: Error: "+ex.getMessage());
+                    JOptionPane.showMessageDialog(this, "Error al obtener Conexión con servidor de aplicaciones. Intente ingresar nuevamente!");
                 }
             }
             
