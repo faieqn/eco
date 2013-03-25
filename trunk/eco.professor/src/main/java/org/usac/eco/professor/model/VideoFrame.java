@@ -121,6 +121,7 @@ public class VideoFrame extends ECOFrame implements ActionListener, IVideoContro
         videoController = new VideoController(this);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("start")){
             encoder = new Encoder((VideoDevice)cmbSource.getSelectedItem(), dtoCourse.getURI());
