@@ -30,11 +30,11 @@ public class DTOCourse {
     
     private int connected;
     
-    private int URI;
+    private String URI;
     
     private DTOUser professor;
 
-    public DTOCourse(int courseId, String courseName, int subscribers, int connected, int URI, DTOUser professor) {
+    public DTOCourse(int courseId, String courseName, int subscribers, int connected, String URI, DTOUser professor) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.subscribers = subscribers;
@@ -63,10 +63,8 @@ public class DTOCourse {
         return subscribers;
     }
 
-    public int getURI() {
+    public String getURI() {
         return URI;
     }
-    
-    
     
 }
