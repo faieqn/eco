@@ -82,4 +82,8 @@ public class LoginController {
     {
 
     }
+    
+    public void LogOut(){
+        
+    }
 }
