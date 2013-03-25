@@ -17,6 +17,8 @@
 
 package org.usac.eco.professor.controller;
 
+import org.usac.eco.libdto.DTOUser;
+
 /**
  *
  * @author ronyHeat3203
@@ -24,5 +26,7 @@ package org.usac.eco.professor.controller;
 public interface ILoginController {
 
     public void Login();
+    
+    public void onError(DTOUser dtoUser, LoginControllerMessage lcm);
 
 }

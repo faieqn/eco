@@ -17,21 +17,58 @@
 
 package org.usac.eco.professor.controller;
 
+import com.zodiac.soa.Request;
+import com.zodiac.soa.client.DynamicServiceHandler;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import org.usac.eco.libdto.DTOUser;
+import org.usac.eco.professor.Configure;
+import org.usac.eco.professor.Log;
+
 /**
  *
  * @author ronyHeat3203
  */
 public class LoginController {
 
-    private ILoginController interfLogin;
+    private List<ILoginController> listeners;
 
     public LoginController(ILoginController iLogin){
-        this.interfLogin = iLogin;
+        listeners = new ArrayList<ILoginController>();
+        addLoginControllerListener(iLogin);
+    }
+    
+    public final boolean addLoginControllerListener(ILoginController ilc){
+        if(ilc == null){
+            return false;
+        }
+        return listeners.add(ilc);
+    }
+    
+    private void fireOnError(DTOUser dtoUser, LoginControllerMessage vcm){
+        Iterator<ILoginController> iterator = listeners.iterator();
+        while(iterator.hasNext()){
+            iterator.next().onError(dtoUser, vcm);
+        }
     }
 
-    public void ValidateSession(String user, String password)
+    public void ValidateSession(DTOUser dtoUser) throws Exception
     {
-
+        String clazz = "org.usac.classroom.bl.User";
+        Class paramsConstructor[] = null;
+        Object argsConstructor[] = null;
+        String method = "CreateSession";
+        Class paramsMethod[] = {DTOUser.class};
+        Object argsMethod[] = {dtoUser};
+        Request request = new Request(clazz, paramsConstructor, argsConstructor, 
+                method, paramsMethod, argsMethod);
+        DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
+        boolean unCreateSession = (Boolean)dsh.run(request);
+        if(!unCreateSession){
+            Log.fatal("Could not validateSession: unknown cause.");
+            fireOnError(dtoUser, LoginControllerMessage.ERROR_ON_LOGIN);
+        }
     }
 
     public void RecoverPassword()
