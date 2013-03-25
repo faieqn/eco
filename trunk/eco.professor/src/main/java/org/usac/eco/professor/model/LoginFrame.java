@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -137,15 +138,30 @@ public class LoginFrame extends MainFrame implements ILoginController, ActionLis
     public void onError(DTOUser dtoUser, LoginControllerMessage lcm) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public boolean ValidateData(){
+        if (this.tfUser.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(this,"¡Debe ingresar usuario!");
+            return false;
+        }
+        if (this.pfPass.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(this,"¡Debe ingresar contraseña!");
+            return false;
+        }
+        return true;
+    }
 
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == this.btnLogIn){
-            dtoUser = new DTOUser(0,this.tfUser.getText(),this.pfPass.getSelectedText(),Profile.PROFESSOR);
-            try {
-                this.controller.ValidateSession(dtoUser);
-            } catch (Exception ex) {
-                Log.fatal("Could not validateSession in LoginFrame: unknown cause. Error: "+ex.getMessage());
+            if (ValidateData()){
+                dtoUser = new DTOUser(0,this.tfUser.getText(),this.pfPass.getSelectedText(),Profile.PROFESSOR);
+                try {
+                    this.controller.ValidateSession(dtoUser);
+                } catch (Exception ex) {
+                    Log.fatal("Could not validateSession in LoginFrame: Error: "+ex.getMessage());
+                }
             }
+            
         }
     }
 }

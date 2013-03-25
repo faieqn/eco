@@ -16,15 +16,28 @@
  */
 package org.usac.eco.professor.model;
 
+import java.awt.event.ActionEvent;
+
 /**
  *
  * @author ronyHeat3203
  */
 public class ProfessorFrame extends ECOFrame{
     
-    public ProfessorFrame()
-    {
+    public ProfessorFrame(){
         
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if( e.getSource() == this.getJmiExit()){
+            System.exit(0);
+        }
+        else if(e.getSource() == this.getJmiLogOut()){
+            
+        }else if(e.getSource() == this.getJmiAbout()){
+            
+        }
     }
     
 }
