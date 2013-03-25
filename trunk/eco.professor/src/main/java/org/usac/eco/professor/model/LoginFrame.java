@@ -46,7 +46,7 @@ import org.usac.eco.professor.controller.LoginControllerMessage;
  *
  * @author ronyHeat3203
  */
-public class LoginFrame extends MainFrame implements ILoginController, ActionListener
+public class LoginFrame extends MainFrame implements ActionListener
 {
 
     private JLabel lbUser, lbPass, lbRecoverPassword;
@@ -59,15 +59,12 @@ public class LoginFrame extends MainFrame implements ILoginController, ActionLis
 
     private JButton btnLogIn;
     
-    private LoginController controller;
-    
     private DTOUser dtoUser;
 
     public LoginFrame()
     {
         super();
 
-        this.controller = new LoginController(this);
         principalPanel = new JPanel();
         principalPanel.setVisible(true);
         principalPanel.setLayout(null);
@@ -130,11 +127,6 @@ public class LoginFrame extends MainFrame implements ILoginController, ActionLis
         this.btnLogIn.addActionListener(this);
     }
 
-    @Override
-    public void Login() {
-        this.setVisible(false);
-    }
-
     public void onError(DTOUser dtoUser, LoginControllerMessage lcm) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -156,7 +148,7 @@ public class LoginFrame extends MainFrame implements ILoginController, ActionLis
             if (ValidateData()){
                 dtoUser = new DTOUser(0,this.tfUser.getText(),this.pfPass.getSelectedText(),Profile.PROFESSOR);
                 try {
-                    this.controller.ValidateSession(dtoUser);
+                    super.getController().ValidateSession(dtoUser);
                 } catch (Exception ex) {
                     Log.fatal("Could not validateSession in LoginFrame: Error: "+ex.getMessage());
                 }

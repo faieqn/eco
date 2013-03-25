@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import org.usac.eco.professor.controller.LoginController;
 
 /**
  *
@@ -178,7 +179,5 @@ public abstract class ECOFrame extends MainFrame implements ActionListener{
             
         }
     }
-    
-    
 
 }
