@@ -28,7 +28,7 @@ import javax.swing.JMenuItem;
  *
  * @author ronyHeat3203
  */
-public class ECOFrame extends MainFrame implements ActionListener{
+public abstract class ECOFrame extends MainFrame implements ActionListener{
 
      private JMenuBar jmbMenuBar;
 
@@ -53,8 +53,13 @@ public class ECOFrame extends MainFrame implements ActionListener{
         this.jmHelp.setVisible(true);
 
         this.jmiLogOut = new JMenuItem("Cerrar Sesión");
+        this.jmiLogOut.setActionCommand("logout");
+        
         this.jmiExit   = new JMenuItem("Salir");
+        this.jmiExit.setActionCommand("exit");
+        
         this.jmiAbout  = new JMenuItem("Acerca De");
+        this.jmiAbout.setActionCommand("about");
 
         this.jmbMenuBar.add(this.jmFile);
         this.jmbMenuBar.add(this.jmHelp);
@@ -165,7 +170,15 @@ public class ECOFrame extends MainFrame implements ActionListener{
     }    
 
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(e.getActionCommand().equals("exit")){
+            System.exit(0);
+        } else if(e.getActionCommand().equals("about")){
+            
+        } else if (e.getActionCommand().equals("logout")){
+            
+        }
     }
+    
+    
 
 }

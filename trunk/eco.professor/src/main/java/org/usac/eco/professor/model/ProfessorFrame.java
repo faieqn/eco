@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
  *
  * @author ronyHeat3203
  */
-public class ProfessorFrame extends ECOFrame{
+public class ProfessorFrame extends ECOFrame {
     
     public ProfessorFrame(){
         
@@ -30,14 +30,8 @@ public class ProfessorFrame extends ECOFrame{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == this.getJmiExit()){
-            System.exit(0);
-        }
-        else if(e.getSource() == this.getJmiLogOut()){
-            
-        }else if(e.getSource() == this.getJmiAbout()){
-            
-        }
+        //Acciones del menu
+        super.actionPerformed(e);
     }
     
 }
