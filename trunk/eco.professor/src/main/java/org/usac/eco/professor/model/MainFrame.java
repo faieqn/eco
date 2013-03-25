@@ -35,6 +35,7 @@ public class MainFrame extends JFrame{
         this.setTitle("ECO.professor");
         this.setLayout(null);
         this.setBackground(Color.BLACK);
+        this.setResizable(false);
 
                /* Agregar Evento Cerrar a la ventana*/
          addWindowListener(new WindowAdapter() {
