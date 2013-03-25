@@ -60,5 +60,10 @@ public abstract class AbstractVideoDevice implements VideoDevice{
             iterator.next().onClosed(vde);
         }
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
     
 }

@@ -37,6 +37,7 @@ public class WebcamDevice extends AbstractVideoDevice implements WebcamListener{
         if(webcam == null){
             throw new IllegalArgumentException("webcam cannot be null or empty");
         }
+        this.webcam = webcam;
         webcam.setViewSize(EncoderConstants.VIDEO_DIMENSION);
     }
     
@@ -47,7 +48,7 @@ public class WebcamDevice extends AbstractVideoDevice implements WebcamListener{
     public String getName() {
         return webcam.getName();
     }
-
+    
     public void webcamOpen(WebcamEvent we) {
         super.fireOnOpen(new VideoDeviceEvent(this));
     }

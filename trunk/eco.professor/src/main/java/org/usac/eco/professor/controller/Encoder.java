@@ -34,8 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -178,6 +176,8 @@ public class Encoder extends Thread {
                     g.dispose();
             }
             
+            
+            
             IConverter converter = ConverterFactory.createConverter(frameImage,
                                                                     EncoderConstants.VIDEO_PIXELFORMAT_TYPE);
             
@@ -259,6 +259,13 @@ public class Encoder extends Thread {
         Iterator<EncoderListener> iterator = listener.iterator();
         while(iterator.hasNext()){
             iterator.next().onSizeChange(ee, size);
+        }
+    }
+    
+    private void fireOnImageChange(EncoderEvent ee, BufferedImage i){
+        Iterator<EncoderListener> iterator = listener.iterator();
+        while(iterator.hasNext()){
+            iterator.next().onImageChange(ee, i);
         }
     }
         
