@@ -21,15 +21,23 @@ import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
+import org.usac.eco.libdto.DTOUser;
+import org.usac.eco.professor.controller.ILoginController;
+import org.usac.eco.professor.controller.LoginController;
+import org.usac.eco.professor.controller.LoginControllerMessage;
 
 /**
  *
  * @author ronyHeat3203
  */
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame implements ILoginController{
+    
+    private LoginController controller;
 
     public MainFrame()
     {
+        this.controller = new LoginController(this);
+        
         this.setBounds(300, 40, 680, 590);
         this.setVisible(true);
         this.setTitle("ECO - Profesor");
@@ -43,6 +51,22 @@ public class MainFrame extends JFrame{
                 System.exit(0);
             }
         });
+    }
+
+    public LoginController getController() {
+        return controller;
+    }
+
+    public void setController(LoginController controller) {
+        this.controller = controller;
+    }
+
+    public void Login() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void onError(DTOUser dtoUser, LoginControllerMessage lcm) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
