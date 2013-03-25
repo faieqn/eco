@@ -19,8 +19,12 @@ package org.usac.eco.professor.model;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,13 +34,18 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
+import org.usac.eco.libdto.DTOUser;
+import org.usac.eco.libdto.DTOUser.Profile;
+import org.usac.eco.professor.Log;
 import org.usac.eco.professor.controller.ILoginController;
+import org.usac.eco.professor.controller.LoginController;
+import org.usac.eco.professor.controller.LoginControllerMessage;
 
 /**
  *
  * @author ronyHeat3203
  */
-public class LoginFrame extends MainFrame implements ILoginController
+public class LoginFrame extends MainFrame implements ILoginController, ActionListener
 {
 
     private JLabel lbUser, lbPass, lbRecoverPassword;
@@ -48,11 +57,16 @@ public class LoginFrame extends MainFrame implements ILoginController
     private JPanel principalPanel;
 
     private JButton btnLogIn;
+    
+    private LoginController controller;
+    
+    private DTOUser dtoUser;
 
     public LoginFrame()
     {
         super();
 
+        this.controller = new LoginController(this);
         principalPanel = new JPanel();
         principalPanel.setVisible(true);
         principalPanel.setLayout(null);
@@ -111,10 +125,27 @@ public class LoginFrame extends MainFrame implements ILoginController
                 lbRecoverPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
         });
+        
+        this.btnLogIn.addActionListener(this);
     }
 
     @Override
     public void Login() {
         this.setVisible(false);
+    }
+
+    public void onError(DTOUser dtoUser, LoginControllerMessage lcm) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == this.btnLogIn){
+            dtoUser = new DTOUser(0,this.tfUser.getText(),this.pfPass.getSelectedText(),Profile.PROFESSOR);
+            try {
+                this.controller.ValidateSession(dtoUser);
+            } catch (Exception ex) {
+                Log.fatal("Could not validateSession in LoginFrame: unknown cause. Error: "+ex.getMessage());
+            }
+        }
     }
 }
