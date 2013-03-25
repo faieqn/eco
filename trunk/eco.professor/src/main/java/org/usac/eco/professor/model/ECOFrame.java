@@ -17,6 +17,7 @@
 
 package org.usac.eco.professor.model;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -27,7 +28,7 @@ import javax.swing.JMenuItem;
  *
  * @author ronyHeat3203
  */
-public class ECOFrame extends MainFrame{
+public class ECOFrame extends MainFrame implements ActionListener{
 
      private JMenuBar jmbMenuBar;
 
@@ -36,8 +37,6 @@ public class ECOFrame extends MainFrame{
     private JMenuItem jmiLogOut, jmiExit, jmiAbout;
 
     private JLabel userName, user;
-
-    private ActionListener onExit, onLogOut, onAbout;
     
     private JStatusBar statusBar;
 
@@ -75,9 +74,9 @@ public class ECOFrame extends MainFrame{
         statusBar.setBounds(1, 507, 650, 20);
         this.add(statusBar);
 
-        this.jmiExit.addActionListener(this.onExit);
-        this.jmiLogOut.addActionListener(this.onLogOut);
-        this.jmiAbout.addActionListener(this.onAbout);
+        jmiLogOut.addActionListener(this);
+        jmiExit.addActionListener(this);
+        jmiAbout.addActionListener(this);
 
     }
 
@@ -164,5 +163,9 @@ public class ECOFrame extends MainFrame{
     public void setStatusBar(JStatusBar statusBar) {
         this.statusBar = statusBar;
     }    
+
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
