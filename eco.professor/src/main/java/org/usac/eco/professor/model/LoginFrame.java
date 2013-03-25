@@ -123,7 +123,7 @@ public class LoginFrame extends MainFrame implements ActionListener
                 lbRecoverPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
         });
-        
+        this.btnLogIn.setActionCommand("login");
         this.btnLogIn.addActionListener(this);
     }
 
@@ -144,7 +144,7 @@ public class LoginFrame extends MainFrame implements ActionListener
     }
 
     public void actionPerformed(ActionEvent event) {
-        if (event.getSource() == this.btnLogIn){
+        if (event.getActionCommand().equals("login")){
             if (ValidateData()){
                 dtoUser = new DTOUser(0,this.tfUser.getText(),this.pfPass.getSelectedText(),Profile.PROFESSOR);
                 try {
