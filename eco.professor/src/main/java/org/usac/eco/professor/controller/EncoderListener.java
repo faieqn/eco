@@ -16,6 +16,8 @@
  */
 package org.usac.eco.professor.controller;
 
+import java.awt.image.BufferedImage;
+
 /**
  *
  * @author brian
@@ -29,5 +31,7 @@ public interface EncoderListener {
     public void onTerminated(EncoderEvent ee);
     
     public void onSizeChange(EncoderEvent ee, int size);
+    
+    public void onImageChange(EncoderEvent ee, BufferedImage image);
     
 }

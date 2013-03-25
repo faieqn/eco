@@ -30,9 +30,9 @@ public class MainFrame extends JFrame{
 
     public MainFrame()
     {
-        this.setBounds(300, 40, 660, 580);
+        this.setBounds(300, 40, 680, 590);
         this.setVisible(true);
-        this.setTitle("ECO.professor");
+        this.setTitle("ECO - Profesor");
         this.setLayout(null);
         this.setBackground(Color.BLACK);
         this.setResizable(false);

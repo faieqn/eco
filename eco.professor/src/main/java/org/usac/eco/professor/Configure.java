@@ -16,6 +16,7 @@
  */
 package org.usac.eco.professor;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,7 +33,9 @@ public class Configure {
     
     private final static String FILENAME = "conf/eco.professor.properties";
     
-    public static URL CLASSROOM;
+    public static URL CLASSROOM = null;
+    
+    public static File VIDEO_ECO_PIC = null;
     
     static {
         try {
@@ -40,6 +43,7 @@ public class Configure {
             properties.load(new FileInputStream(FILENAME));
             
             CLASSROOM = new URL(properties.getProperty("classroom"));
+            VIDEO_ECO_PIC = new File("ecoimg.jpg");
             
         } catch (IOException ex) {
             Log.fatal("Configurator not found: " + FILENAME, ex);
