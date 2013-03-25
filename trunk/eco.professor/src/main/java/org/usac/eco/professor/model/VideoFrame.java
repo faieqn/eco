@@ -125,24 +125,28 @@ public class VideoFrame extends ECOFrame implements ActionListener, IVideoContro
         if(e.getActionCommand().equals("start")){
             encoder = new Encoder((VideoDevice)cmbSource.getSelectedItem(), dtoCourse.getURI());
         } else if (e.getActionCommand().equals("stop")){
-            encoder.interrupt();
-            encoder = null;
+            if(encoder != null) {
+                encoder.interrupt();
+                encoder = null;
+            }
         } else if (e.getActionCommand().equals("sourceChange")){
-            encoder.setVideoDevice((VideoDevice)cmbSource.getSelectedItem());
+            if(encoder != null){
+                encoder.setVideoDevice((VideoDevice)cmbSource.getSelectedItem());
+            }
         }
     }
 
     public void listWebcam(List<VideoDevice> devices) {
         Iterator<VideoDevice> iterator = devices.iterator();
         while(iterator.hasNext()){
-            cmbSource.addItem("Webcam - " + iterator.next());
+            cmbSource.addItem(iterator.next());
         }
     }
 
     public void listDesktop(List<VideoDevice> devices) {
         Iterator<VideoDevice> iterator = devices.iterator();
         while(iterator.hasNext()){
-            cmbSource.addItem("Desktop - " + iterator.next());
+            cmbSource.addItem(iterator.next());
         }
     }
 

@@ -63,5 +63,10 @@ public class RobotWideScreenDevice extends AbstractVideoDevice {
     public String getName() {
         return "Widescreen";
     }
-        
+
+    @Override
+    public String toString() {
+        return "Desktop - " + super.toString();
+    }
+            
 }
