@@ -72,7 +72,7 @@ public class ECOFrame extends MainFrame{
         
         statusBar = new JStatusBar();
         statusBar.setVisible(true);
-        statusBar.setBounds(1, 497, 650, 20);
+        statusBar.setBounds(1, 507, 650, 20);
         this.add(statusBar);
 
         this.jmiExit.addActionListener(this.onExit);
