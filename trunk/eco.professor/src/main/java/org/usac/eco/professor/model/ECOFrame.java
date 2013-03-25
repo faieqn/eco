@@ -38,6 +38,8 @@ public class ECOFrame extends MainFrame{
     private JLabel userName, user;
 
     private ActionListener onExit, onLogOut, onAbout;
+    
+    private JStatusBar statusBar;
 
     public ECOFrame ()
     {
@@ -67,6 +69,11 @@ public class ECOFrame extends MainFrame{
 
         this.user = new JLabel();
         this.userName = new JLabel();
+        
+        statusBar = new JStatusBar();
+        statusBar.setVisible(true);
+        statusBar.setBounds(1, 497, 640, 20);
+        this.add(statusBar);
 
         this.jmiExit.addActionListener(this.onExit);
         this.jmiLogOut.addActionListener(this.onLogOut);
@@ -149,5 +156,13 @@ public class ECOFrame extends MainFrame{
     {
         this.userName = userName;
     }
+
+    public JStatusBar getStatusBar() {
+        return statusBar;
+    }
+
+    public void setStatusBar(JStatusBar statusBar) {
+        this.statusBar = statusBar;
+    }    
 
 }
