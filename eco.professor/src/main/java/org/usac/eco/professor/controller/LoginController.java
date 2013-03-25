@@ -25,6 +25,7 @@ import java.util.List;
 import org.usac.eco.libdto.DTOUser;
 import org.usac.eco.professor.Configure;
 import org.usac.eco.professor.Log;
+import org.usac.eco.professor.model.ProfessorFrame;
 
 /**
  *
@@ -33,6 +34,8 @@ import org.usac.eco.professor.Log;
 public class LoginController {
 
     private List<ILoginController> listeners;
+    
+    private ProfessorFrame professorFrame;
 
     public LoginController(ILoginController iLogin){
         listeners = new ArrayList<ILoginController>();
@@ -68,7 +71,11 @@ public class LoginController {
         if(!unCreateSession){
             Log.fatal("Could not validateSession: unknown cause.");
             fireOnError(dtoUser, LoginControllerMessage.ERROR_ON_LOGIN);
+            return;
         }
+            
+        professorFrame = new ProfessorFrame();
+             
     }
 
     public void RecoverPassword()
