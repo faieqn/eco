@@ -73,7 +73,6 @@ public class LoginController {
             fireOnError(dtoUser, LoginControllerMessage.ERROR_ON_LOGIN);
             return;
         }
-            
         professorFrame = new ProfessorFrame();
              
     }
