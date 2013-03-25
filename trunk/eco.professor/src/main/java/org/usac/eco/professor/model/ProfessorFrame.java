@@ -25,7 +25,8 @@ import java.awt.event.ActionEvent;
 public class ProfessorFrame extends ECOFrame {
     
     public ProfessorFrame(){
-        
+        super();
+        this.setVisible(true);
     }
     
     @Override
