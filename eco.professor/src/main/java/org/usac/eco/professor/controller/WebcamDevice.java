@@ -58,5 +58,12 @@ public class WebcamDevice extends AbstractVideoDevice implements WebcamListener{
     }
 
     public void webcamDisposed(WebcamEvent we) {}
+
+    @Override
+    public String toString() {
+        return "Webcam - " + super.toString();
+    }
+    
+    
         
 }
