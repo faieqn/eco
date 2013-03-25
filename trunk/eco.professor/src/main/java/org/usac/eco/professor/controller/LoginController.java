@@ -83,7 +83,20 @@ public class LoginController {
 
     }
     
-    public void LogOut(){
-        
+    public void LogOut(DTOUser dtoUser) throws Exception{
+        String clazz = "org.usac.classroom.bl.User";
+        Class paramsConstructor[] = null;
+        Object argsConstructor[] = null;
+        String method = "DestroySession";
+        Class paramsMethod[] = {DTOUser.class};
+        Object argsMethod[] = {dtoUser};
+        Request request = new Request(clazz, paramsConstructor, argsConstructor, 
+                method, paramsMethod, argsMethod);
+        DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
+        boolean unDestroySession = (Boolean)dsh.run(request);
+        if(!unDestroySession){
+            Log.fatal("Could not DestroySession: unknown cause.");
+            fireOnError(dtoUser, LoginControllerMessage.ERROR_ON_LOGIN);
+        }
     }
 }
