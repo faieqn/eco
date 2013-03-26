@@ -16,41 +16,19 @@
  */
 package org.usac.eco.classroom.bl;
 
-import com.zodiac.security.Session;
-import com.zodiac.soa.server.PrivateBussinessLogic;
-import java.util.List;
-import org.usac.eco.libdto.DTOCourse;
-import org.usac.eco.libdto.DTOUser;
+import com.zodiac.soa.server.SessionBussinessLogic;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class Course extends PrivateBussinessLogic {
-
-    public Course(Session session) {
+public class Session extends SessionBussinessLogic {
+    
+    public Session(HttpSession session){
         super(session);
     }
+
     
-    public List<DTOCourse> getCourses(DTOUser dtoUser){
-        return null;
-    }
-    
-    public List<DTOCourse> searchCourse(String arg){
-        return null;
-    }
-    
-    public void subscribe(DTOUser dtoUser, DTOCourse dtoCourse){
-        
-    }
-    
-    public boolean publish(DTOCourse dtoCourse) {
-        System.out.println("Publicar");
-        return true;
-    }
-    
-    public boolean unpublish(DTOCourse dtoCourse){
-        return true;
-    }
     
 }
