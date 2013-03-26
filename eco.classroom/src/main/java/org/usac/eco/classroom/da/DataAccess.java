@@ -14,39 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.usac.eco.classroom.bl;
+package org.usac.eco.classroom.da;
 
+import com.zodiac.db.ConnectionFactory;
+import com.zodiac.db.ConnectionParameter;
+import com.zodiac.db.ConnectionString;
+import com.zodiac.db.ConnectionStringJDBC;
 import com.zodiac.db.DAODriver;
-import com.zodiac.soa.server.SessionBussinessLogic;
+import com.zodiac.db.SingletonConnection;
+import java.sql.Connection;
 import java.sql.SQLException;
-import javax.servlet.http.HttpSession;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.usac.eco.classroom.Configure;
-import org.usac.eco.classroom.EcoSession;
-import org.usac.eco.classroom.da.DAOUser;
-import org.usac.eco.libdto.DTOUser;
+import org.usac.eco.classroom.Log;
 
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class Session extends SessionBussinessLogic {
+public class DataAccess {
     
-    public Session(HttpSession session){
-        super(session);
-    }
-
-    public boolean createSession(DTOUser dtoUser) 
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
-        DAOUser daoUser = (DAOUser)DAODriver.getDAODriver("DAOUser");
-        daoUser.getUser(dtoUser);
+    static {
         
-        if(daoUser.next()){
-            DTOUser loggedUser = daoUser.getDTO();
-            set(new EcoSession(loggedUser));
-            return true;
-        } else {
-            return false;
-        }
     }
     
 }
