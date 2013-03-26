@@ -34,22 +34,7 @@ public class ECOLaunch {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        //LoginFrame login = new LoginFrame();
-        //login.setVisible(true);
-        VideoController vc = new VideoController(null);
-        try {
-            vc.publish(null);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(ECOLaunch.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(ECOLaunch.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            vc.publish(null);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(ECOLaunch.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(ECOLaunch.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        LoginFrame login = new LoginFrame();
+        login.setVisible(true);
     }
 }
