@@ -42,6 +42,8 @@ public class MainFrame extends JFrame implements ILoginController{
         this.setBounds(300,100,680,590);
         this.setVisible(true);
         
+        controller = new LoginController(this);
+        
                /* Agregar Evento Cerrar a la ventana*/
          addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

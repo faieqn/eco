@@ -59,10 +59,10 @@ public class LoginController {
 
     public void ValidateSession(DTOUser dtoUser) throws Exception
     {
-        String clazz = "org.usac.classroom.bl.User";
+        String clazz = "org.usac.eco.classroom.bl.User";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
-        String method = "CreateSession";
+        String method = "createSession";
         Class paramsMethod[] = {DTOUser.class};
         Object argsMethod[] = {dtoUser};
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
