@@ -26,7 +26,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.usac.eco.classroom.da.DataAccess;
 
 /**
  *
@@ -45,7 +44,7 @@ public class ServletEvents implements ServletContextListener {
                         Configure.db_driver, 
                         Configure.db_dbms);
             ConnectionString cs = new ConnectionStringJDBC(cp);
-            DAODriver.setDAOPackage("org.usac.eco.classroom.da");
+            DAODriver.setDAOPackage("org.usac.eco.classroom.da.impl");
             DAODriver.setDBMS(Configure.db_dbms);
         try {
             Connection c = ConnectionFactory.getConnection(cp, cs);

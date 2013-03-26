@@ -46,7 +46,7 @@ CREATE TABLE course_status (
 	status_name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE cycle (
+CREATE TABLE "cycle" (
 	cycle_id INTEGER NOT NULL PRIMARY KEY DEFAULT nextval('seq_cycle'),
 	cycle_name VARCHAR(100) NOT NULL,
 	period_id INTEGER NOT NULL REFERENCES period(period_id),
@@ -85,8 +85,8 @@ CREATE TABLE course_subscriber (
 	PRIMARY KEY (course_id, cycle_id, section_id, user_id)
 );
 
-INSERT INTO "day" VALUES (1, 'Lunes'),(2, 'Martes'),(3, 'Miercoles'),(4, 'Jueves'), (5, 'Viernes'),
-			 (6, 'Sabado'),(7, 'Domingo');
+INSERT INTO "day" VALUES (1, 'MONDAY'),(2, 'TUESDAY'),(3, 'WEDNNESDAY'),(4, 'THURSDAY'), (5, 'FRIDAY'),
+			 (6, 'SATURDAY'),(7, 'SUNDAY');
 
 INSERT INTO course_status VALUES (1, 'Desconectado'),(2, 'Conectado'),(3,'Deshabilitado');
 

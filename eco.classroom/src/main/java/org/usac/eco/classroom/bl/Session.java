@@ -20,7 +20,6 @@ import com.zodiac.db.DAODriver;
 import com.zodiac.soa.server.SessionBussinessLogic;
 import java.sql.SQLException;
 import javax.servlet.http.HttpSession;
-import org.usac.eco.classroom.Configure;
 import org.usac.eco.classroom.EcoSession;
 import org.usac.eco.classroom.da.DAOUser;
 import org.usac.eco.libdto.DTOUser;
@@ -47,6 +46,11 @@ public class Session extends SessionBussinessLogic {
         } else {
             return false;
         }
+    }
+    
+    public void destroySession() {
+        super.destroy();
+        
     }
     
 }

@@ -14,20 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.usac.eco.classroom.bl;
+package org.usac.eco.classroom.da;
 
-import com.zodiac.security.Session;
-import com.zodiac.soa.server.PrivateBussinessLogic;
+import com.zodiac.db.DAO;
+import java.sql.SQLException;
+import org.usac.eco.libdto.DTOCourse;
 import org.usac.eco.libdto.DTOUser;
 
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class User extends PrivateBussinessLogic {
-
-    public User(Session session) {
-        super(session);
-    }
-        
+public interface DAOCourse extends DAO<DTOCourse> {
+    
+    public void getCourses(DTOUser dtoUser) throws SQLException;
+    
+    public void searchCourse(DTOCourse dtoCourse) throws SQLException;
+    
+    public void subscribe(DTOUser dtoUser, DTOCourse dtoCourse) throws SQLException;
+    
+    public void changeState(DTOCourse dtoCourse) throws SQLException;
+    
+    public void connectCourse(DTOCourse dtoCourse) throws SQLException;
+    
+    public void unpublish(DTOCourse dtoCourse) throws SQLException;
+    
+    public void publish(DTOCourse dtoCourse) throws SQLException;
+    
 }
