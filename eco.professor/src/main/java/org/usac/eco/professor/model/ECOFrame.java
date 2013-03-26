@@ -174,7 +174,7 @@ public abstract class ECOFrame extends MainFrame implements ActionListener{
         if(e.getActionCommand().equals("exit")){
             System.exit(0);
         } else if(e.getActionCommand().equals("about")){
-            
+            new AboutDialog(this);
         } else if (e.getActionCommand().equals("logout")){
             
         }

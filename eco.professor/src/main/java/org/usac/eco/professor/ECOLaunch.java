@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Zodiac Innovation
+ * Copyright (C) 2013 USAC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.usac.eco.professor.controller.VideoController;
 import org.usac.eco.professor.model.LoginFrame;
+import org.usac.eco.professor.model.ProfessorFrame;
 import org.usac.eco.professor.model.VideoFrame;
 
 /**
  *
- * @author brian
+ * @author Brian Estrada <brianseg014@gmail.com>
  */
 public class ECOLaunch {
 
@@ -34,7 +35,7 @@ public class ECOLaunch {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        LoginFrame login = new LoginFrame();
+        ProfessorFrame login = new ProfessorFrame();
         login.setVisible(true);
     }
 }

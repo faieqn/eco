@@ -52,7 +52,9 @@ import org.usac.eco.professor.controller.LoginControllerMessage;
 public class LoginFrame extends MainFrame implements ActionListener
 {
 
-    private JLabel lbUser, lbPass, lbRecoverPassword;
+    private JLabel lbUser, lbPass;
+    
+    private JLinkLabel lbRecoverPassword;
 
     private JTextField tfUser;
 
@@ -99,7 +101,7 @@ public class LoginFrame extends MainFrame implements ActionListener
         this.btnLogIn = new JButton("Ingresar");
         this.btnLogIn.setVisible(true);
 
-        this.lbRecoverPassword = new JLabel("<html><span style='color: blue;'><u>Recuperar Contraseña</u></span></html>");
+        this.lbRecoverPassword = new JLinkLabel("Recuperar Contraseña");
         this.lbRecoverPassword.setVisible(true);
         
         dataPane.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -127,24 +129,6 @@ public class LoginFrame extends MainFrame implements ActionListener
         getContentPane().add(Box.createRigidArea(new Dimension(180, 0)), BorderLayout.EAST);
         
         this.pack();
-
-                        /*Agregar efecto de cursor de hiper link*/
-
-        this.lbRecoverPassword.addMouseListener(new MouseAdapter()
-        {
-
-            @Override
-            public void mouseExited(MouseEvent arg0)
-            {
-                lbRecoverPassword.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent arg0)
-            {
-                lbRecoverPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
-        });
         this.btnLogIn.setActionCommand("login");
         this.btnLogIn.addActionListener(this);
     }
@@ -168,9 +152,9 @@ public class LoginFrame extends MainFrame implements ActionListener
     public void actionPerformed(ActionEvent event) {
         if (event.getActionCommand().equals("login")){
             if (ValidateParams()){
-                dtoUser = new DTOUser(0,this.tfUser.getText(),this.pfPass.getSelectedText(),Profile.PROFESSOR);
+                dtoUser = new DTOUser(0, null,this.tfUser.getText(),this.pfPass.getSelectedText(), null, Profile.PROFESSOR, null);
                 try {
-                    super.getController().ValidateSession(dtoUser);
+                    super.getController().validateSession(dtoUser);
                 } catch (Exception ex) {
                     Log.error("Could not validateSession in LoginFrame: Error: "+ex.getMessage(),ex);
                     JOptionPane.showMessageDialog(this, "Error al obtener Conexión con servidor de aplicaciones. Intente ingresar nuevamente!. Error:"+ex.getMessage());

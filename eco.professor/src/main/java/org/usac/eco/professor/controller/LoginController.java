@@ -57,9 +57,9 @@ public class LoginController {
         }
     }
 
-    public void ValidateSession(DTOUser dtoUser) throws Exception
+    public void validateSession(DTOUser dtoUser) throws Exception
     {
-        String clazz = "org.usac.eco.classroom.bl.User";
+        String clazz = "org.usac.eco.classroom.bl.Session";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
         String method = "createSession";
@@ -84,13 +84,13 @@ public class LoginController {
 
     }
     
-    public void LogOut(DTOUser dtoUser) throws Exception{
-        String clazz = "org.usac.classroom.bl.User";
+    public void logOut(DTOUser dtoUser) throws Exception{
+        String clazz = "org.usac.eco.classroom.bl.Session";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
-        String method = "DestroySession";
-        Class paramsMethod[] = {DTOUser.class};
-        Object argsMethod[] = {dtoUser};
+        String method = "destroySession";
+        Class paramsMethod[] = null;
+        Object argsMethod[] = null;
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
         DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);

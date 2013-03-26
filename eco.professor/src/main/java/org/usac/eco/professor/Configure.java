@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Zodiac Innovation
+ * Copyright (C) 2013 USAC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,17 +37,27 @@ public class Configure {
     
     public static File VIDEO_ECO_PIC = null;
     
+    public static File ABOUT_PIC = null;
+    
+    public static String APP_TITLE = null;
+    
+    public static String APP_WEBSITE = null;
+    
     static {
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream(FILENAME));
             
-            CLASSROOM = new URL(properties.getProperty("classroom"));
-            VIDEO_ECO_PIC = new File("ecoimg.jpg");
-            
+            CLASSROOM = new URL(properties.getProperty("classroom"));            
         } catch (IOException ex) {
             Log.fatal("Configurator not found: " + FILENAME, ex);
         }
+        VIDEO_ECO_PIC = new File("ecoimg.jpg");
+        
+        ABOUT_PIC = new File("about.jpg");
+        
+        APP_TITLE = "ECO Professor 1.0";
+        APP_WEBSITE = "http://eco.googlecode.com";
     }
     
 }
