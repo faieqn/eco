@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 USAC
+ * Copyright (C) 2013 Zodiac Innovation
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +16,18 @@
  */
 package org.usac.eco.classroom.da;
 
-import com.zodiac.db.ConnectionFactory;
-import com.zodiac.db.ConnectionParameter;
-import com.zodiac.db.ConnectionString;
-import com.zodiac.db.ConnectionStringJDBC;
-import com.zodiac.db.DAODriver;
-import com.zodiac.db.SingletonConnection;
-import java.sql.Connection;
+import com.zodiac.db.DAO;
+import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.usac.eco.classroom.Configure;
-import org.usac.eco.classroom.Log;
+import org.usac.eco.libdto.DTOCourse;
+import org.usac.eco.libdto.DTOCourseSchedule;
 
 /**
  *
- * @author Brian Estrada <brianseg014@gmail.com>
+ * @author brian
  */
-public class DataAccess {
+public interface DAOCourseSchedule extends DAO<DTOCourseSchedule> {
     
-    static {
-        
-    }
+    public void getSchedule(DTOCourse dtoCourse) throws SQLException;
     
 }

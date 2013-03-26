@@ -14,16 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.usac.eco.classroom.da;
+package org.usac.eco.classroom.da.impl;
 
 import com.zodiac.db.AbstractDAO;
 import com.zodiac.db.SingletonConnection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.usac.eco.classroom.Log;
+import org.usac.eco.classroom.da.DAOUser;
 import org.usac.eco.libdto.DTOUser;
 
 /**
@@ -60,7 +56,7 @@ public class DAOUserPostgreSQL extends AbstractDAO<DTOUser> implements DAOUser {
         setQuery();
         getQuery().setQueryString(sql);
         getQuery().addQueryParams(dtoUser.getUsername());
-        getQuery().executeSelect();
+        getQuery().execute();
         setResultSet(getQuery().getResultSet());
     }
 
@@ -75,7 +71,7 @@ public class DAOUserPostgreSQL extends AbstractDAO<DTOUser> implements DAOUser {
         
         setQuery();
         getQuery().setQueryString(sql);
-        getQuery().executeSelect();
+        getQuery().execute();
         setResultSet(getQuery().getResultSet());
     }
 
