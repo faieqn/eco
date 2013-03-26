@@ -34,6 +34,9 @@ public class DTOCourse {
     
     private DTOUser professor;
 
+    public DTOCourse() {
+    }
+    
     public DTOCourse(int courseId, String courseName, int subscribers, int connected, String URI, DTOUser professor) {
         this.courseId = courseId;
         this.courseName = courseName;
