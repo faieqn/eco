@@ -74,6 +74,7 @@ public class LoginController {
             fireOnError(dtoUser, LoginControllerMessage.ERROR_ON_LOGIN);
             return;
         }
+        fireListLogin();
         professorFrame = new ProfessorFrame();
              
     }
@@ -97,6 +98,13 @@ public class LoginController {
         if(!unDestroySession){
             Log.fatal("Could not DestroySession: unknown cause.");
             fireOnError(dtoUser, LoginControllerMessage.ERROR_ON_LOGIN);
+        }
+    }
+    
+    private void fireListLogin(){
+        Iterator<ILoginController> iterator = listeners.iterator();
+        while(iterator.hasNext()){
+            iterator.next().Login();
         }
     }
 }

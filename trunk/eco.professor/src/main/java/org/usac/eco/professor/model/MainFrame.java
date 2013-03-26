@@ -59,7 +59,7 @@ public class MainFrame extends JFrame implements ILoginController{
     }
 
     public void Login() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.setVisible(false);
     }
 
     public void onError(DTOUser dtoUser, LoginControllerMessage lcm) {
