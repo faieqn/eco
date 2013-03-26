@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ronyHeat3203
+ * Copyright (C) 2013 USAC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,24 +16,22 @@
  */
 package org.usac.eco.classroom.bl;
 
+import com.zodiac.security.Session;
+import com.zodiac.soa.server.PrivateBussinessLogic;
 import org.usac.eco.libdto.DTOUser;
 
 /**
  *
- * @author ronyHeat3203
+ * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class User {
-    
-    public User(){}
-    
-    public boolean CreateSession(DTOUser dtoUser){
-        System.out.println("CreateSession");
-        return true;        
+public class User extends PrivateBussinessLogic {
+
+    public User(Session session) {
+        super(session);
     }
     
-    public boolean destroySession(DTOUser dtoUser){
-        System.out.println("DestroySession");
-        return true; 
+    public boolean createSession(DTOUser dtoUser){
+        return true;
     }
     
 }
