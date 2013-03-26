@@ -17,14 +17,19 @@
 
 package org.usac.eco.professor.model;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -64,47 +69,66 @@ public class LoginFrame extends MainFrame implements ActionListener
     public LoginFrame()
     {
         super();
+        
+        getContentPane().setLayout(new BorderLayout());
 
         principalPanel = new JPanel();
+        principalPanel.setLayout(new BoxLayout(principalPanel, BoxLayout.X_AXIS));
         principalPanel.setVisible(true);
-        principalPanel.setLayout(null);
-        principalPanel.setBounds(150, 140, 350, 250);
-
         principalPanel.setBorder(new CompoundBorder(
                 new SoftBevelBorder(BevelBorder.LOWERED),new LineBorder(Color.red)
         ));
-
-        this.add(this.principalPanel);
-
+        
+        JPanel dataPane = new JPanel();
+        dataPane.setLayout(new BoxLayout(dataPane, BoxLayout.Y_AXIS));
+        
         this.lbUser = new JLabel("Usuario");
-        this.principalPanel.add(this.lbUser);
         this.lbUser.setVisible(true);
-        this.lbUser.setBounds(75,40,60,10);
 
         this.lbPass = new JLabel("Contraseña");
-        this.principalPanel.add(this.lbPass);
         this.lbPass.setVisible(true);
-        this.lbPass.setBounds(75,100,80,20);
 
         this.tfUser = new JTextField();
-        this.principalPanel.add(this.tfUser);
+        this.tfUser.setMaximumSize(new Dimension(4000,30));
+        this.tfUser.setMinimumSize(new Dimension(1,35));
         this.tfUser.setVisible(true);
-        this.tfUser.setBounds(75, 60, 200, 30);
 
         this.pfPass = new JPasswordField();
-        this.principalPanel.add(this.pfPass);
+        this.pfPass.setMaximumSize(new Dimension(4000,30));
+        this.pfPass.setMinimumSize(new Dimension(1,35));
         this.pfPass.setVisible(true);
-        this.pfPass.setBounds(75, 125, 200, 30);
 
         this.btnLogIn = new JButton("Ingresar");
-        this.principalPanel.add(this.btnLogIn);
         this.btnLogIn.setVisible(true);
-        this.btnLogIn.setBounds(175, 160, 100, 30);
 
         this.lbRecoverPassword = new JLabel("<html><span style='color: blue;'><u>Recuperar Contraseña</u></span></html>");
-        this.principalPanel.add(this.lbRecoverPassword);
         this.lbRecoverPassword.setVisible(true);
-        this.lbRecoverPassword.setBounds(150, 190, 130, 30);
+        
+        dataPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        dataPane.add(this.lbUser);
+        dataPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        dataPane.add(this.tfUser);
+        dataPane.add(Box.createRigidArea(new Dimension(0, 10)));
+        dataPane.add(this.lbPass);
+        dataPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        dataPane.add(this.pfPass);
+        dataPane.add(Box.createRigidArea(new Dimension(0, 10)));
+        dataPane.add(this.btnLogIn);
+        dataPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        dataPane.add(this.lbRecoverPassword);
+        dataPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        
+        principalPanel.add(Box.createRigidArea(new Dimension(20, 0)));
+        principalPanel.add(dataPane);
+        principalPanel.add(Box.createRigidArea(new Dimension(20, 0)));
+        
+        getContentPane().add(principalPanel, BorderLayout.CENTER);
+        getContentPane().add(Box.createRigidArea(new Dimension(0, 180)), BorderLayout.NORTH);
+        getContentPane().add(Box.createRigidArea(new Dimension(0, 180)), BorderLayout.SOUTH);
+        getContentPane().add(Box.createRigidArea(new Dimension(180, 0)), BorderLayout.WEST);
+        getContentPane().add(Box.createRigidArea(new Dimension(180, 0)), BorderLayout.EAST);
+        
+        this.pack();
 
                         /*Agregar efecto de cursor de hiper link*/
 

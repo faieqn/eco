@@ -16,13 +16,10 @@
  */
 package org.usac.eco.professor.model;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +44,6 @@ import org.usac.eco.professor.controller.IVideoController;
 import org.usac.eco.professor.controller.VideoController;
 import org.usac.eco.professor.controller.VideoControllerMessage;
 import org.usac.eco.professor.controller.VideoDevice;
-import sun.security.krb5.Config;
 
 /**
  *
