@@ -78,9 +78,19 @@ public class DTOUser extends AbstractDTO {
     }
     
     public enum Profile {
-        ADMIN,
-        PROFESSOR,
-        STUDENT
+        ADMIN (1, "Admin"),
+        PROFESSOR (2, "Professor"),
+        STUDENT (3, "Student");
+        
+        private int profile_id;
+        
+        private String profile_name;
+
+        private Profile(int profile_id, String profile_name) {
+            this.profile_id = profile_id;
+            this.profile_name  = profile_name;
+        }
+        
     }
     
 }
