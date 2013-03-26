@@ -26,31 +26,55 @@ public class DTOUser extends AbstractDTO {
     
     private String name;
     
+    private String username;
+    
     private String password;
     
+    private String salt;
+    
     private Profile profile;
+    
+    private String email;
 
-    public DTOUser(int userId, String name, String password, Profile profile) {
+    public DTOUser() {
+    }
+    
+    public DTOUser(int userId, String name, String username, String password, String salt, Profile profile, String email) {
         this.userId = userId;
         this.name = name;
+        this.username = username;
         this.password = password;
+        this.salt = salt;
         this.profile = profile;
+        this.email = email;
     }
 
     public String getName() {
         return name;
     }
 
+    public String getUsername() {
+        return username;
+    }
+    
     public String getPassword() {
         return password;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+    
     public Profile getProfile() {
         return profile;
     }
 
     public int getUserId() {
         return userId;
+    }
+
+    public String getEmail() {
+        return email;
     }
     
     public enum Profile {
