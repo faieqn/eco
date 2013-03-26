@@ -77,7 +77,10 @@ public class AboutDialog extends JDialog implements ActionListener {
         creditsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         creditsPanel.setLayout(new BoxLayout(creditsPanel, BoxLayout.Y_AXIS));
 
-        JLabel lblCredits = new JLabel("Tesis (2013): Rony Arredondo y Brian Estrada");
+        JLabel lblCopyright = new JLabel("Copyright (C) 2013 USAC");
+        lblCopyright.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel lblCredits = new JLabel("Tesis: Rony Arredondo y Brian Estrada");
         lblCredits.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLinkLabel website = new JLinkLabel(Configure.APP_WEBSITE);
@@ -89,7 +92,9 @@ public class AboutDialog extends JDialog implements ActionListener {
         website.setAlignmentX(Component.CENTER_ALIGNMENT);
         
 
+        creditsPanel.add(lblCopyright);
         creditsPanel.add(lblCredits);
+        creditsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         creditsPanel.add(website);
         
         JPanel buttonPanel = new JPanel();
@@ -104,9 +109,9 @@ public class AboutDialog extends JDialog implements ActionListener {
         add(titlePanel);
         add(Box.createRigidArea(new Dimension(0, 20)));
         add(creditsPanel);
-        add(Box.createRigidArea(new Dimension(0, 20)));
+        add(Box.createRigidArea(new Dimension(0, 10)));
         add(buttonPanel);
-        add(Box.createRigidArea(new Dimension(0, 20)));
+        add(Box.createRigidArea(new Dimension(0, 5)));
 
         pack();
         setLocationRelativeTo(owner);
