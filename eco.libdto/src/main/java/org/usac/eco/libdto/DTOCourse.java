@@ -24,6 +24,10 @@ public class DTOCourse {
     
     private int courseId;
     
+    private DTOCycle cycle;
+    
+    private DTOSection section;
+    
     private String courseName;
     
     private int subscribers;
@@ -33,17 +37,24 @@ public class DTOCourse {
     private String URI;
     
     private DTOUser professor;
-
-    public DTOCourse() {
-    }
     
-    public DTOCourse(int courseId, String courseName, int subscribers, int connected, String URI, DTOUser professor) {
+    private Status status;
+    
+    private DTOCourseSchedule courseSchedule;
+
+    public DTOCourse() {}
+
+    public DTOCourse(int courseId, DTOCycle cycle, DTOSection section, String courseName, int subscribers, int connected, String URI, DTOUser professor, Status status, DTOCourseSchedule courseSchedule) {
         this.courseId = courseId;
+        this.cycle = cycle;
+        this.section = section;
         this.courseName = courseName;
         this.subscribers = subscribers;
         this.connected = connected;
         this.URI = URI;
         this.professor = professor;
+        this.status = status;
+        this.courseSchedule = courseSchedule;
     }
 
     public int getConnected() {
@@ -58,8 +69,24 @@ public class DTOCourse {
         return courseName;
     }
 
+    public DTOCourseSchedule getCourseSchedule() {
+        return courseSchedule;
+    }
+
+    public DTOCycle getCycle() {
+        return cycle;
+    }
+
     public DTOUser getProfessor() {
         return professor;
+    }
+
+    public DTOSection getSection() {
+        return section;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public int getSubscribers() {
@@ -69,5 +96,33 @@ public class DTOCourse {
     public String getURI() {
         return URI;
     }
+
+    
+    
+    public enum Status {
+        DISCONNECTED(1,  "Disconnected"),
+        CONNECTED(2, "Connected"),
+        DISABLED(3, "Disabled");
+        
+        private int status_id;
+        
+        private String status_name;
+
+        private Status(int status_id, String status_name) {
+            this.status_id = status_id;
+            this.status_name = status_name;
+        }
+
+        public int getStatusId() {
+            return status_id;
+        }
+
+        public String getStatusName() {
+            return status_name;
+        }
+        
+        
+    }
+    
     
 }
