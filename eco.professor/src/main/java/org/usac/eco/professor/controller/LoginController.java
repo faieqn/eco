@@ -26,6 +26,7 @@ import org.usac.eco.libdto.DTOUser;
 import org.usac.eco.professor.Configure;
 import org.usac.eco.professor.Log;
 import org.usac.eco.professor.model.ProfessorFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -69,7 +70,7 @@ public class LoginController {
         DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
         boolean unCreateSession = (Boolean)dsh.run(request);
         if(!unCreateSession){
-            Log.fatal("Could not validateSession: unknown cause.");
+            JOptionPane.showMessageDialog(null,"¡Error al tratar de ingresar a su sesión. Intente de nuevo!");
             fireOnError(dtoUser, LoginControllerMessage.ERROR_ON_LOGIN);
             return;
         }
