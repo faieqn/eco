@@ -29,10 +29,4 @@ public class ProfessorFrame extends ECOFrame {
         this.setVisible(true);
     }
     
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        //Acciones del menu
-        super.actionPerformed(e);
-    }
-    
 }

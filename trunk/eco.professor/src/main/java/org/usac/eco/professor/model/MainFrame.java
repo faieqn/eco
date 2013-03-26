@@ -39,6 +39,7 @@ public class MainFrame extends JFrame implements ILoginController{
     {
         this.setTitle("ECO - Profesor");
         this.setMinimumSize(new Dimension(680, 590));
+        this.setBounds(300,100,680,590);
         this.setVisible(true);
         
                /* Agregar Evento Cerrar a la ventana*/

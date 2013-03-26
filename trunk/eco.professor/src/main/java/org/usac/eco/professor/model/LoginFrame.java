@@ -43,8 +43,6 @@ import javax.swing.border.SoftBevelBorder;
 import org.usac.eco.libdto.DTOUser;
 import org.usac.eco.libdto.DTOUser.Profile;
 import org.usac.eco.professor.Log;
-import org.usac.eco.professor.controller.ILoginController;
-import org.usac.eco.professor.controller.LoginController;
 import org.usac.eco.professor.controller.LoginControllerMessage;
 
 /**
@@ -155,7 +153,7 @@ public class LoginFrame extends MainFrame implements ActionListener
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public boolean ValidateData(){
+    public boolean ValidateParams(){
         if (this.tfUser.getText().trim().equals("")){
             JOptionPane.showMessageDialog(this,"¡Debe ingresar usuario!");
             return false;
@@ -169,7 +167,7 @@ public class LoginFrame extends MainFrame implements ActionListener
 
     public void actionPerformed(ActionEvent event) {
         if (event.getActionCommand().equals("login")){
-            if (ValidateData()){
+            if (ValidateParams()){
                 dtoUser = new DTOUser(0,this.tfUser.getText(),this.pfPass.getSelectedText(),Profile.PROFESSOR);
                 try {
                     super.getController().ValidateSession(dtoUser);
