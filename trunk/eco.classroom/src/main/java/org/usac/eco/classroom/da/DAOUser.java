@@ -14,27 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.usac.eco.classroom;
+package org.usac.eco.classroom.da;
 
-import com.zodiac.security.AbstractSession;
+import com.zodiac.db.DAO;
+import java.sql.SQLException;
 import org.usac.eco.libdto.DTOUser;
 
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class EcoSession extends AbstractSession {
+public interface DAOUser extends DAO<DTOUser> {
     
-    private DTOUser dtoUser;
-
-    public EcoSession(DTOUser dtoUser) {
-        this.dtoUser = dtoUser;
-    }
+    public void getUser(DTOUser user) throws SQLException;
     
-    @Override
-    public void open() {}
-
-    @Override
-    public void close() {}
-
+    public void allUsers() throws SQLException;
+    
 }

@@ -90,4 +90,4 @@ INSERT INTO "day" VALUES (1, 'Lunes'),(2, 'Martes'),(3, 'Miercoles'),(4, 'Jueves
 
 INSERT INTO course_status VALUES (1, 'Desconectado'),(2, 'Conectado'),(3,'Deshabilitado');
 
-INSERT INTO user_profile VALUES (1, 'Adminitrador'), (2, 'Profesor'), (3, 'Estudiante');
+INSERT INTO user_profile VALUES (1, 'ADMIN'), (2, 'PROFESSOR'), (3, 'STUDENT');
