@@ -23,6 +23,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import org.usac.eco.libdto.DTOUser;
+import org.usac.eco.professor.Configure;
 import org.usac.eco.professor.controller.ILoginController;
 import org.usac.eco.professor.controller.LoginController;
 import org.usac.eco.professor.controller.LoginControllerMessage;
@@ -37,9 +38,9 @@ public class MainFrame extends JFrame implements ILoginController{
 
     public MainFrame()
     {
-        this.setTitle("ECO - Profesor");
+        this.setTitle(Configure.APP_TITLE);
         this.setMinimumSize(new Dimension(680, 590));
-        this.setBounds(300,100,680,590);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
         
         controller = new LoginController(this);
