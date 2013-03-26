@@ -133,8 +133,18 @@ public class LoginFrame extends MainFrame implements ActionListener
         this.btnLogIn.addActionListener(this);
     }
 
+    @Override
+    public void Login() {
+        super.Login();
+        new ProfessorFrame();
+    }
+    
     public void onError(DTOUser dtoUser, LoginControllerMessage lcm) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        switch(lcm){
+            case ERROR_ON_LOGIN:
+                JOptionPane.showMessageDialog(null,"¡Error al tratar de ingresar a su sesión. Intente de nuevo!");
+                break;
+        }
     }
     
     public boolean ValidateParams(){

@@ -35,7 +35,7 @@ public class ECOLaunch {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        ProfessorFrame login = new ProfessorFrame();
+        LoginFrame login = new LoginFrame();
         login.setVisible(true);
     }
 }

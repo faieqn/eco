@@ -27,6 +27,7 @@ import org.usac.eco.professor.Configure;
 import org.usac.eco.professor.Log;
 import org.usac.eco.professor.model.ProfessorFrame;
 import javax.swing.JOptionPane;
+import org.usac.eco.professor.Session;
 
 /**
  *
@@ -68,15 +69,14 @@ public class LoginController {
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
         DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
-        boolean unCreateSession = (Boolean)dsh.run(request);
-        if(!unCreateSession){
-            JOptionPane.showMessageDialog(null,"¡Error al tratar de ingresar a su sesión. Intente de nuevo!");
+        DTOUser loggedUser = (DTOUser)dsh.run(request);
+        if(loggedUser != null){
+            Session.getSession(loggedUser);
+            fireListLogin();
+        } else {
             fireOnError(dtoUser, LoginControllerMessage.ERROR_ON_LOGIN);
             return;
         }
-        fireListLogin();
-        professorFrame = new ProfessorFrame();
-             
     }
 
     public void RecoverPassword()
