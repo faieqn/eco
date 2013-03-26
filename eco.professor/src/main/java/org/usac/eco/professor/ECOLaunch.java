@@ -1,0 +1,55 @@
+/*
+ * Copyright (C) 2013 Zodiac Innovation
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.usac.eco.professor;
+
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.usac.eco.professor.controller.VideoController;
+import org.usac.eco.professor.model.LoginFrame;
+import org.usac.eco.professor.model.VideoFrame;
+
+/**
+ *
+ * @author brian
+ */
+public class ECOLaunch {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        //LoginFrame login = new LoginFrame();
+        //login.setVisible(true);
+        VideoController vc = new VideoController(null);
+        try {
+            vc.publish(null);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ECOLaunch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ECOLaunch.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            vc.publish(null);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ECOLaunch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ECOLaunch.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
