@@ -14,36 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.usac.eco.classroom.bl;
+package org.usac.eco.classroom.da;
 
-import com.zodiac.db.DAODriver;
-import com.zodiac.security.Session;
-import com.zodiac.soa.server.PrivateBussinessLogic;
+import com.zodiac.db.DAO;
 import java.sql.SQLException;
-import java.util.List;
-import org.usac.eco.classroom.da.DAOUser;
+import org.usac.eco.libdto.DTOCourse;
 import org.usac.eco.libdto.DTOUser;
 
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class User extends PrivateBussinessLogic {
-
-    public User(Session session) {
-        super(session);
-    }
+public interface DAOCourseOpen extends DAO<DTOCourse> {
     
-    public List<DTOUser> getAllUsers() 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        DAOUser daoUser = getDAOUser();
-        daoUser.getAllUsers();
-        return daoUser.getListDTO();
-    }
+    public void getAllCoursesOpen() throws SQLException;
     
-    private DAOUser getDAOUser() 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException{
-        return (DAOUser)DAODriver.getDAODriver("DAOUser");
-    }
-        
+    public void getCoursesOpen(DTOUser dtoUser) throws SQLException;
+    
+    public void searchCourseOpen(DTOCourse dtoCourse) throws SQLException;
+    
+    public void subscribe(DTOUser dtoUser, DTOCourse dtoCourse) throws SQLException;
+    
+    public void changeState(DTOCourse dtoCourse) throws SQLException;
+    
+    public void connectCourseOpen(DTOCourse dtoCourse) throws SQLException;
+    
+    public void unpublish(DTOCourse dtoCourse) throws SQLException;
+    
+    public void publish(DTOCourse dtoCourse) throws SQLException;
+            
 }

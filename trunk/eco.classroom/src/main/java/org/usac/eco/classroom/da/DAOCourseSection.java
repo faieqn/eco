@@ -18,16 +18,14 @@ package org.usac.eco.classroom.da;
 
 import com.zodiac.db.DAO;
 import java.sql.SQLException;
-import org.usac.eco.libdto.DTOUser;
+import org.usac.eco.libdto.DTOSection;
 
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public interface DAOUser extends DAO<DTOUser> {
+public interface DAOCourseSection extends DAO<DTOSection> {
     
-    public void getUser(DTOUser user) throws SQLException;
-    
-    public void getAllUsers() throws SQLException;
+    public void getAllSections() throws SQLException;
     
 }

@@ -20,6 +20,7 @@ import com.zodiac.db.DAODriver;
 import com.zodiac.soa.server.SessionBussinessLogic;
 import java.sql.SQLException;
 import javax.servlet.http.HttpSession;
+import org.usac.eco.classroom.Configure;
 import org.usac.eco.classroom.EcoSession;
 import org.usac.eco.classroom.da.DAOUser;
 import org.usac.eco.libdto.DTOUser;
@@ -34,7 +35,11 @@ public class Session extends SessionBussinessLogic {
         super(session);
     }
 
-    public boolean createSession(DTOUser dtoUser) 
+    public String geRecoveryPasswordLink() {
+        return Configure.PAGE_RECOVERY_PASSWORD;
+    }
+    
+    public DTOUser createSession(DTOUser dtoUser) 
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         DAOUser daoUser = (DAOUser)DAODriver.getDAODriver("DAOUser");
         daoUser.getUser(dtoUser);
@@ -42,9 +47,9 @@ public class Session extends SessionBussinessLogic {
         if(daoUser.next()){
             DTOUser loggedUser = daoUser.getDTO();
             set(new EcoSession(loggedUser));
-            return true;
+            return loggedUser;
         } else {
-            return false;
+            return null;
         }
     }
     

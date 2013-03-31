@@ -14,20 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.usac.eco.classroom.da;
-
-import com.zodiac.db.DAO;
-import java.sql.SQLException;
-import org.usac.eco.libdto.DTOUser;
+package org.usac.eco.classroom;
 
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public interface DAOUser extends DAO<DTOUser> {
+public enum ClassroomFunctionName {
     
-    public void getUser(DTOUser user) throws SQLException;
-    
-    public void getAllUsers() throws SQLException;
+    LOGIN,
+    LIST_ALL_COURSES_OPEN,
+    LIST_ALL_USERS,
+    DISABLE_COURSE_OPEN,
+    LIST_ALL_COURSES_CYCLES_SECTIONS_PERIODS,
     
 }

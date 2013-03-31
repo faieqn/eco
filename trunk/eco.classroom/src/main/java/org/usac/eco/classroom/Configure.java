@@ -29,33 +29,36 @@ public class Configure {
     
     private final static String FILENAME = "C:/eco/eco.classroom.properties";
     
-    public static String db_host;
+    public static String DB_HOST;
     
-    public static String db_port;
+    public static String DB_PORT;
     
-    public static String db_username;
+    public static String DB_USERNAME;
     
-    public static String db_password;
+    public static String DB_PASSWORD;
     
-    public static String db_database;
+    public static String DB_DATABASE;
     
-    public static String db_driver;
+    public static String DB_DRIVER;
     
-    public static String db_dbms;
+    public static String DB_DBMS;
     
+    public static String PAGE_RECOVERY_PASSWORD;
+        
     static {
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream(FILENAME));
             
-            db_host = properties.getProperty("classroom.db.host");
-            db_port = properties.getProperty("classroom.db.port");
-            db_username = properties.getProperty("classroom.db.username");
-            db_password = properties.getProperty("classroom.db.password");
-            db_database = properties.getProperty("classroom.db.database");
-            db_driver = properties.getProperty("classroom.db.driver");
-            db_dbms = properties.getProperty("classroom.db.dbms");
+            DB_HOST = properties.getProperty("classroom.db.host");
+            DB_PORT = properties.getProperty("classroom.db.port");
+            DB_USERNAME = properties.getProperty("classroom.db.username");
+            DB_PASSWORD = properties.getProperty("classroom.db.password");
+            DB_DATABASE = properties.getProperty("classroom.db.database");
+            DB_DRIVER = properties.getProperty("classroom.db.driver");
+            DB_DBMS = properties.getProperty("classroom.db.dbms");
             
+            PAGE_RECOVERY_PASSWORD = "http://localhost:8080/eco.classroom/DynamicService";
         } catch (IOException ex) {
             Log.fatal("Configurator not found: " + FILENAME, ex);
         }

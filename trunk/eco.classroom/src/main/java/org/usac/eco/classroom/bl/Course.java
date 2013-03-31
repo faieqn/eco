@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.List;
 import org.usac.eco.classroom.da.DAOCourse;
 import org.usac.eco.libdto.DTOCourse;
-import org.usac.eco.libdto.DTOUser;
 
 /**
  *
@@ -34,40 +33,12 @@ public class Course extends PrivateBussinessLogic {
     public Course(Session session) {
         super(session);
     }
-    
-    public List<DTOCourse> getCourses(DTOUser dtoUser)
+ 
+    public List<DTOCourse> getAllCourses() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
         DAOCourse daoCourse = getDAOCourse();
-        daoCourse.getCourses(dtoUser);
+        daoCourse.getAllCourses();
         return daoCourse.getListDTO();
-    }
-    
-    public List<DTOCourse> searchCourse(DTOCourse dtoCourse)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        DAOCourse daoCourse = getDAOCourse();
-        daoCourse.searchCourse(dtoCourse);
-        return daoCourse.getListDTO();
-    }
-    
-    public boolean subscribe(DTOUser dtoUser, DTOCourse dtoCourse) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        DAOCourse daoCourse = getDAOCourse();
-        daoCourse.subscribe(dtoUser, dtoCourse);
-        return true;
-    }
-    
-    public boolean publish(DTOCourse dtoCourse) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        DAOCourse daoCourse = getDAOCourse();
-        daoCourse.publish(dtoCourse);
-        return true;
-    }
-    
-    public boolean unpublish(DTOCourse dtoCourse) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        DAOCourse daoCourse = getDAOCourse();
-        daoCourse.unpublish(dtoCourse);
-        return true;
     }
     
     private DAOCourse getDAOCourse() 
