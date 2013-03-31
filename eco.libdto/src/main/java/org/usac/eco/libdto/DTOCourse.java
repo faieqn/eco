@@ -20,7 +20,7 @@ package org.usac.eco.libdto;
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class DTOCourse {
+public class DTOCourse extends AbstractDTO {
     
     private int courseId;
     
@@ -38,13 +38,13 @@ public class DTOCourse {
     
     private DTOUser professor;
     
-    private Status status;
+    private DTOCourseStatus status;
     
     private DTOCourseSchedule courseSchedule;
-
+    
     public DTOCourse() {}
-
-    public DTOCourse(int courseId, DTOCycle cycle, DTOSection section, String courseName, int subscribers, int connected, String URI, DTOUser professor, Status status, DTOCourseSchedule courseSchedule) {
+    
+    public DTOCourse(int courseId, DTOCycle cycle, DTOSection section, String courseName, int subscribers, int connected, String URI, DTOUser professor, DTOCourseStatus status, DTOCourseSchedule courseSchedule) {
         this.courseId = courseId;
         this.cycle = cycle;
         this.section = section;
@@ -85,7 +85,7 @@ public class DTOCourse {
         return section;
     }
 
-    public Status getStatus() {
+    public DTOCourseStatus getStatus() {
         return status;
     }
 
@@ -96,33 +96,5 @@ public class DTOCourse {
     public String getURI() {
         return URI;
     }
-
-    
-    
-    public enum Status {
-        DISCONNECTED(1,  "Disconnected"),
-        CONNECTED(2, "Connected"),
-        DISABLED(3, "Disabled");
-        
-        private int status_id;
-        
-        private String status_name;
-
-        private Status(int status_id, String status_name) {
-            this.status_id = status_id;
-            this.status_name = status_name;
-        }
-
-        public int getStatusId() {
-            return status_id;
-        }
-
-        public String getStatusName() {
-            return status_name;
-        }
-        
-        
-    }
-    
     
 }

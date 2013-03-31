@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Zodiac Innovation
+ * Copyright (C) 2013 USAC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,42 +16,36 @@
  */
 package org.usac.eco.libdto;
 
-import java.util.Date;
-
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class DTOCourseSchedule extends AbstractDTO {
+public class DTOUserProfile extends AbstractDTO {
     
-    private DTODay day;
+    private int profileId;
     
-    private Date startTime;
-    
-    private Date endTime;
+    private String profileName;
 
-    public DTOCourseSchedule() {
-    }
-    
-    
-
-    public DTOCourseSchedule(DTODay day, Date startTime, Date endTime) {
-        this.day = day;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public DTOUserProfile() {
     }
 
-    public DTODay getDay() {
-        return day;
+    
+    
+    public DTOUserProfile(int profileId, String profileName) {
+        this.profileId = profileId;
+        this.profileName = profileName;
     }
 
-    public Date getEndDate() {
-        return endTime;
+    public int getProfileId() {
+        return profileId;
     }
 
-    public Date getStartDate() {
-        return startTime;
+    public String getProfileName() {
+        return profileName;
     }
     
+    public static DTOUserProfile ADMIN = new DTOUserProfile(1, "ADMIN");
+    public static DTOUserProfile PROFESSOR = new DTOUserProfile(2, "PROFESSOR");
+    public static DTOUserProfile STUDENT = new DTOUserProfile(3, "STUDENT");
     
 }

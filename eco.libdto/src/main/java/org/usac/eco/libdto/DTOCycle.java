@@ -30,6 +30,11 @@ public class DTOCycle extends AbstractDTO {
     
     private int year;
 
+    public DTOCycle() {
+    }
+    
+    
+
     public DTOCycle(int cycleId, String cycleName, DTOPeriod period, int year) {
         this.cycleId = cycleId;
         this.cycleName = cycleName;

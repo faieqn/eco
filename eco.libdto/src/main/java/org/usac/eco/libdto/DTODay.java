@@ -16,42 +16,32 @@
  */
 package org.usac.eco.libdto;
 
-import java.util.Date;
-
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class DTOCourseSchedule extends AbstractDTO {
+public class DTODay extends AbstractDTO {
     
-    private DTODay day;
+    private int dayId;
     
-    private Date startTime;
-    
-    private Date endTime;
+    private String dayName;
 
-    public DTOCourseSchedule() {
-    }
-    
-    
-
-    public DTOCourseSchedule(DTODay day, Date startTime, Date endTime) {
-        this.day = day;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public DTODay() {
     }
 
-    public DTODay getDay() {
-        return day;
-    }
-
-    public Date getEndDate() {
-        return endTime;
-    }
-
-    public Date getStartDate() {
-        return startTime;
-    }
     
+    
+    public DTODay(int dayId, String dayName) {
+        this.dayId = dayId;
+        this.dayName = dayName;
+    }
+
+    public int getDayId() {
+        return dayId;
+    }
+
+    public String getDayName() {
+        return dayName;
+    }
     
 }
