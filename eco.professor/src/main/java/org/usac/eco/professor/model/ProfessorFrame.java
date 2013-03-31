@@ -17,16 +17,38 @@
 package org.usac.eco.professor.model;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.usac.eco.libdto.DTOCourse;
+import org.usac.eco.professor.controller.IProfessorController;
+import org.usac.eco.professor.controller.ProfessorController;
 
 /**
  *
  * @author ronyHeat3203
  */
-public class ProfessorFrame extends ECOFrame {
+public class ProfessorFrame extends ECOFrame implements IProfessorController {
+    
+    private ProfessorController professorController;
     
     public ProfessorFrame(){
         super();
         this.setVisible(true);
+        try {
+            professorController = new ProfessorController(this);
+        } catch (Exception ex) {
+            Logger.getLogger(ProfessorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
+    public void listCourses(List<DTOCourse> courses) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void recoveryPasswordLink(String link) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

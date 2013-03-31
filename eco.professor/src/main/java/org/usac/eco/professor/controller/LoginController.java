@@ -25,8 +25,6 @@ import java.util.List;
 import org.usac.eco.libdto.DTOUser;
 import org.usac.eco.professor.Configure;
 import org.usac.eco.professor.Log;
-import org.usac.eco.professor.model.ProfessorFrame;
-import javax.swing.JOptionPane;
 import org.usac.eco.professor.Session;
 
 /**
@@ -36,8 +34,6 @@ import org.usac.eco.professor.Session;
 public class LoginController {
 
     private List<ILoginController> listeners;
-    
-    private ProfessorFrame professorFrame;
 
     public LoginController(ILoginController iLogin){
         listeners = new ArrayList<ILoginController>();
@@ -56,6 +52,20 @@ public class LoginController {
         while(iterator.hasNext()){
             iterator.next().onError(dtoUser, vcm);
         }
+    }
+    
+    public void getRecoveryPasswordLink() throws Exception{
+        String clazz = "org.usac.eco.classroom.bl.Session";
+        Class paramsConstructor[] = null;
+        Object argsConstructor[] = null;
+        String method = "geRecoveryPasswordLink";
+        Class paramsMethod[] = null;
+        Object argsMethod[] = null;
+        Request request = new Request(clazz, paramsConstructor, argsConstructor, 
+                method, paramsMethod, argsMethod);
+        DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
+        String link = dsh.run(request).toString();
+        fireRecoveryPasswordLink(link);
     }
 
     public void validateSession(DTOUser dtoUser) throws Exception
@@ -78,12 +88,7 @@ public class LoginController {
             return;
         }
     }
-
-    public void RecoverPassword()
-    {
-
-    }
-    
+        
     public void logOut(DTOUser dtoUser) throws Exception{
         String clazz = "org.usac.eco.classroom.bl.Session";
         Class paramsConstructor[] = null;
@@ -105,6 +110,13 @@ public class LoginController {
         Iterator<ILoginController> iterator = listeners.iterator();
         while(iterator.hasNext()){
             iterator.next().Login();
+        }
+    }
+    
+    private void fireRecoveryPasswordLink(String link){
+        Iterator<ILoginController> iterator = listeners.iterator();
+        while(iterator.hasNext()){
+            iterator.next().recoveryPasswordLink(link);
         }
     }
 }

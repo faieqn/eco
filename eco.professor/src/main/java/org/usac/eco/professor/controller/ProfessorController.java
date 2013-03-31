@@ -38,10 +38,10 @@ public class ProfessorController {
         listener = new ArrayList<IProfessorController>();
         addProfessorControllerListener(ipc);
         
-        String clazz = "org.usac.classroom.bl.Course";
+        String clazz = "org.usac.eco.classroom.bl.CourseOpen";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
-        String method = "getCourses";
+        String method = "getCoursesOpen";
         Class paramsMethod[] = {DTOCourse.class};
         Object argsMethod[] = {Session.getSession().getUser()};
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 

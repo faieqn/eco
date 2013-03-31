@@ -170,6 +170,10 @@ public class VideoFrame extends ECOFrame implements ActionListener, IVideoContro
     public void onImageChange(EncoderEvent ee, BufferedImage image) {
         video.setIcon(new ImageIcon(image));
     }
+
+    public void recoveryPasswordLink(String link) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
        
 }
