@@ -20,30 +20,43 @@ import com.zodiac.db.DAODriver;
 import com.zodiac.security.Session;
 import com.zodiac.soa.server.PrivateBussinessLogic;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
-import org.usac.eco.classroom.da.DAOUser;
-import org.usac.eco.libdto.DTOUser;
+import org.usac.eco.classroom.da.DAOCycle;
+import org.usac.eco.libdto.DTOCycle;
 
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class User extends PrivateBussinessLogic {
+public class Cycle extends PrivateBussinessLogic {
 
-    public User(Session session) {
+    public Cycle(Session session) {
         super(session);
     }
     
-    public List<DTOUser> getAllUsers() 
+    public List<DTOCycle> getAllCycles() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        DAOUser daoUser = getDAOUser();
-        daoUser.getAllUsers();
-        return daoUser.getListDTO();
+        DAOCycle daoCycle = getDAOCycle();
+        daoCycle.getAllCycles();
+        return daoCycle.getListDTO();
     }
     
-    private DAOUser getDAOUser() 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException{
-        return (DAOUser)DAODriver.getDAODriver("DAOUser");
-    }
+    public int[] getSampleCycleYears(){
+        int countYears = 4;
+        int[] years = new int[countYears];
         
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        for(int i = 0; i < countYears; i++){
+            years[i] = currentYear - 2 + i;
+        }
+        return years;
+    }
+    
+    private DAOCycle getDAOCycle() 
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+        return (DAOCycle)DAODriver.getDAODriver("DAOCycle");
+    }
+    
 }

@@ -1,0 +1,18 @@
+<div>
+    <ul>
+        <li>
+            Cursos
+            <ul>
+                <li><a href="adminCourses.jsp">Administrar Cursos</a></li>
+                <li><a href="configureCourses.jsp">Configurar</a></li>
+                <li><a href="importCourses.jsp">Importar</a></li>
+            </ul>
+        </li>
+        <li>
+            Usuarios
+            <ul>
+                <li><a href="adminUsers.jsp">Administrar Usuarios</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

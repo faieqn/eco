@@ -19,40 +19,42 @@ package org.usac.eco.classroom.da.impl;
 import com.zodiac.db.AbstractDAO;
 import com.zodiac.db.SingletonConnection;
 import java.sql.SQLException;
-import org.usac.eco.classroom.da.DAOCourse;
-import org.usac.eco.libdto.DTOCourse;
+import org.usac.eco.classroom.da.DAOCycle;
+import org.usac.eco.libdto.DTOCycle;
+import org.usac.eco.libdto.DTOPeriod;
 
 /**
  *
- * @author brian
+ * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class DAOCoursePostgreSQL extends AbstractDAO<DTOCourse> implements DAOCourse {
+public class DAOCyclePostgreSQL extends AbstractDAO<DTOCycle> implements DAOCycle {
 
-    public DAOCoursePostgreSQL() {
+    public DAOCyclePostgreSQL() {
         super(SingletonConnection.getInstance().getConnection());
     }
-
+    
     @Override
-    public DTOCourse getDTO() throws SQLException {
-        return new DTOCourse(
-                getResultSet().getInt("course_id"), 
-                null, 
-                null, 
-                getResultSet().getString("course_name"), 
-                0, 
-                0, 
-                null, 
-                null, 
-                null, 
-                null);
+    public DTOCycle getDTO() throws SQLException {
+        return new DTOCycle(
+                getResultSet().getInt("cycle_id"), 
+                getResultSet().getString("cycle_name"), 
+                new DTOPeriod(
+                    getResultSet().getInt("period_id"), 
+                    getResultSet().getString("period_name"), 
+                    getResultSet().getDate("start_date"), 
+                    getResultSet().getDate("end_date")), 
+                getResultSet().getInt("year"));
     }
 
     @Override
-    public void getAllCourses() throws SQLException {
+    public void getAllCycles() throws SQLException {
         String sql = "SELECT "
-                + "  course_id, course_name "
+                + "  c.cycle_id, c.cycle_name, c.year, "
+                + "  p.period_id, p.period_name, p.start_date, p.end_date "
                 + "FROM "
-                + "  course ";
+                + "  cycle c, period p "
+                + "WHERE "
+                + "  c.period_id = p.period_id ";
         setQuery();
         getQuery().setQueryString(sql);
         getQuery().execute();

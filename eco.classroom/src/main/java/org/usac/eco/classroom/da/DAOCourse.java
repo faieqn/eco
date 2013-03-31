@@ -19,7 +19,6 @@ package org.usac.eco.classroom.da;
 import com.zodiac.db.DAO;
 import java.sql.SQLException;
 import org.usac.eco.libdto.DTOCourse;
-import org.usac.eco.libdto.DTOUser;
 
 /**
  *
@@ -27,18 +26,6 @@ import org.usac.eco.libdto.DTOUser;
  */
 public interface DAOCourse extends DAO<DTOCourse> {
     
-    public void getCourses(DTOUser dtoUser) throws SQLException;
-    
-    public void searchCourse(DTOCourse dtoCourse) throws SQLException;
-    
-    public void subscribe(DTOUser dtoUser, DTOCourse dtoCourse) throws SQLException;
-    
-    public void changeState(DTOCourse dtoCourse) throws SQLException;
-    
-    public void connectCourse(DTOCourse dtoCourse) throws SQLException;
-    
-    public void unpublish(DTOCourse dtoCourse) throws SQLException;
-    
-    public void publish(DTOCourse dtoCourse) throws SQLException;
+    public void getAllCourses() throws SQLException;
     
 }

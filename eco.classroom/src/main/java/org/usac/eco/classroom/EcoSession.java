@@ -29,6 +29,7 @@ public class EcoSession extends AbstractSession {
 
     public EcoSession(DTOUser dtoUser) {
         this.dtoUser = dtoUser;
+        setOpen(true);
     }
     
     @Override

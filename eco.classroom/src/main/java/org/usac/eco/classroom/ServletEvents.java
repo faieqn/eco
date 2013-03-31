@@ -35,25 +35,7 @@ public class ServletEvents implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ConnectionParameter cp = new ConnectionParameter(
-                        Configure.db_host, 
-                        Configure.db_port, 
-                        Configure.db_database, 
-                        Configure.db_username, 
-                        Configure.db_password, 
-                        Configure.db_driver, 
-                        Configure.db_dbms);
-            ConnectionString cs = new ConnectionStringJDBC(cp);
-            DAODriver.setDAOPackage("org.usac.eco.classroom.da.impl");
-            DAODriver.setDBMS(Configure.db_dbms);
-        try {
-            Connection c = ConnectionFactory.getConnection(cp, cs);
-            SingletonConnection.getInstance().setConnection(c);
-        } catch (ClassNotFoundException ex) {
-            Log.fatal("Database driver not found.", ex);
-        } catch (SQLException ex) {
-            Log.fatal("Cannot connecto to database " + cs.getConnectionString() + ".", ex);
-        }
+        EcoLoader.load();
     }
 
     @Override

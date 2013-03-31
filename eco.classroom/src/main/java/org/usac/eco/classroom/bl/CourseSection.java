@@ -21,29 +21,29 @@ import com.zodiac.security.Session;
 import com.zodiac.soa.server.PrivateBussinessLogic;
 import java.sql.SQLException;
 import java.util.List;
-import org.usac.eco.classroom.da.DAOUser;
-import org.usac.eco.libdto.DTOUser;
+import org.usac.eco.classroom.da.DAOCourseSection;
+import org.usac.eco.libdto.DTOSection;
 
 /**
  *
- * @author Brian Estrada <brianseg014@gmail.com>
+ * @author Brian Estrada <brianseg014@gmail.com>s
  */
-public class User extends PrivateBussinessLogic {
+public class CourseSection extends PrivateBussinessLogic {
 
-    public User(Session session) {
+    public CourseSection(Session session) {
         super(session);
     }
     
-    public List<DTOUser> getAllUsers() 
+    public List<DTOSection> getAllSections() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        DAOUser daoUser = getDAOUser();
-        daoUser.getAllUsers();
-        return daoUser.getListDTO();
+        DAOCourseSection daoCourseSection = getDAOCourseSection();
+        daoCourseSection.getAllSections();
+        return daoCourseSection.getListDTO();
     }
     
-    private DAOUser getDAOUser() 
+    private DAOCourseSection getDAOCourseSection() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException{
-        return (DAOUser)DAODriver.getDAODriver("DAOUser");
+        return (DAOCourseSection)DAODriver.getDAODriver("DAOCourseSection");
     }
-        
+    
 }

@@ -21,6 +21,7 @@ import com.zodiac.db.SingletonConnection;
 import java.sql.SQLException;
 import org.usac.eco.classroom.da.DAOUser;
 import org.usac.eco.libdto.DTOUser;
+import org.usac.eco.libdto.DTOUserProfile;
 
 /**
  *
@@ -40,14 +41,16 @@ public class DAOUserPostgreSQL extends AbstractDAO<DTOUser> implements DAOUser {
                 getResultSet().getString("username"),
                 getResultSet().getString("password"),
                 getResultSet().getString("salt"),
-                DTOUser.Profile.valueOf(getResultSet().getString("profile_name")),
+                new DTOUserProfile(
+                    getResultSet().getInt("profile_id"), 
+                    getResultSet().getString("profile_name")),
                 getResultSet().getString("email"));
     }
 
     @Override
     public void getUser(DTOUser dtoUser) throws SQLException{
         String sql = "SELECT "
-                + "  user_id, user_name, username, password, salt, profile_name, email "
+                + "  u.user_id, u.user_name, u.username, u.password, u.salt, up.profile_id, up.profile_name, u.email "
                 + "FROM "
                 + "  \"user\" u, user_profile up "
                 + "WHERE "
@@ -61,9 +64,9 @@ public class DAOUserPostgreSQL extends AbstractDAO<DTOUser> implements DAOUser {
     }
 
     @Override
-    public void allUsers() throws SQLException {
+    public void getAllUsers() throws SQLException {
         String sql = "SELECT "
-                + "  user_id, user_name, username, profile_name, email "
+                + "  u.user_id, u.user_name, u.username, u.password, u.salt, up.profile_id, up.profile_name, u.email "
                 + "FROM "
                 + "  \"user\" u, user_profile up "
                 + "WHERE "

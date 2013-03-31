@@ -17,10 +17,12 @@
 package org.usac.eco.classroom.da.impl;
 
 import com.zodiac.db.AbstractDAO;
+import com.zodiac.db.SingletonConnection;
 import java.sql.SQLException;
 import org.usac.eco.classroom.da.DAOCourseSchedule;
 import org.usac.eco.libdto.DTOCourse;
 import org.usac.eco.libdto.DTOCourseSchedule;
+import org.usac.eco.libdto.DTODay;
 
 /**
  *
@@ -28,10 +30,16 @@ import org.usac.eco.libdto.DTOCourseSchedule;
  */
 public class DAOCourseSchedulePostgreSQL extends AbstractDAO<DTOCourseSchedule> implements DAOCourseSchedule {
 
+    public DAOCourseSchedulePostgreSQL(){
+        super(SingletonConnection.getInstance().getConnection());
+    }
+    
     @Override
     public DTOCourseSchedule getDTO() throws SQLException {
         return new DTOCourseSchedule(
-                DTOCourseSchedule.Day.valueOf(getResultSet().getNString("day_name")), 
+                new DTODay(
+                        getResultSet().getInt("day_id"),
+                        getResultSet().getString("day_name")), 
                 getResultSet().getTime("start_time"), 
                 getResultSet().getTime("end_time"));
     }

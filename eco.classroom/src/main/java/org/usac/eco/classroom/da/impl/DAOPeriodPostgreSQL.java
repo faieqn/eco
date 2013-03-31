@@ -19,44 +19,39 @@ package org.usac.eco.classroom.da.impl;
 import com.zodiac.db.AbstractDAO;
 import com.zodiac.db.SingletonConnection;
 import java.sql.SQLException;
-import org.usac.eco.classroom.da.DAOCourse;
-import org.usac.eco.libdto.DTOCourse;
+import org.usac.eco.classroom.da.DAOPeriod;
+import org.usac.eco.libdto.DTOPeriod;
 
 /**
  *
- * @author brian
+ * @author Brian Estrada
  */
-public class DAOCoursePostgreSQL extends AbstractDAO<DTOCourse> implements DAOCourse {
+public class DAOPeriodPostgreSQL extends AbstractDAO<DTOPeriod> implements DAOPeriod {
 
-    public DAOCoursePostgreSQL() {
+    public DAOPeriodPostgreSQL() {
         super(SingletonConnection.getInstance().getConnection());
     }
 
     @Override
-    public DTOCourse getDTO() throws SQLException {
-        return new DTOCourse(
-                getResultSet().getInt("course_id"), 
-                null, 
-                null, 
-                getResultSet().getString("course_name"), 
-                0, 
-                0, 
-                null, 
-                null, 
-                null, 
-                null);
+    public DTOPeriod getDTO() throws SQLException {
+        return new DTOPeriod(
+                getResultSet().getInt("period_id"), 
+                getResultSet().getString("period_name"), 
+                getResultSet().getDate("start_date"), 
+                getResultSet().getDate("end_date"));
     }
 
     @Override
-    public void getAllCourses() throws SQLException {
+    public void getAllPeriods() throws SQLException {
         String sql = "SELECT "
-                + "  course_id, course_name "
+                + "  period_id, period_name, start_date, end_date "
                 + "FROM "
-                + "  course ";
+                + "  period ";
         setQuery();
         getQuery().setQueryString(sql);
         getQuery().execute();
         setResultSet(getQuery().getResultSet());
     }
+    
     
 }

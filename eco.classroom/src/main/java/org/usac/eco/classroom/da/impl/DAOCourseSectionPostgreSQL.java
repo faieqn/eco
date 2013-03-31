@@ -19,40 +19,32 @@ package org.usac.eco.classroom.da.impl;
 import com.zodiac.db.AbstractDAO;
 import com.zodiac.db.SingletonConnection;
 import java.sql.SQLException;
-import org.usac.eco.classroom.da.DAOCourse;
-import org.usac.eco.libdto.DTOCourse;
+import org.usac.eco.classroom.da.DAOCourseSection;
+import org.usac.eco.libdto.DTOSection;
 
 /**
  *
- * @author brian
+ * @author Brian Estrada
  */
-public class DAOCoursePostgreSQL extends AbstractDAO<DTOCourse> implements DAOCourse {
+public class DAOCourseSectionPostgreSQL extends AbstractDAO<DTOSection> implements DAOCourseSection{
 
-    public DAOCoursePostgreSQL() {
+    public DAOCourseSectionPostgreSQL() {
         super(SingletonConnection.getInstance().getConnection());
     }
-
+    
     @Override
-    public DTOCourse getDTO() throws SQLException {
-        return new DTOCourse(
-                getResultSet().getInt("course_id"), 
-                null, 
-                null, 
-                getResultSet().getString("course_name"), 
-                0, 
-                0, 
-                null, 
-                null, 
-                null, 
-                null);
+    public DTOSection getDTO() throws SQLException {
+        return new DTOSection(
+                getResultSet().getInt("section_id"), 
+                getResultSet().getString("section_name"));
     }
 
     @Override
-    public void getAllCourses() throws SQLException {
+    public void getAllSections() throws SQLException {
         String sql = "SELECT "
-                + "  course_id, course_name "
+                + "  section_id, section_name "
                 + "FROM "
-                + "  course ";
+                + "  course_section ";
         setQuery();
         getQuery().setQueryString(sql);
         getQuery().execute();
