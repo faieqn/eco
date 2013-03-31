@@ -26,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -41,7 +43,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 import org.usac.eco.libdto.DTOUser;
-import org.usac.eco.libdto.DTOUser.Profile;
+import org.usac.eco.libdto.DTOUserProfile;
 import org.usac.eco.professor.Log;
 import org.usac.eco.professor.controller.LoginControllerMessage;
 
@@ -162,7 +164,7 @@ public class LoginFrame extends MainFrame implements ActionListener
     public void actionPerformed(ActionEvent event) {
         if (event.getActionCommand().equals("login")){
             if (ValidateParams()){
-                dtoUser = new DTOUser(0, null,this.tfUser.getText(),this.pfPass.getSelectedText(), null, Profile.PROFESSOR, null);
+                dtoUser = new DTOUser(0, null,this.tfUser.getText(),this.pfPass.getSelectedText(), null, DTOUserProfile.PROFESSOR, null);
                 try {
                     super.getController().validateSession(dtoUser);
                 } catch (Exception ex) {
@@ -170,6 +172,14 @@ public class LoginFrame extends MainFrame implements ActionListener
                     JOptionPane.showMessageDialog(this, "Error al obtener Conexión con servidor de aplicaciones. Intente ingresar nuevamente!. Error:"+ex.getMessage());
                 }
             }            
+        }
+    }
+
+    public void recoveryPasswordLink(String link) {
+        try {
+            this.lbRecoverPassword.setURI(new URI(link));
+        } catch (URISyntaxException ex) {
+            Log.error("Bad recovery password link receive from classroom server.");
         }
     }
 }

@@ -32,7 +32,7 @@ import org.usac.eco.professor.controller.LoginControllerMessage;
  *
  * @author ronyHeat3203
  */
-public class MainFrame extends JFrame implements ILoginController{
+public abstract class MainFrame extends JFrame implements ILoginController{
     
     private LoginController controller;
 

@@ -27,6 +27,8 @@ public interface ILoginController {
 
     public void Login();
     
+    public void recoveryPasswordLink(String link);
+    
     public void onError(DTOUser dtoUser, LoginControllerMessage lcm);
 
 }

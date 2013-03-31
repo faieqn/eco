@@ -52,7 +52,7 @@ public class VideoController {
     }
     
     public void publish(DTOCourse dtoCourse) throws MalformedURLException, Exception{
-        String clazz = "org.usac.eco.classroom.bl.Course";
+        String clazz = "org.usac.eco.classroom.bl.CourseOpen";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
         String method = "publish";
@@ -69,7 +69,7 @@ public class VideoController {
     }
     
     public void unpublish(DTOCourse dtoCourse) throws Exception{
-        String clazz = "org.usac.classroom.bl.Course";
+        String clazz = "org.usac.classroom.bl.CourseOpen";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
         String method = "unpublish";
