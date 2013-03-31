@@ -32,14 +32,14 @@ public class DTOUser extends AbstractDTO {
     
     private String salt;
     
-    private Profile profile;
+    private DTOUserProfile profile;
     
     private String email;
 
     public DTOUser() {
     }
     
-    public DTOUser(int userId, String name, String username, String password, String salt, Profile profile, String email) {
+    public DTOUser(int userId, String name, String username, String password, String salt, DTOUserProfile profile, String email) {
         this.userId = userId;
         this.name = name;
         this.username = username;
@@ -65,7 +65,7 @@ public class DTOUser extends AbstractDTO {
         return salt;
     }
     
-    public Profile getProfile() {
+    public DTOUserProfile getProfile() {
         return profile;
     }
 
@@ -75,22 +75,6 @@ public class DTOUser extends AbstractDTO {
 
     public String getEmail() {
         return email;
-    }
-    
-    public enum Profile {
-        ADMIN (1, "Admin"),
-        PROFESSOR (2, "Professor"),
-        STUDENT (3, "Student");
-        
-        private int profile_id;
-        
-        private String profile_name;
-
-        private Profile(int profile_id, String profile_name) {
-            this.profile_id = profile_id;
-            this.profile_name  = profile_name;
-        }
-        
     }
     
 }

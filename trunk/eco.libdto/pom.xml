@@ -21,6 +21,27 @@
             <distribution>https://bitbucket.org/KohrAh/jni-pln/overview</distribution>
         </license>
     </licenses>
+    
+    <developers>
+        <developer>
+            <id>brian</id>
+            <name>Brian Estrada</name>
+            <email>brianseg014@gmail.com</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>rony</id>
+            <name>Rony Arredondo</name>
+            <email>heat3203@gmail.com</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>

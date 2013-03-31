@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Zodiac Innovation
+ * Copyright (C) 2013 USAC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,42 +16,34 @@
  */
 package org.usac.eco.libdto;
 
-import java.util.Date;
-
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class DTOCourseSchedule extends AbstractDTO {
+public class DTOCourseStatus extends AbstractDTO {
     
-    private DTODay day;
+    private int statusId;
     
-    private Date startTime;
-    
-    private Date endTime;
+    private String statusName;
 
-    public DTOCourseSchedule() {
+    public DTOCourseStatus() {
     }
     
-    
-
-    public DTOCourseSchedule(DTODay day, Date startTime, Date endTime) {
-        this.day = day;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public DTOCourseStatus(int statusId, String statusName) {
+        this.statusId = statusId;
+        this.statusName = statusName;
     }
 
-    public DTODay getDay() {
-        return day;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public Date getEndDate() {
-        return endTime;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public Date getStartDate() {
-        return startTime;
-    }
-    
+    public static DTOCourseStatus DISCONNECTED = new DTOCourseStatus(1, "Desconectado");
+    public static DTOCourseStatus CONNECTED = new DTOCourseStatus(2, "Conectado");
+    public static DTOCourseStatus DISABLE = new DTOCourseStatus(3, "Deshabilitado");
     
 }

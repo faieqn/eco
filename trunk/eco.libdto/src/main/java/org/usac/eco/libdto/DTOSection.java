@@ -26,6 +26,11 @@ public class DTOSection extends AbstractDTO {
     
     private String sectionName;
 
+    public DTOSection() {
+    }
+
+    
+    
     public DTOSection(int sectionId, String sectionName) {
         this.sectionId = sectionId;
         this.sectionName = sectionName;

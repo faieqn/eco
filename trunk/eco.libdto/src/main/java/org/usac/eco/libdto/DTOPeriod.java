@@ -32,6 +32,11 @@ public class DTOPeriod extends AbstractDTO {
     
     private Date endDate;
 
+    public DTOPeriod() {
+    }
+
+    
+    
     public DTOPeriod(int periodId, String periodName, Date startDate, Date endDate) {
         this.periodId = periodId;
         this.periodName = periodName;
