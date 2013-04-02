@@ -28,7 +28,7 @@ switch(function){
     case LOGIN:
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        result = ClassroomFunction.login(username, password, session).toJSONString();
+        result = ClassroomFunction.login(username, password, request).toJSONString();
         break;
     case LIST_ALL_COURSES_OPEN:
         result = ClassroomFunction.list_all_courses_open(session).toJSONString();

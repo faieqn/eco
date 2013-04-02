@@ -19,6 +19,7 @@ package org.usac.eco.classroom.bl;
 import com.zodiac.db.DAODriver;
 import com.zodiac.soa.server.SessionBussinessLogic;
 import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.usac.eco.classroom.Configure;
 import org.usac.eco.classroom.EcoSession;
@@ -30,13 +31,9 @@ import org.usac.eco.libdto.DTOUser;
  * @author Brian Estrada <brianseg014@gmail.com>
  */
 public class Session extends SessionBussinessLogic {
-    
-    public Session(HttpSession session){
-        super(session);
-    }
 
-    public String geRecoveryPasswordLink() {
-        return Configure.PAGE_RECOVERY_PASSWORD;
+    public Session(HttpServletRequest httpServletRequest) {
+        super(httpServletRequest);
     }
     
     public DTOUser createSession(DTOUser dtoUser) 
