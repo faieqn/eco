@@ -40,11 +40,11 @@ public class DTOCourse extends AbstractDTO {
     
     private DTOCourseStatus status;
     
-    private DTOCourseSchedule courseSchedule;
+    private DTOCourseSchedule[] courseSchedule;
     
     public DTOCourse() {}
     
-    public DTOCourse(int courseId, DTOCycle cycle, DTOSection section, String courseName, int subscribers, int connected, String URI, DTOUser professor, DTOCourseStatus status, DTOCourseSchedule courseSchedule) {
+    public DTOCourse(int courseId, DTOCycle cycle, DTOSection section, String courseName, int subscribers, int connected, String URI, DTOUser professor, DTOCourseStatus status, DTOCourseSchedule[] courseSchedule) {
         this.courseId = courseId;
         this.cycle = cycle;
         this.section = section;
@@ -69,7 +69,7 @@ public class DTOCourse extends AbstractDTO {
         return courseName;
     }
 
-    public DTOCourseSchedule getCourseSchedule() {
+    public DTOCourseSchedule[] getCourseSchedule() {
         return courseSchedule;
     }
 
