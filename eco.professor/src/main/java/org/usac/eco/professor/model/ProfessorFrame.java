@@ -121,11 +121,10 @@ public class ProfessorFrame extends ECOFrame implements IProfessorController {
         this.getStatusBar().addMessage("mensaje de prueba de barra status");
         this.getContentPane().add(this.getStatusBar(),BorderLayout.SOUTH);
         try {
-           // professorController = new ProfessorController(this);
+            professorController = new ProfessorController(this);
         } catch (Exception ex) {
             Logger.getLogger(ProfessorFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }        
     }
 
     public void listCourses(List<DTOCourse> courses) {
