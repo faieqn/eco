@@ -17,6 +17,7 @@
 
 package org.usac.eco.professor.model;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
@@ -77,8 +78,6 @@ public abstract class ECOFrame extends MainFrame implements ActionListener{
         
         statusBar = new JStatusBar();
         statusBar.setVisible(true);
-        statusBar.setBounds(1, 507, 650, 20);
-        this.add(statusBar);
 
         jmiLogOut.addActionListener(this);
         jmiExit.addActionListener(this);
