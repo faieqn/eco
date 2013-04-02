@@ -20,6 +20,7 @@ import com.zodiac.security.Session;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -43,7 +44,7 @@ import org.usac.eco.libdto.DTOUserProfile;
  */
 public class ClassroomFunction {
     
-    public static JSONObject login(String username, String password, HttpSession session) 
+    public static JSONObject login(String username, String password, HttpServletRequest httpServletRequest) 
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         DTOUser dtoUser = new DTOUser(
                 0, 
@@ -54,7 +55,7 @@ public class ClassroomFunction {
                 DTOUserProfile.ADMIN, 
                 null);
         org.usac.eco.classroom.bl.Session newSession = 
-                new org.usac.eco.classroom.bl.Session(session);
+                new org.usac.eco.classroom.bl.Session(httpServletRequest);
         DTOUser loggedUser = newSession.createSession(dtoUser);
         
         JSONObject jsonObject = new JSONObject();

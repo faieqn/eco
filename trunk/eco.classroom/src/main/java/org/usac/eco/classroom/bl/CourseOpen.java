@@ -20,9 +20,14 @@ import com.zodiac.db.DAODriver;
 import com.zodiac.security.Session;
 import com.zodiac.soa.server.PrivateBussinessLogic;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.usac.eco.classroom.da.DAOCourseOpen;
+import org.usac.eco.classroom.da.DAOCourseSchedule;
 import org.usac.eco.libdto.DTOCourse;
+import org.usac.eco.libdto.DTOCourseSchedule;
+import org.usac.eco.libdto.DTOCourseStatus;
 import org.usac.eco.libdto.DTOUser;
 
 /**
@@ -51,9 +56,34 @@ public class CourseOpen extends PrivateBussinessLogic {
     
     public List<DTOCourse> searchCourseOpen(DTOCourse dtoCourse)
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        DAOCourseOpen daoCourse = getDAOCourse();
-        daoCourse.searchCourseOpen(dtoCourse);
-        return daoCourse.getListDTO();
+        DAOCourseOpen daoCourseOpen = getDAOCourse();
+        daoCourseOpen.searchCourseOpen(dtoCourse);
+        
+        DAOCourseSchedule daoCourseSchedule = getDAOCourseSchedule();
+        
+        List<DTOCourse> listCourses = new ArrayList<DTOCourse>();
+        Iterator<DTOCourse> iterator = daoCourseOpen.getListDTO().iterator();
+        while(iterator.hasNext()){
+            DTOCourse newDTOCourse = iterator.next();
+            daoCourseSchedule.getSchedule(newDTOCourse);
+            List<DTOCourseSchedule> listDTOCourseSchedule = daoCourseSchedule.getListDTO();
+            DTOCourseSchedule[] dtoCourseSchedules = new DTOCourseSchedule[listDTOCourseSchedule.size()];
+            listDTOCourseSchedule.toArray(dtoCourseSchedules);
+            listCourses.add(new DTOCourse(
+                        newDTOCourse.getCourseId(), 
+                        newDTOCourse.getCycle(), 
+                        newDTOCourse.getSection(), 
+                        newDTOCourse.getCourseName(), 
+                        newDTOCourse.getSubscribers(), 
+                        newDTOCourse.getConnected(), 
+                        newDTOCourse.getURI(), 
+                        newDTOCourse.getProfessor(), 
+                        newDTOCourse.getStatus(), 
+                        dtoCourseSchedules));
+        }
+        
+        
+        return listCourses;
     }
     
     public boolean subscribe(DTOUser dtoUser, DTOCourse dtoCourse) 
@@ -84,9 +114,45 @@ public class CourseOpen extends PrivateBussinessLogic {
         return true;
     }
     
+    public List<DTOCourse> getCoursesOpenSubscribed(DTOUser dtoUser) 
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        DAOCourseOpen daoCourseOpen = getDAOCourse();
+        daoCourseOpen.getCoursesOpenSubscribed(dtoUser);
+        
+        DAOCourseSchedule daoCourseSchedule = getDAOCourseSchedule();
+        
+        List<DTOCourse> listCourses = new ArrayList<DTOCourse>();
+        Iterator<DTOCourse> iterator = daoCourseOpen.getListDTO().iterator();
+        while(iterator.hasNext()){
+            DTOCourse dtoCourse = iterator.next();
+            daoCourseSchedule.getSchedule(dtoCourse);
+            List<DTOCourseSchedule> listDTOCourseSchedule = daoCourseSchedule.getListDTO();
+            DTOCourseSchedule[] dtoCourseSchedules = new DTOCourseSchedule[listDTOCourseSchedule.size()];
+            listDTOCourseSchedule.toArray(dtoCourseSchedules);
+            listCourses.add(new DTOCourse(
+                        dtoCourse.getCourseId(), 
+                        dtoCourse.getCycle(), 
+                        dtoCourse.getSection(), 
+                        dtoCourse.getCourseName(), 
+                        dtoCourse.getSubscribers(), 
+                        dtoCourse.getConnected(), 
+                        dtoCourse.getURI(), 
+                        dtoCourse.getProfessor(), 
+                        dtoCourse.getStatus(), 
+                        dtoCourseSchedules));
+        }
+        
+        return listCourses;
+    }
+    
     private DAOCourseOpen getDAOCourse() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException{
         return (DAOCourseOpen)DAODriver.getDAODriver("DAOCourseOpen");
+    }
+    
+    private DAOCourseSchedule getDAOCourseSchedule() 
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+        return (DAOCourseSchedule)DAODriver.getDAODriver("DAOCourseSchedule");
     }
     
 }

@@ -31,6 +31,8 @@ public interface DAOCourseOpen extends DAO<DTOCourse> {
     
     public void getCoursesOpen(DTOUser dtoUser) throws SQLException;
     
+    public void getCoursesOpenSubscribed(DTOUser dtoUser) throws SQLException;
+    
     public void searchCourseOpen(DTOCourse dtoCourse) throws SQLException;
     
     public void subscribe(DTOUser dtoUser, DTOCourse dtoCourse) throws SQLException;

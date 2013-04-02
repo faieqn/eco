@@ -85,8 +85,8 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 + "  course_open co, course c, course_section cs, "
                 + "  cycle cy, course_status cst, period p, \"user\" u "
                 + "WHERE "
-                + "  co.course_id = c.course_name "
-                + "  AND co.profesor_id = u.user_id "
+                + "  co.course_id = c.course_id "
+                + "  AND co.professor_id = u.user_id "
                 + "  AND cs.section_id = co.section_id "
                 + "  AND cy.cycle_id = co.cycle_id "
                 + "  AND cst.status_id = co.status_id "
@@ -111,16 +111,16 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 + "  course_open co, course c, course_section cs, "
                 + "  cycle cy, course_status cst, period p, \"user\" u "
                 + "WHERE "
-                + "  co.course_id = c.course_name "
-                + "  AND co.profesor_id = u.user_id "
+                + "  co.course_id = c.course_id "
+                + "  AND co.professor_id = u.user_id "
                 + "  AND cs.section_id = co.section_id "
                 + "  AND cy.cycle_id = co.cycle_id "
                 + "  AND cst.status_id = co.status_id "
                 + "  AND p.period_id = cy.period_id "
-                + "  AND c.course_name LIKE '%?%' ";
+                + "  AND c.course_name LIKE ? ";
         setQuery();
         getQuery().setQueryString(sql);
-        getQuery().addQueryParams(dtoCourse.getCourseName());
+        getQuery().addQueryParams("%" + dtoCourse.getCourseName() + "%");
         getQuery().execute();
         setResultSet(getQuery().getResultSet());
     }
@@ -234,6 +234,36 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 + "  AND p.period_id = cy.period_id ";
         setQuery();
         getQuery().setQueryString(sql);
+        getQuery().execute();
+        setResultSet(getQuery().getResultSet());
+    }
+
+    @Override
+    public void getCoursesOpenSubscribed(DTOUser dtoUser) throws SQLException {
+        String sql = "SELECT "
+                + "  c.course_id, c.course_name, co.subscribers,"
+                + "  co.connected, co.uri, u.user_id, u.user_name, "
+                + "  cs.section_id, cs.section_name, cy.cycle_id, cy.cycle_name,"
+                + "  cy.year, cst.status_id, cst.status_name, p.period_id,"
+                + "  p.period_name, p.start_date, p.end_date "
+                + "FROM "
+                + "  course_open co, course c, course_section cs, "
+                + "  cycle cy, course_status cst, period p, \"user\" u,"
+                + "  course_subscriber csb "
+                + "WHERE "
+                + "  co.course_id = c.course_id "
+                + "  AND cs.section_id = co.section_id "
+                + "  AND cy.cycle_id = co.cycle_id "
+                + "  AND cst.status_id = co.status_id "
+                + "  AND p.period_id = cy.period_id "
+                + "  AND csb.course_id = c.course_id "
+                + "  AND csb.section_id = co.section_id "
+                + "  AND csb.cycle_id = co.cycle_id "
+                + "  AND csb.user_id = u.user_id "
+                + "  AND u.user_id = ? ";
+        setQuery();
+        getQuery().setQueryString(sql);
+        getQuery().addQueryParams(dtoUser.getUserId());
         getQuery().execute();
         setResultSet(getQuery().getResultSet());
     }

@@ -47,7 +47,7 @@ public class DAOCourseSchedulePostgreSQL extends AbstractDAO<DTOCourseSchedule> 
     @Override
     public void getSchedule(DTOCourse dtoCourse) throws SQLException{
         String sql = "SELECT "
-                + "  day_name, start_time, end_time "
+                + "  d.day_id, d.day_name, cos.start_time, cos.end_time "
                 + "FROM "
                 + "  course_open_schedule cos, \"day\" d "
                 + "WHERE "
@@ -61,6 +61,7 @@ public class DAOCourseSchedulePostgreSQL extends AbstractDAO<DTOCourseSchedule> 
                                   dtoCourse.getCycle().getCycleId(),
                                   dtoCourse.getSection().getSectionId());
         getQuery().execute();
+        setResultSet(getQuery().getResultSet());
     }
     
 }
