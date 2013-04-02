@@ -19,9 +19,11 @@ package org.usac.eco.professor.model;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,6 +56,8 @@ public class ProfessorFrame extends ECOFrame implements IProfessorController {
     
     private JPanel pnInfoUser;
     
+    private JPanel pnCourseContainer;
+    
     private JPanel pnTitulo;
     
     public ProfessorFrame(){
@@ -63,9 +67,14 @@ public class ProfessorFrame extends ECOFrame implements IProfessorController {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         
-        pnInfoCourses = new JScrollPane();
+        pnCourseContainer = new JPanel();
+        pnCourseContainer.setMaximumSize(new Dimension(screen.width,600));
+        pnCourseContainer.setMinimumSize(new Dimension(600,400));
+        pnCourseContainer.setLayout(new BoxLayout(pnCourseContainer, BoxLayout.Y_AXIS));
+        
+        pnInfoCourses = new JScrollPane(pnCourseContainer);
         pnInfoCourses.setVisible(true);
-        pnInfoCourses.setLayout(new ScrollPaneLayout());
+        pnInfoCourses.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         pnInfoCourses.setMaximumSize(new Dimension(screen.width,600));
         pnInfoCourses.setMinimumSize(new Dimension(600,400));
         pnInfoCourses.setBorder(new LineBorder(Color.red));
@@ -93,6 +102,8 @@ public class ProfessorFrame extends ECOFrame implements IProfessorController {
         
         this.getUser().setText("  Nombre: "+Session.getSession().getUser().getUsername());
         this.getUserName().setText("Usuario: "+Session.getSession().getUser().getName());
+        //this.getUser().setText("  Nombre: Rony Arredondo");
+        //this.getUserName().setText("Usuario: roarredondo");
         this.getUser().setVisible(true);
         
         pnInfoUser.add(this.getUser(),BorderLayout.WEST);
@@ -110,7 +121,7 @@ public class ProfessorFrame extends ECOFrame implements IProfessorController {
         this.getStatusBar().addMessage("mensaje de prueba de barra status");
         this.getContentPane().add(this.getStatusBar(),BorderLayout.SOUTH);
         try {
-            professorController = new ProfessorController(this);
+           // professorController = new ProfessorController(this);
         } catch (Exception ex) {
             Logger.getLogger(ProfessorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -118,7 +129,12 @@ public class ProfessorFrame extends ECOFrame implements IProfessorController {
     }
 
     public void listCourses(List<DTOCourse> courses) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
+        Iterator<DTOCourse> iCourse = courses.iterator();
+        while(iCourse.hasNext()){
+            this.pnCourseContainer.add(new Course(iCourse.next()));     
+            this.pnCourseContainer.add(Box.createRigidArea(new Dimension(0, 5)));
+        }
     }
 
     public void recoveryPasswordLink(String link) {
