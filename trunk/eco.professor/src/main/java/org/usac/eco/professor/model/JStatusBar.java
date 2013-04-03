@@ -22,6 +22,7 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
@@ -52,6 +53,13 @@ public class JStatusBar extends JPanel{
     public void editMessage(int position, String msg){
         JLabel lb = (JLabel)this.getComponent(position);
         lb.setText(msg);
+        lb.setForeground(UIManager.getColor( "Label.foreground" ));
+    }
+    
+    public void editMessageAsError(int position, String msg){
+        JLabel lb = (JLabel)this.getComponent(position);
+        lb.setText(msg);
+        lb.setForeground(Color.RED);
     }
     
 }

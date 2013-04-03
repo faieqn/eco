@@ -29,6 +29,10 @@ public interface IVideoController {
     
     public void listDesktop(List<VideoDevice> devices);
     
+    public void onFinishedListingDevices();
+    
+    public void onChangedConnected(int connected);
+    
     public void onError(DTOCourse dtoCourse, VideoControllerMessage vcm);
     
 }

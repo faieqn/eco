@@ -23,6 +23,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,6 +41,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.usac.eco.libdto.DTOCourse;
 import org.usac.eco.professor.Configure;
@@ -67,14 +74,23 @@ public class VideoFrame extends ECOFrame
     
     private Encoder encoder;
     
-    private int statusBarConnectionId;
+    private int statusBarConnectionStatusId;
     
     private int statusBarConnectedId;
     
-    public VideoFrame(DTOCourse dtoCourse) {
+    private Thread updateConnected;
+    
+    private String size;
+    
+    private String elapsedTime;
+    
+    public VideoFrame(final DTOCourse dtoCourse) {
         this.dtoCourse = dtoCourse;
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+        this.getContentPane().setLayout(new BorderLayout());
+        
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         
         JPanel optionsPanel = new JPanel();
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.X_AXIS));
@@ -119,19 +135,20 @@ public class VideoFrame extends ECOFrame
         videoPanel.add(video);
         videoPanel.add(Box.createRigidArea(new Dimension(5,0)));
         
-        add(Box.createRigidArea(new Dimension(0,5)));
-        add(optionsPanel);
-        add(Box.createRigidArea(new Dimension(0,5)));
-        add(videoPanel);
-        add(Box.createRigidArea(new Dimension(0,10)));
+        mainPanel.add(Box.createRigidArea(new Dimension(0,5)));
+        mainPanel.add(optionsPanel);
+        mainPanel.add(Box.createRigidArea(new Dimension(0,5)));
+        mainPanel.add(videoPanel);
+        mainPanel.add(Box.createRigidArea(new Dimension(0,10)));
         
         this.getStatusBar().setMaximumSize(new Dimension(screen.width,25));
         this.getStatusBar().setMinimumSize(new Dimension(660,25));
-        this.getStatusBar().addMessage(Session.getSession().getUser().getName());
         this.getStatusBar().addMessage(dtoCourse.getCourseName());
-        statusBarConnectionId = this.getStatusBar().addMessage("Cargando dispositivos");
+        statusBarConnectionStatusId = this.getStatusBar().addMessage("Cargando dispositivos...");
         statusBarConnectedId = this.getStatusBar().addMessage("Conectados: " + dtoCourse.getConnected());
-        this.getContentPane().add(this.getStatusBar(),BorderLayout.SOUTH);
+        
+        this.getContentPane().add(mainPanel, BorderLayout.CENTER);
+        this.getContentPane().add(this.getStatusBar(), BorderLayout.SOUTH);
         
         videoController = new VideoController(this);
         new Thread(){
@@ -143,25 +160,34 @@ public class VideoFrame extends ECOFrame
             }
             
         }.start();
+        
+        updateConnected = new Thread() {
+            @Override
+            public void run() {
+                while(true){
+                    
+                    try {
+                        videoController.checkCountConnected(dtoCourse);
+                    } catch (Exception ex) {
+                        Logger.getLogger(VideoFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    try {
+                        Thread.sleep(20*1000);
+                    } catch (InterruptedException ex) {}
+                }
+            }
+        };
+        updateConnected.start();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("start") && encoder == null){
-            encoder = new Encoder((VideoDevice)cmbSource.getSelectedItem(), dtoCourse.getURI());
-            encoder.addEncoderListener(this);
-            encoder.start();
-            this.getStatusBar().editMessage(statusBarConnectionId, "Conectado");
+            startStreaming();
         } else if (e.getActionCommand().equals("stop")){
-            if(encoder != null) {
-                encoder.interrupt();
-                encoder = null;
-                this.getStatusBar().editMessage(statusBarConnectionId, "Desconectado");
-            }
+            stopStreaming();
         } else if (e.getActionCommand().equals("sourceChange")){
-            if(encoder != null){
-                encoder.setVideoDevice((VideoDevice)cmbSource.getSelectedItem());
-            }
+            changeDevice();
         }
     }
 
@@ -170,8 +196,6 @@ public class VideoFrame extends ECOFrame
         while(iterator.hasNext()){
             cmbSource.addItem(iterator.next());
         }
-        btStart.setEnabled(true);
-        this.getStatusBar().editMessage(statusBarConnectionId, "Desconectado");
     }
 
     public void listDesktop(List<VideoDevice> devices) {
@@ -182,32 +206,116 @@ public class VideoFrame extends ECOFrame
     }
 
     public void onError(DTOCourse dtoCourse, VideoControllerMessage vcm) {
-        
+        this.getStatusBar().editMessageAsError(statusBarConnectionStatusId, "Error Classroom");
+        showErrorDialogMessage("No es posible comunicarse con el servidor classroom.\n"
+                + "URL: " + Configure.CLASSROOM.toString());
     }
 
     public void onStart(EncoderEvent ee) {
-        
+        this.getStatusBar().editMessage(statusBarConnectionStatusId, "Conectado");
+        publish();
     }
 
     public void onError(EncoderEvent ee, EncoderMessage em) {
-        
+        this.getStatusBar().editMessageAsError(statusBarConnectionStatusId, "Error on transmiting");
+        unpublish();
+        showErrorDialogMessage("No es posible comunicarse con el servidor multimedia.\n"
+                + "URL: " + dtoCourse.getURI());
     }
 
     public void onTerminated(EncoderEvent ee) {
-        
-    }
-
-    public void onSizeChange(EncoderEvent ee, int size) {
-        
-    }
-
-    public void onImageChange(EncoderEvent ee, BufferedImage image) {
-        video.setIcon(new ImageIcon(image));
-    }
-
-    public void recoveryPasswordLink(String link) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.getStatusBar().editMessage(statusBarConnectionStatusId, "Desconectado");
+        unpublish();
     }
     
-       
+    public void onTimeChanged(EncoderEvent ee, long time) {
+        time = time / 1000000;
+        long hours = time / 3600; // whole hours
+        long mins = time / 60 - hours * 60;
+        long secs = time % 60;
+        this.elapsedTime = String.format("%s:%2s:%2s",
+            new DecimalFormat("00").format(hours), 
+            new DecimalFormat("00").format(mins), 
+            new DecimalFormat("00").format(secs));
+        this.getStatusBar().editMessage(statusBarConnectionStatusId, "Conectado " + elapsedTime + " (" + this.size + ")");
+    }
+
+    public void onSizeChanged(EncoderEvent ee, int size) {    
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        double sizeKB = size / 1024;
+        if(sizeKB < 1024){
+            this.size = decimalFormat.format(sizeKB) + "KB";
+        } else {
+            double sizeMB = sizeKB / 1024;
+            this.size = decimalFormat.format(sizeMB) + "MB";
+        }
+        this.getStatusBar().editMessage(statusBarConnectionStatusId, "Conectado " + elapsedTime + " (" + this.size + ")");
+    }
+
+    public void onImageChanged(EncoderEvent ee, BufferedImage image) {
+        video.setIcon(new ImageIcon(image));
+    }
+    
+    public void onFinishedListingDevices() {
+        btStart.setEnabled(true);
+        this.getStatusBar().editMessage(statusBarConnectionStatusId, "Desconectado");
+    }
+    
+    public void showErrorDialogMessage(String message){
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void onChangedConnected(int connected) {
+        this.getStatusBar().editMessage(statusBarConnectedId, "Connectados: " + connected);
+    }
+    
+    private void onCloseWindow(){
+        updateConnected.interrupt();
+        unpublish();
+        stopStreaming();
+    }
+    
+    @Override
+    public void onLogout() {
+        onCloseWindow();
+        super.onLogout();
+    }
+    
+    private void publish(){
+        try {
+            videoController.publish(dtoCourse);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(VideoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(VideoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void unpublish(){
+        try {
+            videoController.unpublish(dtoCourse);
+        } catch (Exception ex) {
+            Logger.getLogger(VideoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void startStreaming() {
+        encoder = new Encoder((VideoDevice)cmbSource.getSelectedItem(), dtoCourse.getURI());
+        encoder.addEncoderListener(this);
+        encoder.start();
+    }
+    
+    private void stopStreaming(){
+        if(encoder != null) {
+            encoder.interrupt();
+            encoder = null;
+        }
+    }
+    
+    private void changeDevice(){
+        if(encoder != null){
+            encoder.setVideoDevice((VideoDevice)cmbSource.getSelectedItem());
+        }
+    }
+    
 }
