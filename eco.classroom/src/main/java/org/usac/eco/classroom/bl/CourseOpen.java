@@ -23,6 +23,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.usac.eco.classroom.da.DAOCourseOpen;
 import org.usac.eco.classroom.da.DAOCourseSchedule;
 import org.usac.eco.libdto.DTOCourse;
@@ -105,6 +107,35 @@ public class CourseOpen extends PrivateBussinessLogic {
         DAOCourseOpen daoCourse = getDAOCourse();
         daoCourse.unpublish(dtoCourse);
         return true;
+    }
+    
+    public boolean connect(DTOCourse dtoCourse) 
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+        DAOCourseOpen daoCourse = getDAOCourse();
+        daoCourse.connectCourseOpen(dtoCourse);
+        return checkStatusConnected(dtoCourse);
+    }
+    
+    public boolean checkStatusConnected(DTOCourse dTOCourse)
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        DAOCourseOpen daoCourse = getDAOCourse();
+        daoCourse.getCourseOpen(dTOCourse);
+        daoCourse.next();
+        DTOCourse dtoCourse = daoCourse.getDTO();
+        if(dtoCourse.getStatus().getStatusId() == DTOCourseStatus.CONNECTED.getStatusId()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public int getCourseConnected(DTOCourse dtoCourse) 
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        DAOCourseOpen daoCourseOpen = getDAOCourse();
+        daoCourseOpen.getCourseOpen(dtoCourse);
+        daoCourseOpen.next();
+        dtoCourse = daoCourseOpen.getDTO();
+        return dtoCourse.getConnected();
     }
     
     public boolean disable(DTOCourse dtoCourse) 
