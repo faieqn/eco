@@ -20,10 +20,13 @@ package org.usac.eco.professor.model;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import org.usac.eco.professor.Session;
 import org.usac.eco.professor.controller.LoginController;
 
 /**
@@ -175,7 +178,13 @@ public abstract class ECOFrame extends MainFrame implements ActionListener{
         } else if(e.getActionCommand().equals("about")){
             new AboutDialog(this);
         } else if (e.getActionCommand().equals("logout")){
-            
+            try {
+                getController().logOut(Session.getSession().getUser());
+                new LoginFrame();
+                dispose();
+            } catch (Exception ex) {
+                Logger.getLogger(ECOFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

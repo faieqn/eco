@@ -40,6 +40,8 @@ public class Course extends JPanel implements MouseListener {
     private DTOCourse dtoCourse;
     
     private List<ActionListener> listener;
+    
+    private String actionCommand;
 
     public Course(DTOCourse dtoCourse) {
         listener = new ArrayList<ActionListener>();
@@ -65,15 +67,26 @@ public class Course extends JPanel implements MouseListener {
         add(lblSubscribers);
         add(lblConnected);
     }
+
+    public void setActionCommand(String actionCommand) {
+        this.actionCommand = actionCommand;
+    }
     
     public DTOCourse getDTOCourse(){
         return this.dtoCourse;
     }
     
+    public boolean addActionListener(ActionListener actionListener){
+        if(actionListener != null){
+            return listener.add(actionListener);
+        }
+        return false;
+    }
+    
     private void fireActionPerformed(){
         Iterator<ActionListener> iterator = listener.iterator();
         while(iterator.hasNext()){
-            iterator.next().actionPerformed(new ActionEvent(this, 0, null));
+            iterator.next().actionPerformed(new ActionEvent(this, 0, actionCommand));
         }
     }
 

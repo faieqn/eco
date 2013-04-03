@@ -38,7 +38,9 @@ public class VideoController {
     public VideoController(IVideoController ivc) {
         listeners = new ArrayList<IVideoController>();
         addVideoControllerListener(ivc);
-        
+    }
+    
+    public void loadDevices(){
         List<VideoDevice> desktop = new ArrayList<VideoDevice>();
         desktop.add(new RobotWideScreenDevice());
         fireListDesktop(desktop);

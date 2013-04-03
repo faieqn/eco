@@ -46,7 +46,7 @@ public class ProfessorController {
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
         String method = "getCoursesOpen";
-        Class paramsMethod[] = {DTOCourse.class};
+        Class paramsMethod[] = {DTOUser.class};
         Object argsMethod[] = {dtoUser};
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);

@@ -39,7 +39,7 @@ public abstract class MainFrame extends JFrame implements ILoginController{
     public MainFrame()
     {
         this.setTitle(Configure.APP_TITLE);
-        this.setMinimumSize(new Dimension(680, 590));
+        this.setMinimumSize(new Dimension(680, 618));
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         

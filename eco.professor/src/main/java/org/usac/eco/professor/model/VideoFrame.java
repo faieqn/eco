@@ -16,7 +16,9 @@
  */
 package org.usac.eco.professor.model;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -36,6 +38,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.usac.eco.libdto.DTOCourse;
 import org.usac.eco.professor.Configure;
+import org.usac.eco.professor.Session;
 import org.usac.eco.professor.controller.Encoder;
 import org.usac.eco.professor.controller.EncoderEvent;
 import org.usac.eco.professor.controller.EncoderListener;
@@ -49,7 +52,8 @@ import org.usac.eco.professor.controller.VideoDevice;
  *
  * @author Brian Estrada <brianseg014@gmail.com>
  */
-public class VideoFrame extends ECOFrame implements ActionListener, IVideoController, EncoderListener {
+public class VideoFrame extends ECOFrame 
+        implements ActionListener, IVideoController, EncoderListener {
     
     private VideoController videoController;
     
@@ -63,8 +67,13 @@ public class VideoFrame extends ECOFrame implements ActionListener, IVideoContro
     
     private Encoder encoder;
     
+    private int statusBarConnectionId;
+    
+    private int statusBarConnectedId;
+    
     public VideoFrame(DTOCourse dtoCourse) {
         this.dtoCourse = dtoCourse;
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         
         JPanel optionsPanel = new JPanel();
@@ -79,9 +88,11 @@ public class VideoFrame extends ECOFrame implements ActionListener, IVideoContro
         
         btStart = new JButton("Iniciar");
         btStart.setActionCommand("start");
+        btStart.addActionListener(this);
         
         btStop = new JButton("Detener");
         btStop.setActionCommand("stop");
+        btStop.addActionListener(this);
         
         optionsPanel.add(Box.createRigidArea(new Dimension(20, 0)));
         optionsPanel.add(lblSource);
@@ -114,17 +125,38 @@ public class VideoFrame extends ECOFrame implements ActionListener, IVideoContro
         add(videoPanel);
         add(Box.createRigidArea(new Dimension(0,10)));
         
+        this.getStatusBar().setMaximumSize(new Dimension(screen.width,25));
+        this.getStatusBar().setMinimumSize(new Dimension(660,25));
+        this.getStatusBar().addMessage(Session.getSession().getUser().getName());
+        this.getStatusBar().addMessage(dtoCourse.getCourseName());
+        statusBarConnectionId = this.getStatusBar().addMessage("Cargando dispositivos");
+        statusBarConnectedId = this.getStatusBar().addMessage("Conectados: " + dtoCourse.getConnected());
+        this.getContentPane().add(this.getStatusBar(),BorderLayout.SOUTH);
+        
         videoController = new VideoController(this);
+        new Thread(){
+
+            @Override
+            public void run() {
+                btStart.setEnabled(false);
+                videoController.loadDevices();
+            }
+            
+        }.start();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("start")){
+        if(e.getActionCommand().equals("start") && encoder == null){
             encoder = new Encoder((VideoDevice)cmbSource.getSelectedItem(), dtoCourse.getURI());
+            encoder.addEncoderListener(this);
+            encoder.start();
+            this.getStatusBar().editMessage(statusBarConnectionId, "Conectado");
         } else if (e.getActionCommand().equals("stop")){
             if(encoder != null) {
                 encoder.interrupt();
                 encoder = null;
+                this.getStatusBar().editMessage(statusBarConnectionId, "Desconectado");
             }
         } else if (e.getActionCommand().equals("sourceChange")){
             if(encoder != null){
@@ -138,6 +170,8 @@ public class VideoFrame extends ECOFrame implements ActionListener, IVideoContro
         while(iterator.hasNext()){
             cmbSource.addItem(iterator.next());
         }
+        btStart.setEnabled(true);
+        this.getStatusBar().editMessage(statusBarConnectionId, "Desconectado");
     }
 
     public void listDesktop(List<VideoDevice> devices) {
