@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ECO Student</string>
+    <string name="user">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Ingresar</string>
+    <string name="uri">URI</string>
+    <string name="classroom">Classroom</string>
+    <string name="search">Buscar</string>
+    <string name="searchMessage">Buscar curso</string>
+    <string name="course">Curso</string>
+    <string name="section">Seccion</string>
+    <string name="professor">Profesor</string>
+    <string name="schedule">Horario</string>
+    <string name="subscribe">Suscribir</string>
+    <string name="logout">Cerrar Sesion</string>
+    <string name="preference">Preferencias</string>
+    <string name="update">Actualizar</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="rememberPassword">Recordar contraseña</string>
+    <string name="forgotPassword">No puede acceder a su cuenta?</string>
+    <string name="error">Error</string>
+    <string name="errorStreaming">No se puede reproducir este curso.</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="ok">Aceptar</string>
+    <string name="buffering">Buffering&#8230;</string>
+    <string name="loading">Cargando&#8230;</string>
+    <string name="logingin">Ingresando&#8230;</string>
+    <string name="errorUserPass">Usuario/Contraseña incorrecto</string>
+    <string name="classroomNotResponding">Classroom no responde. Desea cambiar URI?</string>
+</resources>

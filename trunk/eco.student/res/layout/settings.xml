@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:summary="Informacion de server"
+        android:title="@string/classroom" >
+        
+        <EditTextPreference
+            android:key="classroom_uri"
+            android:summary="URI de Classroom"
+            android:title="@string/uri" />
+        	
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:summary="Configuracion de Notificaciones"
+        android:title="@string/notifications">
+        
+        
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>
