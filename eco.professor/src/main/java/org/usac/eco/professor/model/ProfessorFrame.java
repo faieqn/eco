@@ -122,6 +122,7 @@ public class ProfessorFrame extends ECOFrame implements IProfessorController {
         this.getContentPane().add(this.getStatusBar(),BorderLayout.SOUTH);
         try {
             professorController = new ProfessorController(this);
+            professorController.listCourses(Session.getSession().getUser());
         } catch (Exception ex) {
             Logger.getLogger(ProfessorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }        
