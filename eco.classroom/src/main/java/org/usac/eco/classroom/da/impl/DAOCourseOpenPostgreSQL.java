@@ -252,15 +252,15 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 + "  course_subscriber csb "
                 + "WHERE "
                 + "  co.course_id = c.course_id "
+                + "  AND u.user_id = co.professor_id "
                 + "  AND cs.section_id = co.section_id "
                 + "  AND cy.cycle_id = co.cycle_id "
                 + "  AND cst.status_id = co.status_id "
                 + "  AND p.period_id = cy.period_id "
-                + "  AND csb.course_id = c.course_id "
+                + "  AND csb.course_id = co.course_id "
                 + "  AND csb.section_id = co.section_id "
                 + "  AND csb.cycle_id = co.cycle_id "
-                + "  AND csb.user_id = u.user_id "
-                + "  AND u.user_id = ? ";
+                + "  AND csb.user_id = ? ";
         setQuery();
         getQuery().setQueryString(sql);
         getQuery().addQueryParams(dtoUser.getUserId());
