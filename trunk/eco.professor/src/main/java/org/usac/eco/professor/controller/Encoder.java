@@ -18,10 +18,12 @@ package org.usac.eco.professor.controller;
 
 import com.xuggle.ferry.IBuffer;
 import com.xuggle.xuggler.IAudioSamples;
+import com.xuggle.xuggler.ICodec;
 import com.xuggle.xuggler.IContainer;
 import com.xuggle.xuggler.IContainerFormat;
 import com.xuggle.xuggler.IPacket;
 import com.xuggle.xuggler.IPixelFormat;
+import com.xuggle.xuggler.IRational;
 import com.xuggle.xuggler.IStream;
 import com.xuggle.xuggler.IStreamCoder;
 import com.xuggle.xuggler.IVideoPicture;
@@ -89,7 +91,7 @@ public class Encoder extends Thread {
         }
         
         System.out.println("Setting conf for video codec...");
-        IStream videoStream = rtmpContainer.addNewStream(EncoderConstants.AUDIO_CODEC);
+        IStream videoStream = rtmpContainer.addNewStream(EncoderConstants.VIDEO_CODEC);
         IStreamCoder videoCoder = videoStream.getStreamCoder();
         videoCoder.setFlag(IStreamCoder.Flags.FLAG_QSCALE, true);
         
@@ -103,9 +105,9 @@ public class Encoder extends Thread {
         videoCoder.setFrameRate(EncoderConstants.VIDEO_FRAME_RATE);
         videoCoder.setTimeBase(EncoderConstants.VIDEO_TIME_BASE);
         
-        videoCoder.open(EncoderConstants.getVideoOptions(), 
-                        EncoderConstants.getVideoUnsetOptions());
+        videoCoder.open();
         
+        System.out.println("Setting conf for audio codec...");
         IStream audioStream = rtmpContainer.addNewStream(EncoderConstants.AUDIO_CODEC);
         IStreamCoder audioCoder = audioStream.getStreamCoder();
         
@@ -129,9 +131,9 @@ public class Encoder extends Thread {
             fireOnError(new EncoderEvent(this), EncoderMessage.ERROR_LOGO_NOT_FOUND);
         }
         
-        AudioFormat audioFormat = new AudioFormat(EncoderConstants.AUDIO_BIT_RATE, 
+        AudioFormat audioFormat = new AudioFormat(EncoderConstants.AUDIO_SAMPLE_RATE, 
                                                 EncoderConstants.AUDIO_SAMPLE_SIZE_BITS, 
-                                                EncoderConstants.AUDIO_SAMPLE_RATE, true, false);
+                                                EncoderConstants.AUDIO_CHANNEL_COUNT, true, false);
         DataLine.Info audioInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
         TargetDataLine targetDataLine = null;
         try {
@@ -161,6 +163,11 @@ public class Encoder extends Thread {
         while(true){
             if(this.isInterrupted()){
                 rtmpContainer.close();
+                
+                targetDataLine.flush();
+                targetDataLine.stop();
+                targetDataLine.close();
+                
                 fireOnTerminate(new EncoderEvent(this));
                 return;
             }
@@ -176,7 +183,7 @@ public class Encoder extends Thread {
                     g.dispose();
             }
             
-            
+            fireOnImageChange(new EncoderEvent(this), frameImage);
             
             IConverter converter = ConverterFactory.createConverter(frameImage,
                                                                     EncoderConstants.VIDEO_PIXELFORMAT_TYPE);
@@ -184,8 +191,6 @@ public class Encoder extends Thread {
             IVideoPicture frame = converter.toPicture(frameImage, timeStampMedia);
             frame.setKeyFrame(firstIteration);
             frame.setQuality(0);
-            
-            firstIteration = false;
             
             IPacket videoPacket = IPacket.make();
             videoCoder.encodeVideo(videoPacket, frame, 0);
@@ -231,6 +236,7 @@ public class Encoder extends Thread {
            }
             
            rtmpContainer.flushPackets();
+           firstIteration = false;
         }
     }
     

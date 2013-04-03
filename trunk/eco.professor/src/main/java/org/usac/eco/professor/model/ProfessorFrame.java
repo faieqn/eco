@@ -23,6 +23,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -48,7 +49,8 @@ import org.usac.eco.professor.controller.ProfessorController;
  *
  * @author ronyHeat3203
  */
-public class ProfessorFrame extends ECOFrame implements IProfessorController {
+public class ProfessorFrame extends ECOFrame 
+        implements IProfessorController {
     
     private ProfessorController professorController;
     
@@ -132,7 +134,10 @@ public class ProfessorFrame extends ECOFrame implements IProfessorController {
         //throw new UnsupportedOperationException("Not supported yet.");
         Iterator<DTOCourse> iCourse = courses.iterator();
         while(iCourse.hasNext()){
-            this.pnCourseContainer.add(new Course(iCourse.next()));     
+            Course course = new Course(iCourse.next());
+            course.addActionListener(this);
+            course.setActionCommand("streamCourse");
+            this.pnCourseContainer.add(course);
             this.pnCourseContainer.add(Box.createRigidArea(new Dimension(0, 5)));
         }
     }
@@ -140,5 +145,14 @@ public class ProfessorFrame extends ECOFrame implements IProfessorController {
     public void recoveryPasswordLink(String link) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand().equals("streamCourse")){
+            DTOCourse dtoCourse = ((Course)e.getSource()).getDTOCourse();
+            new VideoFrame(dtoCourse);
+            dispose();
+        }
+    }
+        
 }

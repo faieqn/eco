@@ -39,13 +39,19 @@ public class JStatusBar extends JPanel{
         this.setLayout(new GridLayout());
     }
     
-    public void addMessage(String msg)
+    public int addMessage(String msg)
     {
         JLabel lb = new JLabel(msg);
         this.add(lb);
         lb.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
         lb.setSize(lb.getWidth(), this.getHeight());
         lb.setVisible(true);
+        return this.getComponentCount() -  1;
+    }
+    
+    public void editMessage(int position, String msg){
+        JLabel lb = (JLabel)this.getComponent(position);
+        lb.setText(msg);
     }
     
 }
