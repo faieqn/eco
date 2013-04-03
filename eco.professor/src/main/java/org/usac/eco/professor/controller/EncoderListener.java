@@ -30,8 +30,10 @@ public interface EncoderListener {
     
     public void onTerminated(EncoderEvent ee);
     
-    public void onSizeChange(EncoderEvent ee, int size);
+    public void onSizeChanged(EncoderEvent ee, int size);
     
-    public void onImageChange(EncoderEvent ee, BufferedImage image);
+    public void onTimeChanged(EncoderEvent ee, long time);
+    
+    public void onImageChanged(EncoderEvent ee, BufferedImage image);
     
 }

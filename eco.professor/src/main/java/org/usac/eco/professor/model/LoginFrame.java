@@ -127,12 +127,18 @@ public class LoginFrame extends MainFrame implements ActionListener
         getContentPane().add(principalPanel, BorderLayout.CENTER);
         getContentPane().add(Box.createRigidArea(new Dimension(0, 180)), BorderLayout.NORTH);
         getContentPane().add(Box.createRigidArea(new Dimension(0, 180)), BorderLayout.SOUTH);
-        getContentPane().add(Box.createRigidArea(new Dimension(180, 0)), BorderLayout.WEST);
-        getContentPane().add(Box.createRigidArea(new Dimension(180, 0)), BorderLayout.EAST);
+        getContentPane().add(Box.createRigidArea(new Dimension(210, 0)), BorderLayout.WEST);
+        getContentPane().add(Box.createRigidArea(new Dimension(210, 0)), BorderLayout.EAST);
         
         this.pack();
         this.btnLogIn.setActionCommand("login");
         this.btnLogIn.addActionListener(this);
+        
+        try {
+            getController().getRecoveryPasswordLink();
+        } catch (Exception ex) {
+            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

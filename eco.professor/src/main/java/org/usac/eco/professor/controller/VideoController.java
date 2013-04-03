@@ -26,6 +26,7 @@ import java.util.List;
 import org.usac.eco.libdto.DTOCourse;
 import org.usac.eco.professor.Configure;
 import org.usac.eco.professor.Log;
+import org.usac.eco.professor.Session;
 
 /**
  *
@@ -51,6 +52,8 @@ public class VideoController {
             webcams.add(new WebcamDevice(Webcam.getWebcams().get(i)));
         }
         fireListWebcam(webcams);
+        
+        fireOnFinishedListingDevices();
     }
     
     public void publish(DTOCourse dtoCourse) throws MalformedURLException, Exception{
@@ -62,7 +65,7 @@ public class VideoController {
         Object argsMethod[] = {dtoCourse};
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
-        DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
+        DynamicServiceHandler dsh = Session.getSession().getDynamicServiceHandler();
         boolean published = (Boolean)dsh.run(request);
         if(!published){
             Log.fatal("Could not publish: unknown cause.");
@@ -71,7 +74,7 @@ public class VideoController {
     }
     
     public void unpublish(DTOCourse dtoCourse) throws Exception{
-        String clazz = "org.usac.classroom.bl.CourseOpen";
+        String clazz = "org.usac.eco.classroom.bl.CourseOpen";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
         String method = "unpublish";
@@ -79,12 +82,26 @@ public class VideoController {
         Object argsMethod[] = {dtoCourse};
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
-        DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
+        DynamicServiceHandler dsh = Session.getSession().getDynamicServiceHandler();
         boolean unpublished = (Boolean)dsh.run(request);
         if(!unpublished){
             Log.fatal("Could not unpublish: unknown cause.");
             fireOnError(dtoCourse, VideoControllerMessage.ERROR_ON_PUBLISH);
         }
+    }
+    
+    public void checkCountConnected(DTOCourse dtoCourse) throws Exception{
+        String clazz = "org.usac.eco.classroom.bl.CourseOpen";
+        Class paramsConstructor[] = null;
+        Object argsConstructor[] = null;
+        String method = "getCourseConnected";
+        Class paramsMethod[] = {DTOCourse.class};
+        Object argsMethod[] = {dtoCourse};
+        Request request = new Request(clazz, paramsConstructor, argsConstructor, 
+                method, paramsMethod, argsMethod);
+        DynamicServiceHandler dsh = Session.getSession().getDynamicServiceHandler();
+        int connected = (Integer)dsh.run(request);
+        fireOnChangedConnected(connected);
     }
     
     public final boolean addVideoControllerListener(IVideoController ivc){
@@ -112,6 +129,20 @@ public class VideoController {
         Iterator<IVideoController> iterator = listeners.iterator();
         while(iterator.hasNext()){
             iterator.next().onError(dtoCourse, vcm);
+        }
+    }
+    
+    private void fireOnFinishedListingDevices(){
+        Iterator<IVideoController> iterator = listeners.iterator();
+        while(iterator.hasNext()){
+            iterator.next().onFinishedListingDevices();
+        }
+    }
+    
+    private void fireOnChangedConnected(int connected){
+        Iterator<IVideoController> iterator = listeners.iterator();
+        while(iterator.hasNext()){
+            iterator.next().onChangedConnected(connected);
         }
     }
     

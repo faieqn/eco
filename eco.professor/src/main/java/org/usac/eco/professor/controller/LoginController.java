@@ -55,10 +55,10 @@ public class LoginController {
     }
     
     public void getRecoveryPasswordLink() throws Exception{
-        String clazz = "org.usac.eco.classroom.bl.Session";
+        String clazz = "org.usac.eco.classroom.bl.ConfigureClient";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
-        String method = "geRecoveryPasswordLink";
+        String method = "getRecoveryPasswordLink";
         Class paramsMethod[] = null;
         Object argsMethod[] = null;
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 

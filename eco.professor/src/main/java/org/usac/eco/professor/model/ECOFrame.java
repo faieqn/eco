@@ -20,12 +20,15 @@ package org.usac.eco.professor.model;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.WindowConstants;
 import org.usac.eco.professor.Session;
 import org.usac.eco.professor.controller.LoginController;
 
@@ -40,14 +43,21 @@ public abstract class ECOFrame extends MainFrame implements ActionListener{
     private JMenu jmFile, jmHelp;
 
     private JMenuItem jmiLogOut, jmiExit, jmiAbout;
-
-    private JLabel userName, user;
     
     private JStatusBar statusBar;
 
     public ECOFrame ()
     {
         super();
+        super.setDefaultCloseOperation(ECOFrame.DO_NOTHING_ON_CLOSE);
+        super.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                onExitEcoProfessor();
+            }
+            
+        });
 
         this.jmbMenuBar = new JMenuBar();
         this.jmbMenuBar.setVisible(true);
@@ -75,13 +85,11 @@ public abstract class ECOFrame extends MainFrame implements ActionListener{
         this.jmHelp.add(this.jmiAbout);
 
         this.setJMenuBar(this.jmbMenuBar);
-
-        this.user = new JLabel();
-        this.userName = new JLabel();
         
         statusBar = new JStatusBar();
         statusBar.setVisible(true);
-
+        statusBar.addMessage(Session.getSession().getUser().getName());
+        
         jmiLogOut.addActionListener(this);
         jmiExit.addActionListener(this);
         jmiAbout.addActionListener(this);
@@ -143,27 +151,7 @@ public abstract class ECOFrame extends MainFrame implements ActionListener{
     {
         this.jmiLogOut = jmiLogOut;
     }
-
-    public JLabel getUser()
-    {
-        return user;
-    }
-
-    public void setUser(JLabel user)
-    {
-        this.user = user;
-    }
-
-    public JLabel getUserName()
-    {
-        return userName;
-    }
-
-    public void setUserName(JLabel userName)
-    {
-        this.userName = userName;
-    }
-
+    
     public JStatusBar getStatusBar() {
         return statusBar;
     }
@@ -174,18 +162,31 @@ public abstract class ECOFrame extends MainFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("exit")){
-            System.exit(0);
+            onExitEcoProfessor();
         } else if(e.getActionCommand().equals("about")){
-            new AboutDialog(this);
+            onOpenAboutDialog();
         } else if (e.getActionCommand().equals("logout")){
-            try {
-                getController().logOut(Session.getSession().getUser());
-                new LoginFrame();
-                dispose();
-            } catch (Exception ex) {
-                Logger.getLogger(ECOFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            onLogout();
         }
     }
-
+    
+    public void onExitEcoProfessor(){
+        onLogout();
+        System.exit(0);
+    }
+    
+    public void onOpenAboutDialog(){
+        new AboutDialog(this);
+    }
+    
+    public void onLogout(){
+        try {
+            getController().logOut(Session.getSession().getUser());
+            new LoginFrame();
+            dispose();
+        } catch (Exception ex) {
+            Logger.getLogger(ECOFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

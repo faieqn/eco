@@ -183,7 +183,7 @@ public class Encoder extends Thread {
                     g.dispose();
             }
             
-            fireOnImageChange(new EncoderEvent(this), frameImage);
+            fireOnImageChanged(new EncoderEvent(this), frameImage);
             
             IConverter converter = ConverterFactory.createConverter(frameImage,
                                                                     EncoderConstants.VIDEO_PIXELFORMAT_TYPE);
@@ -196,7 +196,7 @@ public class Encoder extends Thread {
             videoCoder.encodeVideo(videoPacket, frame, 0);
             if(videoPacket.isComplete()){
                 size+=videoPacket.getSize();
-                fireOnSizeChange(new EncoderEvent(this), size);
+                fireOnSizeChanged(new EncoderEvent(this), size);
                 rtmpContainer.writePacket(videoPacket, true);
             }
             if(videoPacket != null){
@@ -224,7 +224,7 @@ public class Encoder extends Thread {
 
                            if(audioPacket.isComplete()){
                                size+=audioPacket.getSize();
-                               fireOnSizeChange(new EncoderEvent(this), size);
+                               fireOnSizeChanged(new EncoderEvent(this), size);
                                rtmpContainer.writePacket(audioPacket, true);
                            }
                            if(audioPacket != null) {
@@ -237,6 +237,7 @@ public class Encoder extends Thread {
             
            rtmpContainer.flushPackets();
            firstIteration = false;
+           fireOnTimeChanged(new EncoderEvent(this), timeStampMedia);
         }
     }
     
@@ -261,17 +262,24 @@ public class Encoder extends Thread {
         }
     }
     
-    private void fireOnSizeChange(EncoderEvent ee, int size){
+    private void fireOnSizeChanged(EncoderEvent ee, int size){
         Iterator<EncoderListener> iterator = listener.iterator();
         while(iterator.hasNext()){
-            iterator.next().onSizeChange(ee, size);
+            iterator.next().onSizeChanged(ee, size);
         }
     }
     
-    private void fireOnImageChange(EncoderEvent ee, BufferedImage i){
+    private void fireOnImageChanged(EncoderEvent ee, BufferedImage i){
         Iterator<EncoderListener> iterator = listener.iterator();
         while(iterator.hasNext()){
-            iterator.next().onImageChange(ee, i);
+            iterator.next().onImageChanged(ee, i);
+        }
+    }
+    
+    private void fireOnTimeChanged(EncoderEvent ee, long time){
+        Iterator<EncoderListener> iterator = listener.iterator();
+        while(iterator.hasNext()){
+            iterator.next().onTimeChanged(ee, time);
         }
     }
         

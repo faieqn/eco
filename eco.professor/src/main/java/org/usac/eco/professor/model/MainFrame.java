@@ -21,7 +21,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.usac.eco.libdto.DTOUser;
 import org.usac.eco.professor.Configure;
 import org.usac.eco.professor.controller.ILoginController;
@@ -32,25 +36,31 @@ import org.usac.eco.professor.controller.LoginControllerMessage;
  *
  * @author ronyHeat3203
  */
-public abstract class MainFrame extends JFrame implements ILoginController{
+public abstract class MainFrame extends JFrame implements ILoginController {
     
     private LoginController controller;
 
     public MainFrame()
     {
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         this.setTitle(Configure.APP_TITLE);
-        this.setMinimumSize(new Dimension(680, 618));
+        this.setMinimumSize(new Dimension(760, 618));
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         controller = new LoginController(this);
-        
-               /* Agregar Evento Cerrar a la ventana*/
-         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
     }
 
     public LoginController getController() {
@@ -68,5 +78,11 @@ public abstract class MainFrame extends JFrame implements ILoginController{
     public void onError(DTOUser dtoUser, LoginControllerMessage lcm) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public void recoveryPasswordLink(String link) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    
 
 }

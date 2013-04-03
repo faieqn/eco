@@ -56,8 +56,6 @@ public class ProfessorFrame extends ECOFrame
     
     private JScrollPane pnInfoCourses;
     
-    private JPanel pnInfoUser;
-    
     private JPanel pnCourseContainer;
     
     private JPanel pnTitulo;
@@ -81,15 +79,7 @@ public class ProfessorFrame extends ECOFrame
         pnInfoCourses.setMinimumSize(new Dimension(600,400));
         pnInfoCourses.setBorder(new LineBorder(Color.red));
         pnInfoCourses.add(Box.createRigidArea(new Dimension(0,15)));
-        
-        pnInfoUser = new JPanel();
-        pnInfoUser.setLayout(new BorderLayout());
-        pnInfoUser.setMaximumSize(new Dimension(screen.width,50));
-        pnInfoUser.setMinimumSize(new Dimension(660,50));        
-        pnInfoUser.setBorder(new LineBorder(Color.red));
-        pnInfoUser.add(new JLabel("BIENVENIDO"),BorderLayout.NORTH);
-        pnInfoUser.setVisible(true);
-        
+                
         pnTitulo = new JPanel();
         pnTitulo.setLayout(new BorderLayout());
         pnTitulo.setMaximumSize(new Dimension(screen.width,50));
@@ -101,18 +91,6 @@ public class ProfessorFrame extends ECOFrame
         pnTitulo.setMaximumSize(new Dimension(310,50));
         pnTitulo.add(lbTitulo,BorderLayout.CENTER);
         
-        
-        this.getUser().setText("  Nombre: "+Session.getSession().getUser().getUsername());
-        this.getUserName().setText("Usuario: "+Session.getSession().getUser().getName());
-        //this.getUser().setText("  Nombre: Rony Arredondo");
-        //this.getUserName().setText("Usuario: roarredondo");
-        this.getUser().setVisible(true);
-        
-        pnInfoUser.add(this.getUser(),BorderLayout.WEST);
-        pnInfoUser.add(this.getUserName(), BorderLayout.EAST);
-        pnInfoUser.add(Box.createRigidArea(new Dimension(0, 15)),BorderLayout.SOUTH);
-        
-        this.getContentPane().add(pnInfoUser,BorderLayout.NORTH);
         this.getContentPane().add(Box.createRigidArea(new Dimension(0,15)));
         this.getContentPane().add(pnTitulo,BorderLayout.CENTER);
         this.getContentPane().add(Box.createRigidArea(new Dimension(0,15)));
@@ -120,7 +98,6 @@ public class ProfessorFrame extends ECOFrame
         
         this.getStatusBar().setMaximumSize(new Dimension(screen.width,25));
         this.getStatusBar().setMinimumSize(new Dimension(660,25));
-        this.getStatusBar().addMessage("mensaje de prueba de barra status");
         this.getContentPane().add(this.getStatusBar(),BorderLayout.SOUTH);
         try {
             professorController = new ProfessorController(this);
