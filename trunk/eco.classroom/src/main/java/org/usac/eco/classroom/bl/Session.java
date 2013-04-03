@@ -50,9 +50,8 @@ public class Session extends SessionBussinessLogic {
         }
     }
     
-    public void destroySession() {
-        super.destroy();
-        
+    public boolean destroySession() {
+        return super.destroy();
     }
     
 }

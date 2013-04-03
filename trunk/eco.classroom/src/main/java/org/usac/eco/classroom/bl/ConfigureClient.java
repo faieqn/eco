@@ -28,7 +28,7 @@ public class ConfigureClient extends BussinessLogic {
     public ConfigureClient() {
     }
     
-    public String geRecoveryPasswordLink() {
+    public String getRecoveryPasswordLink() {
         return Configure.PAGE_RECOVERY_PASSWORD;
     }
     
