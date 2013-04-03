@@ -17,6 +17,7 @@
 package org.usac.eco.professor;
 
 import com.zodiac.security.AbstractSession;
+import com.zodiac.soa.client.DynamicServiceHandler;
 import org.usac.eco.libdto.DTOUser;
 
 /**
@@ -28,6 +29,8 @@ public class Session {
     private static Session INSTANCE = null;
     
     private DTOUser user;
+    
+    private DynamicServiceHandler dynamicServiceHandler;
 
     public static Session getSession(){
         return getSession(null);
@@ -48,6 +51,14 @@ public class Session {
 
     public DTOUser getUser() {
         return user;
+    }
+
+    public DynamicServiceHandler getDynamicServiceHandler() {
+        return dynamicServiceHandler;
+    }
+
+    public void setDynamicServiceHandler(DynamicServiceHandler dynamicServiceHandler) {
+        this.dynamicServiceHandler = dynamicServiceHandler;
     }
         
 }

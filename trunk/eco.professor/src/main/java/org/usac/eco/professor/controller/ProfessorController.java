@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.usac.eco.libdto.DTOCourse;
+import org.usac.eco.libdto.DTOUser;
 import org.usac.eco.professor.Configure;
 import org.usac.eco.professor.Session;
 import org.usac.eco.professor.model.VideoFrame;
@@ -34,19 +35,22 @@ public class ProfessorController {
     
     private List<IProfessorController> listener;
 
-    public ProfessorController(IProfessorController ipc) throws Exception {
+    public ProfessorController(IProfessorController ipc) {
         listener = new ArrayList<IProfessorController>();
         addProfessorControllerListener(ipc);
         
+    }
+    
+    public void listCourses(DTOUser dtoUser) throws Exception{
         String clazz = "org.usac.eco.classroom.bl.CourseOpen";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
         String method = "getCoursesOpen";
         Class paramsMethod[] = {DTOCourse.class};
-        Object argsMethod[] = {Session.getSession().getUser()};
+        Object argsMethod[] = {dtoUser};
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
-        DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
+        DynamicServiceHandler dsh = Session.getSession().getDynamicServiceHandler();
         List<DTOCourse> courses = (List<DTOCourse>)dsh.run(request);
         fireListCourses(courses);
     }

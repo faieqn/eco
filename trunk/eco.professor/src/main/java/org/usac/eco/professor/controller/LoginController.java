@@ -82,6 +82,7 @@ public class LoginController {
         DTOUser loggedUser = (DTOUser)dsh.run(request);
         if(loggedUser != null){
             Session.getSession(loggedUser);
+            Session.getSession().setDynamicServiceHandler(dsh);
             fireListLogin();
         } else {
             fireOnError(dtoUser, LoginControllerMessage.ERROR_ON_LOGIN);
@@ -98,7 +99,7 @@ public class LoginController {
         Object argsMethod[] = null;
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
-        DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
+        DynamicServiceHandler dsh = Session.getSession().getDynamicServiceHandler();
         boolean unDestroySession = (Boolean)dsh.run(request);
         if(!unDestroySession){
             Log.fatal("Could not DestroySession: unknown cause.");
