@@ -118,8 +118,8 @@ public class CoursesActivity extends EcoActivity
 	
 	private void showCourseDisconnected(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Informacion");
-        builder.setMessage("Este curso esta desconectado.");
+        builder.setTitle(getString(R.string.error));
+        builder.setMessage(getString(R.string.errorStreaming));
         builder.setCancelable(false);
         builder.setPositiveButton("Aceptar", null);
         AlertDialog alert = builder.create();

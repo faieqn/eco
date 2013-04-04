@@ -41,7 +41,7 @@ public class SubscriberController {
         Object argsMethod[] = {course};
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
-        request.setNoException(true);
+        request.setTextModeException(true);
         DynamicServiceHandler dsh = Session.getSession().getDynamicServiceHandler();
         dsh.removeAllDynamicServiceHandlerListener();
         dsh.run(request, new DynamicServiceHandlerListener() {
@@ -69,7 +69,7 @@ public class SubscriberController {
         Object argsMethod[] = {Session.getSession().getUser(), course};
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
-        request.setNoException(true);
+        request.setTextModeException(true);
         DynamicServiceHandler dsh = Session.getSession().getDynamicServiceHandler();
         dsh.removeAllDynamicServiceHandlerListener();
         dsh.run(request, new DynamicServiceHandlerListener() {

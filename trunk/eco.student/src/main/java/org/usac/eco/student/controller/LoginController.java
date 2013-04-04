@@ -47,12 +47,12 @@ public class LoginController {
 		String clazz = "org.usac.eco.classroom.bl.ConfigureClient";
         Class paramsConstructor[] = null;
         Object argsConstructor[] = null;
-        String method = "geRecoveryPasswordLink";
+        String method = "getRecoveryPasswordLink";
         Class paramsMethod[] = null;
         Object argsMethod[] = null;
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
-        request.setNoException(true);
+        request.setTextModeException(true);
         DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
         
         dsh.run(request, new DynamicServiceHandlerListener() {
@@ -80,7 +80,7 @@ public class LoginController {
         Object argsMethod[] = {dtoUser};
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
-        request.setNoException(true);
+        request.setTextModeException(true);
         final DynamicServiceHandler dsh = new DynamicServiceHandler(Configure.CLASSROOM);
         
         dsh.run(request, new DynamicServiceHandlerListener() {
@@ -114,7 +114,7 @@ public class LoginController {
         Object argsMethod[] = null;
         Request request = new Request(clazz, paramsConstructor, argsConstructor, 
                 method, paramsMethod, argsMethod);
-        request.setNoException(true);
+        request.setTextModeException(true);
         DynamicServiceHandler dsh = Session.getSession().getDynamicServiceHandler();
         dsh.removeAllDynamicServiceHandlerListener();
         dsh.run(request, new DynamicServiceHandlerListener() {

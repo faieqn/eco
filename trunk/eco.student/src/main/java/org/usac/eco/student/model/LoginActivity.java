@@ -146,6 +146,7 @@ public class LoginActivity extends Activity
 	}
 	
 	private void showErrorOnLogin(){
+		progressDialog.dismiss();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.error));
         builder.setMessage(getString(R.string.errorUserPass));
@@ -156,6 +157,7 @@ public class LoginActivity extends Activity
 	}
 	
 	private void showErrorCannotConnectClassroom(){
+		progressDialog.dismiss();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.error));
         builder.setMessage(getString(R.string.classroomNotResponding));
