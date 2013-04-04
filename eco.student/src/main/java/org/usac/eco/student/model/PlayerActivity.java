@@ -21,12 +21,18 @@ import io.vov.vitamio.MediaPlayer.OnPreparedListener;
 import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
+import org.usac.eco.student.controller.VideoController;
+import org.usac.eco.student.controller.VideoControllerMessage;
+
 /**
  * @author Brian Estrada <brianseg014@gmail.com>
  *
  */
 public class PlayerActivity extends EcoActivity
-		implements OnBufferingUpdateListener, OnCompletionListener, OnPreparedListener, OnErrorListener {
+		implements OnBufferingUpdateListener, OnCompletionListener, 
+		OnPreparedListener, OnErrorListener, VideoController.OnVideoControllerListener {
+	
+	private VideoController videoController;
 	
 	private VideoView videoView;
 	
@@ -42,22 +48,27 @@ public class PlayerActivity extends EcoActivity
 		DTOCourse dtoCourse = new DTOCourse();
 		dtoCourse.fromXML(extras.getString("course"));
 		
-		videoView = (VideoView) findViewById(R.id.VideoView);
-        videoView.setVideoURI(Uri.parse(dtoCourse.getURI()));
-        videoView.setOnBufferingUpdateListener(this);
-        videoView.setOnCompletionListener(this);
-        videoView.setOnPreparedListener(this);
-        videoView.setOnErrorListener(this);
-        
-        MediaController mediaController = new MediaController(PlayerActivity.this);
-        videoView.setMediaController(mediaController);
-        videoView.requestFocus();
-        videoView.start();
-        
-        progressDialog = ProgressDialog.show(
+		progressDialog = ProgressDialog.show(
         		PlayerActivity.this, 
         		"", 
         		getString(R.string.loading));
+		
+		videoController = new VideoController(this);
+		videoController.connectCourse(dtoCourse);
+		
+		MediaController mediaController = new MediaController(PlayerActivity.this);
+		
+		videoView = (VideoView) findViewById(R.id.VideoView);
+		videoView.setOnBufferingUpdateListener(this);
+        videoView.setOnCompletionListener(this);
+        videoView.setOnPreparedListener(this);
+        videoView.setOnErrorListener(this);
+        videoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);
+        videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0);
+        videoView.setVideoPath(dtoCourse.getURI());
+        videoView.setMediaController(mediaController);
+        videoView.requestFocus();
+        videoView.start();
 	}
 
 	public void onPrepared(MediaPlayer mediaPlayer) {
@@ -67,7 +78,7 @@ public class PlayerActivity extends EcoActivity
 
 	public void onCompletion(MediaPlayer mediaPlayer) {
 		// TODO Auto-generated method stub
-		destroyActivity(mediaPlayer);
+		destroyActivity();
 	}
 	
 	public void onBufferingUpdate(MediaPlayer mediaPlayer, int arg1) {
@@ -85,11 +96,11 @@ public class PlayerActivity extends EcoActivity
 	public boolean onError(MediaPlayer mediaPlayer, int arg1, int arg2) {
 		// TODO Auto-generated method stub
 		System.out.println("ERROR PLAYING");
-		showError(mediaPlayer);
+		showError();
 		return false;
 	}
 	
-	private void showError(final MediaPlayer mediaPlayer){
+	private void showError(){
 		progressDialog.dismiss();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.error));
@@ -99,16 +110,26 @@ public class PlayerActivity extends EcoActivity
 			
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				destroyActivity(mediaPlayer);
+				destroyActivity();
 			}
 		});
         AlertDialog alert = builder.create();
         alert.show();
 	}
 	
-	private void destroyActivity(MediaPlayer mediaPlayer){
-		mediaPlayer.release();
+	private void destroyActivity(){
+		videoView.stopPlayback();
 		PlayerActivity.this.finish();
+	}
+
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+		showError();
+	}
+
+	public void onError(VideoControllerMessage vcm) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

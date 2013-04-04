@@ -20,7 +20,7 @@
     <string name="rememberPassword">Recordar contraseña</string>
     <string name="forgotPassword">No puede acceder a su cuenta?</string>
     <string name="error">Error</string>
-    <string name="errorStreaming">No se puede reproducir este curso.</string>
+    <string name="errorStreaming">Este curso esta desconectado.</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="ok">Aceptar</string>
