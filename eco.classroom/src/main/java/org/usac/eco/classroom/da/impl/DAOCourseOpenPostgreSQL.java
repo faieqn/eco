@@ -21,10 +21,8 @@ import com.zodiac.db.SingletonConnection;
 import java.sql.SQLException;
 import org.usac.eco.classroom.da.DAOCourseOpen;
 import org.usac.eco.libdto.DTOCourse;
-import org.usac.eco.libdto.DTOCourseSchedule;
 import org.usac.eco.libdto.DTOCourseStatus;
 import org.usac.eco.libdto.DTOCycle;
-import org.usac.eco.libdto.DTOPeriod;
 import org.usac.eco.libdto.DTOSection;
 import org.usac.eco.libdto.DTOUser;
 import org.usac.eco.libdto.DTOUserProfile;
@@ -46,12 +44,8 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 new DTOCycle(
                     getResultSet().getInt("cycle_id"), 
                     getResultSet().getString("cycle_name"), 
-                    new DTOPeriod(
-                        getResultSet().getInt("period_id"), 
-                        getResultSet().getString("period_name"), 
-                        getResultSet().getTime("start_date"), 
-                        getResultSet().getTime("end_date")), 
-                    getResultSet().getInt("year")),
+                    getResultSet().getTime("start_date"), 
+                    getResultSet().getTime("end_date")), 
                 new DTOSection(
                     getResultSet().getInt("section_id"), 
                     getResultSet().getString("section_name")),
@@ -79,18 +73,16 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 + "  c.course_id, c.course_name, co.subscribers,"
                 + "  co.connected, co.uri, u.user_id, u.user_name, "
                 + "  cs.section_id, cs.section_name, cy.cycle_id, cy.cycle_name,"
-                + "  cy.year, cst.status_id, cst.status_name, p.period_id,"
-                + "  p.period_name, p.start_date, p.end_date "
+                + "  cst.status_id, cst.status_name,  cy.start_date, cy.end_date "
                 + "FROM "
                 + "  course_open co, course c, course_section cs, "
-                + "  cycle cy, course_status cst, period p, \"user\" u "
+                + "  cycle cy, course_status cst, \"user\" u "
                 + "WHERE "
                 + "  co.course_id = c.course_id "
                 + "  AND co.professor_id = u.user_id "
                 + "  AND cs.section_id = co.section_id "
                 + "  AND cy.cycle_id = co.cycle_id "
                 + "  AND cst.status_id = co.status_id "
-                + "  AND p.period_id = cy.period_id "
                 + "  AND u.user_id = ? ";
         setQuery();
         getQuery().setQueryString(sql);
@@ -105,18 +97,16 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 + "  c.course_id, c.course_name, co.subscribers,"
                 + "  co.connected, co.uri, u.user_id, u.user_name, "
                 + "  cs.section_id, cs.section_name, cy.cycle_id, cy.cycle_name,"
-                + "  cy.year, cst.status_id, cst.status_name, p.period_id,"
-                + "  p.period_name, p.start_date, p.end_date "
+                + "  cst.status_id, cst.status_name,  cy.start_date, cy.end_date "
                 + "FROM "
                 + "  course_open co, course c, course_section cs, "
-                + "  cycle cy, course_status cst, period p, \"user\" u "
+                + "  cycle cy, course_status cst, \"user\" u "
                 + "WHERE "
                 + "  co.course_id = c.course_id "
                 + "  AND co.professor_id = u.user_id "
                 + "  AND cs.section_id = co.section_id "
                 + "  AND cy.cycle_id = co.cycle_id "
                 + "  AND cst.status_id = co.status_id "
-                + "  AND p.period_id = cy.period_id "
                 + "  AND c.course_name LIKE ? ";
         setQuery();
         getQuery().setQueryString(sql);
@@ -218,25 +208,25 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
     }
 
     @Override
-    public void getAllCoursesOpen() throws SQLException {
+    public void getAllCoursesOpen(DTOCycle dtoCycle) throws SQLException {
         String sql = "SELECT "
                 + "  c.course_id, c.course_name, co.subscribers,"
                 + "  co.connected, co.uri, u.user_id, u.user_name, "
                 + "  cs.section_id, cs.section_name, cy.cycle_id, cy.cycle_name,"
-                + "  cy.year, cst.status_id, cst.status_name, p.period_id,"
-                + "  p.period_name, p.start_date, p.end_date "
+                + "  cst.status_id, cst.status_name,  cy.start_date, cy.end_date "
                 + "FROM "
                 + "  course_open co, course c, course_section cs, "
-                + "  cycle cy, course_status cst, period p, \"user\" u "
+                + "  cycle cy, course_status cst, \"user\" u "
                 + "WHERE "
                 + "  co.course_id = c.course_id "
                 + "  AND co.professor_id = u.user_id "
                 + "  AND cs.section_id = co.section_id "
                 + "  AND cy.cycle_id = co.cycle_id "
                 + "  AND cst.status_id = co.status_id "
-                + "  AND p.period_id = cy.period_id ";
+                + "  AND cy.cycle_id = ? ";
         setQuery();
         getQuery().setQueryString(sql);
+        getQuery().addQueryParams(dtoCycle.getCycleId());
         getQuery().execute();
         setResultSet(getQuery().getResultSet());
     }
@@ -247,11 +237,10 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 + "  c.course_id, c.course_name, co.subscribers,"
                 + "  co.connected, co.uri, u.user_id, u.user_name, "
                 + "  cs.section_id, cs.section_name, cy.cycle_id, cy.cycle_name,"
-                + "  cy.year, cst.status_id, cst.status_name, p.period_id,"
-                + "  p.period_name, p.start_date, p.end_date "
+                + "  cst.status_id, cst.status_name,  cy.start_date, cy.end_date "
                 + "FROM "
                 + "  course_open co, course c, course_section cs, "
-                + "  cycle cy, course_status cst, period p, \"user\" u,"
+                + "  cycle cy, course_status cst, \"user\" u, "
                 + "  course_subscriber csb "
                 + "WHERE "
                 + "  co.course_id = c.course_id "
@@ -259,7 +248,6 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 + "  AND cs.section_id = co.section_id "
                 + "  AND cy.cycle_id = co.cycle_id "
                 + "  AND cst.status_id = co.status_id "
-                + "  AND p.period_id = cy.period_id "
                 + "  AND csb.course_id = co.course_id "
                 + "  AND csb.section_id = co.section_id "
                 + "  AND csb.cycle_id = co.cycle_id "
@@ -277,18 +265,16 @@ public class DAOCourseOpenPostgreSQL extends AbstractDAO<DTOCourse> implements D
                 + "  c.course_id, c.course_name, co.subscribers,"
                 + "  co.connected, co.uri, u.user_id, u.user_name, "
                 + "  cs.section_id, cs.section_name, cy.cycle_id, cy.cycle_name,"
-                + "  cy.year, cst.status_id, cst.status_name, p.period_id,"
-                + "  p.period_name, p.start_date, p.end_date "
+                + "  cst.status_id, cst.status_name,  cy.start_date, cy.end_date "
                 + "FROM "
                 + "  course_open co, course c, course_section cs, "
-                + "  cycle cy, course_status cst, period p, \"user\" u "
+                + "  cycle cy, course_status cst, \"user\" u "
                 + "WHERE "
                 + "  co.course_id = c.course_id "
                 + "  AND co.professor_id = u.user_id "
                 + "  AND cs.section_id = co.section_id "
                 + "  AND cy.cycle_id = co.cycle_id "
                 + "  AND cst.status_id = co.status_id "
-                + "  AND p.period_id = cy.period_id "
                 + "  AND c.course_id = ? ";
         setQuery();
         getQuery().setQueryString(sql);

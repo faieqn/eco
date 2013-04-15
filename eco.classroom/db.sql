@@ -1,6 +1,5 @@
 ﻿CREATE SEQUENCE seq_user START WITH 0 INCREMENT BY 1 MINVALUE 0 NO MAXVALUE NO CYCLE;
 CREATE SEQUENCE seq_course START WITH 0 INCREMENT BY 1 MINVALUE 0 NO MAXVALUE NO CYCLE;
-CREATE SEQUENCE seq_period START WITH 0 INCREMENT BY 1 MINVALUE 0 NO MAXVALUE NO CYCLE;
 CREATE SEQUENCE seq_cycle START WITH 0 INCREMENT BY 1 MINVALUE 0 NO MAXVALUE NO CYCLE;
 CREATE SEQUENCE seq_section START WITH 0 INCREMENT BY 1 MINVALUE 0 NO MAXVALUE NO CYCLE;
 
@@ -29,12 +28,33 @@ CREATE TABLE course (
 	course_name VARCHAR(200) NOT NULL
 );
 
-CREATE TABLE period (
-	period_id INTEGER NOT NULL PRIMARY KEY DEFAULT nextval('seq_period'),
-	period_name VARCHAR(100) NOT NULL,
-	start_date DATE NULL,
-	end_date DATE NULL
+
+CREATE TABLE "cycle" (
+	cycle_id INTEGER NOT NULL PRIMARY KEY DEFAULT nextval('seq_cycle'),
+	cycle_name VARCHAR(100) NOT NULL,
+	start_date DATE NOT NULL,
+	end_date DATE NOT NULL
 );
+
+CREATE OR REPLACE FUNCTION check_sequencial_cycles() RETURNS TRIGGER AS $check_sequencial_cycles$
+	DECLARE
+		countCycles INTEGER;
+	BEGIN
+		SELECT COUNT(*)
+		INTO countCycles
+		FROM "cycle"
+		WHERE (NEW.start_date BETWEEN start_date AND end_date)
+		OR (NEW.end_date BETWEEN start_date AND end_date);
+
+		IF countCycles > 0 THEN
+			RAISE EXCEPTION 'Cycles overlap';
+		END IF;
+
+		RETURN NEW;
+	END;
+$check_sequencial_cycles$ LANGUAGE plpgsql;
+CREATE TRIGGER check_sequencial_cycles BEFORE INSERT OR UPDATE ON "cycle"
+	FOR EACH ROW EXECUTE PROCEDURE check_sequencial_cycles();
 
 CREATE TABLE course_section (
 	section_id INTEGER NOT NULL PRIMARY KEY DEFAULT nextval('seq_section'),
@@ -44,13 +64,6 @@ CREATE TABLE course_section (
 CREATE TABLE course_status (
 	status_id INTEGER NOT NULL PRIMARY KEY,
 	status_name VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE "cycle" (
-	cycle_id INTEGER NOT NULL PRIMARY KEY DEFAULT nextval('seq_cycle'),
-	cycle_name VARCHAR(100) NOT NULL,
-	period_id INTEGER NOT NULL REFERENCES period(period_id),
-	"year" INTEGER NOT NULL
 );
 
 CREATE TABLE course_open (
@@ -85,9 +98,9 @@ CREATE TABLE course_subscriber (
 	PRIMARY KEY (course_id, cycle_id, section_id, user_id)
 );
 
-INSERT INTO "day" VALUES (1, 'MONDAY'),(2, 'TUESDAY'),(3, 'WEDNNESDAY'),(4, 'THURSDAY'), (5, 'FRIDAY'),
-			 (6, 'SATURDAY'),(7, 'SUNDAY');
+INSERT INTO "day" VALUES (1, 'Lunes'),(2, 'Martes'),(3, 'Miercoles'),(4, 'Jueves'), (5, 'Viernes'),
+			 (6, 'Sabado'),(7, 'Doming');
 
 INSERT INTO course_status VALUES (1, 'Desconectado'),(2, 'Conectado'),(3,'Deshabilitado');
 
-INSERT INTO user_profile VALUES (1, 'ADMIN'), (2, 'PROFESSOR'), (3, 'STUDENT');
+INSERT INTO user_profile VALUES (1, 'Admin'), (2, 'Profesor'), (3, 'Estudiante');

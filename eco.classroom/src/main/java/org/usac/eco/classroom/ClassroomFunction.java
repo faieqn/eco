@@ -17,9 +17,14 @@
 package org.usac.eco.classroom;
 
 import com.zodiac.security.Session;
+import com.zodiac.soa.server.BussinessLogic;
+import com.zodiac.soa.server.MessageContext;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
@@ -28,12 +33,11 @@ import org.usac.eco.classroom.bl.Course;
 import org.usac.eco.classroom.bl.CourseOpen;
 import org.usac.eco.classroom.bl.CourseSection;
 import org.usac.eco.classroom.bl.Cycle;
-import org.usac.eco.classroom.bl.Period;
 import org.usac.eco.classroom.bl.User;
 import org.usac.eco.libdto.DTOCourse;
+import org.usac.eco.libdto.DTOCourseSchedule;
 import org.usac.eco.libdto.DTOCourseStatus;
 import org.usac.eco.libdto.DTOCycle;
-import org.usac.eco.libdto.DTOPeriod;
 import org.usac.eco.libdto.DTOSection;
 import org.usac.eco.libdto.DTOUser;
 import org.usac.eco.libdto.DTOUserProfile;
@@ -44,7 +48,19 @@ import org.usac.eco.libdto.DTOUserProfile;
  */
 public class ClassroomFunction {
     
-    public static JSONObject login(String username, String password, HttpServletRequest httpServletRequest) 
+    public static void registerMessageContext(MessageContext messageContext){
+        try {
+            BussinessLogic.setMessageContext(messageContext);
+        } catch (NoSuchFieldException ex) {
+            Logger.getLogger(ClassroomFunction.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(ClassroomFunction.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(ClassroomFunction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static JSONObject login(String username, String password) 
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         DTOUser dtoUser = new DTOUser(
                 0, 
@@ -54,9 +70,10 @@ public class ClassroomFunction {
                 null, 
                 DTOUserProfile.ADMIN, 
                 null);
-        org.usac.eco.classroom.bl.Session newSession = 
-                new org.usac.eco.classroom.bl.Session(httpServletRequest);
-        DTOUser loggedUser = newSession.createSession(dtoUser);
+        org.usac.eco.classroom.bl.Session session = 
+                new org.usac.eco.classroom.bl.Session();
+        
+        DTOUser loggedUser = session.createSession(dtoUser);
         
         JSONObject jsonObject = new JSONObject();
         if(loggedUser != null){
@@ -68,10 +85,10 @@ public class ClassroomFunction {
         return jsonObject;
     }
     
-    public static JSONObject list_all_courses_open(HttpSession session) 
+    public static JSONObject list_all_courses_open(DTOCycle dtoCycle) 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        CourseOpen course = new CourseOpen((Session)session.getAttribute("session"));
-        List<DTOCourse> listCourses = course.getAllCoursesOpen();
+        CourseOpen course = new CourseOpen();
+        List<DTOCourse> listCourses = course.getAllCoursesOpen(dtoCycle);
         
         JSONArray jsonCourses = new JSONArray();
         
@@ -87,6 +104,21 @@ public class ClassroomFunction {
             jsonCourse.put("subscribers", dtoCourse.getSubscribers());
             jsonCourse.put("connected", dtoCourse.getConnected());
             jsonCourse.put("uri", dtoCourse.getURI());
+            
+            JSONArray jsonSchedules = new JSONArray();
+            DTOCourseSchedule[] schedules = dtoCourse.getCourseSchedule();
+            for(int i = 0; i < schedules.length; i++){
+                DTOCourseSchedule dtoSchedule = schedules[i];
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                
+                JSONObject jsonSchedule = new JSONObject();
+                jsonSchedule.put("dayId", dtoSchedule.getDay().getDayId());
+                jsonSchedule.put("dayName", dtoSchedule.getDay().getDayName());
+                jsonSchedule.put("startTime", format.format(dtoSchedule.getStartTime()));
+                jsonSchedule.put("endTime", format.format(dtoSchedule.getEndTime()));
+                jsonSchedules.add(jsonSchedule);
+            }
+            jsonCourse.put("schedules", jsonSchedules);
             jsonCourses.add(jsonCourse);
         }
         
@@ -96,9 +128,9 @@ public class ClassroomFunction {
         return jsonObject;
     }
     
-    public static JSONObject list_all_users(HttpSession session) 
+    public static JSONObject list_all_users() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        User user = new User((Session)session.getAttribute("session"));
+        User user = new User();
         List<DTOUser> listUsers = user.getAllUsers();
         
         JSONArray jsonUsers = new JSONArray();
@@ -119,7 +151,7 @@ public class ClassroomFunction {
         return jsonObject;
     }
     
-    public static JSONObject disable_course_open(int course_id, HttpSession session) 
+    public static JSONObject disable_course_open(int course_id) 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
         DTOCourse dtoCourse = new DTOCourse(
                 course_id, 
@@ -132,7 +164,7 @@ public class ClassroomFunction {
                 null, 
                 DTOCourseStatus.DISABLE, 
                 null);
-        CourseOpen course = new CourseOpen((Session)session.getAttribute("session"));
+        CourseOpen course = new CourseOpen();
         course.disable(dtoCourse);
         
         JSONObject jsonObject = new JSONObject();
@@ -141,9 +173,9 @@ public class ClassroomFunction {
         return jsonObject;
     }
     
-    public static JSONObject list_all_courses(HttpSession session) 
+    public static JSONObject list_all_courses() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        Course course = new Course((Session)session.getAttribute("session"));
+        Course course = new Course();
         List<DTOCourse> listCourses = course.getAllCourses();
         JSONArray jsonCourses = new JSONArray();
         Iterator<DTOCourse> iterator = listCourses.iterator();
@@ -161,9 +193,9 @@ public class ClassroomFunction {
         return jsonObject;
     }
     
-    public static JSONObject list_all_cycles(HttpSession session) 
+    public static JSONObject list_all_cycles() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        Cycle cycle = new Cycle((Session)session.getAttribute("session"));
+        Cycle cycle = new Cycle();
         List<DTOCycle> listCycles = cycle.getAllCycles();
         JSONArray jsonCycles = new JSONArray();
         Iterator<DTOCycle> iterator = listCycles.iterator();
@@ -181,9 +213,9 @@ public class ClassroomFunction {
         return jsonObject;
     }
     
-    public static JSONObject list_all_courses_sections(HttpSession session) 
+    public static JSONObject list_all_courses_sections() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        CourseSection courseSection = new CourseSection((Session)session.getAttribute("session"));
+        CourseSection courseSection = new CourseSection();
         List<DTOSection> listSections = courseSection.getAllSections();
         JSONArray jsonSections = new JSONArray();
         Iterator<DTOSection> iterator = listSections.iterator();
@@ -201,24 +233,14 @@ public class ClassroomFunction {
         return jsonObject;
     }
     
-    public static JSONObject list_all_periods(HttpSession session) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        Period period = new Period((Session)session.getAttribute("session"));
-        List<DTOPeriod> listPeriods = period.getAllPeriods();
-        JSONArray jsonPeriods = new JSONArray();
-        Iterator<DTOPeriod> iterator = listPeriods.iterator();
-        while(iterator.hasNext()){
-            DTOPeriod dtoPeriod = iterator.next();
-            JSONObject jsonPeriod = new JSONObject();
-            jsonPeriod.put("periodId", dtoPeriod.getPeriodId());
-            jsonPeriod.put("periodName", dtoPeriod.getPeriodName());
-            jsonPeriods.add(jsonPeriod);
-        }
-        
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("periods", jsonPeriods);
-        
-        return jsonObject;
+    public static DTOCycle getCurrentCycle() 
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        Cycle cycle = new Cycle();
+        return cycle.getCurrentCycle();
+    }
+    
+    private static Session getSession(HttpSession session){
+        return (Session)session.getAttribute("session");
     }
     
 }

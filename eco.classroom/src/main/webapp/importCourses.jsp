@@ -1,15 +1,23 @@
-<jsp:include page="private_header.jsp" />
+<jsp:include page="private_header.jsp">
+    <jsp:param name="jsfile" value="importCourses.js" />
+</jsp:include>
 <div>
-    <div>
-        <input type="button" value="Nuevo" />
-    </div>
     <div>
         <div>Importar desde ciclo</div>
         <div>
-            <select>
-                <option>- Vacio -</option>
+            <select id="sourceCycleList">
+                <option value="empty">- Seleccione una fuente -</option>
             </select>
         </div>
+    </div>
+    <div>
+        <div>Exportar hacia ciclo</div>
+        <div>
+            <select id="destCycleList"></select>
+        </div>
+    </div>
+    <div>
+        <input type="button" value="Importar" id="import" />
     </div>
     <div>
         <table>
@@ -21,10 +29,9 @@
                     <th>Profesor</th>
                     <th>D&iacute;a</th>
                     <th>Hora</th>
-                    <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="courses">
             </tbody>
         </table>
     </div>

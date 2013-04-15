@@ -48,9 +48,15 @@
                 <div><input type="text" /></div>
             </div>
             <div>
-                <div>Periodo</div>
+                <div>Fecha de Inicio</div>
                 <div>
-                    <select id="periodList"></select>
+                    <input type="text" id="startDate" />
+                </div>
+            </div>
+            <div>
+                <div>Fecha de Fin</div>
+                <div>
+                    <input type="text" id="endDate" />
                 </div>
             </div>
             <div>
