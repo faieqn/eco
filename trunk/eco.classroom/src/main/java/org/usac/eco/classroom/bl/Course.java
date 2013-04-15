@@ -30,10 +30,9 @@ import org.usac.eco.libdto.DTOCourse;
  */
 public class Course extends PrivateBussinessLogic {
 
-    public Course(Session session) {
-        super(session);
+    public Course() {
     }
- 
+    
     public List<DTOCourse> getAllCourses() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
         DAOCourse daoCourse = getDAOCourse();

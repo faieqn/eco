@@ -30,8 +30,7 @@ import org.usac.eco.libdto.DTOUser;
  */
 public class User extends PrivateBussinessLogic {
 
-    public User(Session session) {
-        super(session);
+    public User() {
     }
     
     public List<DTOUser> getAllUsers() 

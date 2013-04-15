@@ -26,7 +26,7 @@ function loadAll(){
         url: 'functions.jsp',
         dataType: 'json',
         type: 'post',
-        data: 'function=LIST_ALL_COURSES_CYCLES_SECTIONS_PERIODS',
+        data: 'function=LIST_ALL_COURSES_CYCLES_SECTIONS',
         success: function(data, textStatus, xhr){
             if(data.hasOwnProperty('error')){
                 alert('Error en el servidor.');
@@ -55,14 +55,6 @@ function loadAll(){
                     .attr("value", value["sectionId"])
                     .html(value["sectionName"])
                     .appendTo(sectionList);
-            });
-            
-            var periodList = $("#periodList");
-            $.each(data.periods, function(index, value){
-                $("<option></option>")
-                    .attr("value", value["periodId"])
-                    .html(value["periodName"])
-                    .appendTo(periodList);
             });
             
             var cycleYear = $("#cycleYear");

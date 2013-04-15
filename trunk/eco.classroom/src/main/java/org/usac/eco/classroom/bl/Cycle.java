@@ -31,9 +31,10 @@ import org.usac.eco.libdto.DTOCycle;
  */
 public class Cycle extends PrivateBussinessLogic {
 
-    public Cycle(Session session) {
-        super(session);
+    public Cycle() {
     }
+
+    
     
     public List<DTOCycle> getAllCycles() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
@@ -52,6 +53,14 @@ public class Cycle extends PrivateBussinessLogic {
             years[i] = currentYear - 2 + i;
         }
         return years;
+    }
+    
+    public DTOCycle getCurrentCycle() 
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+        DAOCycle daoCycle = getDAOCycle();
+        daoCycle.getCurrentCycle();
+        daoCycle.next();
+        return daoCycle.getDTO();
     }
     
     private DAOCycle getDAOCycle() 

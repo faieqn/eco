@@ -30,6 +30,7 @@ import org.usac.eco.classroom.da.DAOCourseSchedule;
 import org.usac.eco.libdto.DTOCourse;
 import org.usac.eco.libdto.DTOCourseSchedule;
 import org.usac.eco.libdto.DTOCourseStatus;
+import org.usac.eco.libdto.DTOCycle;
 import org.usac.eco.libdto.DTOUser;
 
 /**
@@ -38,15 +39,38 @@ import org.usac.eco.libdto.DTOUser;
  */
 public class CourseOpen extends PrivateBussinessLogic {
 
-    public CourseOpen(Session session) {
-        super(session);
+    public CourseOpen() {
     }
     
-    public List<DTOCourse> getAllCoursesOpen() 
+    public List<DTOCourse> getAllCoursesOpen(DTOCycle dtoCycle) 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-        DAOCourseOpen daoCourse = getDAOCourse();
-        daoCourse.getAllCoursesOpen();
-        return daoCourse.getListDTO();
+        DAOCourseOpen daoCourseOpen = getDAOCourse();
+        daoCourseOpen.getAllCoursesOpen(dtoCycle);
+        
+        DAOCourseSchedule daoCourseSchedule = getDAOCourseSchedule();
+        
+        List<DTOCourse> listCourses = new ArrayList<DTOCourse>();
+        Iterator<DTOCourse> iterator = daoCourseOpen.getListDTO().iterator();
+        while(iterator.hasNext()){
+            DTOCourse dtoCourse = iterator.next();
+            daoCourseSchedule.getSchedule(dtoCourse);
+            List<DTOCourseSchedule> listDTOCourseSchedule = daoCourseSchedule.getListDTO();
+            DTOCourseSchedule[] dtoCourseSchedules = new DTOCourseSchedule[listDTOCourseSchedule.size()];
+            listDTOCourseSchedule.toArray(dtoCourseSchedules);
+            listCourses.add(new DTOCourse(
+                        dtoCourse.getCourseId(), 
+                        dtoCourse.getCycle(), 
+                        dtoCourse.getSection(), 
+                        dtoCourse.getCourseName(), 
+                        dtoCourse.getSubscribers(), 
+                        dtoCourse.getConnected(), 
+                        dtoCourse.getURI(), 
+                        dtoCourse.getProfessor(), 
+                        dtoCourse.getStatus(), 
+                        dtoCourseSchedules));
+        }
+        
+        return listCourses;
     }
     
     public List<DTOCourse> getCoursesOpen(DTOUser dtoUser)

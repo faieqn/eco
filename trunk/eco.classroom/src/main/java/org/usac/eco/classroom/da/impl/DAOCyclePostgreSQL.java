@@ -21,7 +21,6 @@ import com.zodiac.db.SingletonConnection;
 import java.sql.SQLException;
 import org.usac.eco.classroom.da.DAOCycle;
 import org.usac.eco.libdto.DTOCycle;
-import org.usac.eco.libdto.DTOPeriod;
 
 /**
  *
@@ -38,23 +37,30 @@ public class DAOCyclePostgreSQL extends AbstractDAO<DTOCycle> implements DAOCycl
         return new DTOCycle(
                 getResultSet().getInt("cycle_id"), 
                 getResultSet().getString("cycle_name"), 
-                new DTOPeriod(
-                    getResultSet().getInt("period_id"), 
-                    getResultSet().getString("period_name"), 
-                    getResultSet().getDate("start_date"), 
-                    getResultSet().getDate("end_date")), 
-                getResultSet().getInt("year"));
+                getResultSet().getDate("start_date"), 
+                getResultSet().getDate("end_date"));
     }
 
     @Override
     public void getAllCycles() throws SQLException {
         String sql = "SELECT "
-                + "  c.cycle_id, c.cycle_name, c.year, "
-                + "  p.period_id, p.period_name, p.start_date, p.end_date "
+                + "  c.cycle_id, c.cycle_name, c.start_date, c.end_date "
                 + "FROM "
-                + "  cycle c, period p "
+                + "  cycle c ";
+        setQuery();
+        getQuery().setQueryString(sql);
+        getQuery().execute();
+        setResultSet(getQuery().getResultSet());
+    }
+
+    @Override
+    public void getCurrentCycle() throws SQLException {
+        String sql = "SELECT "
+                + "  c.cycle_id, c.cycle_name, c.start_date, c.end_date "
+                + "FROM "
+                + "  cycle c "
                 + "WHERE "
-                + "  c.period_id = p.period_id ";
+                + "  current_date BETWEEN c.start_date AND c.end_date ";
         setQuery();
         getQuery().setQueryString(sql);
         getQuery().execute();

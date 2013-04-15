@@ -28,4 +28,6 @@ public interface DAOCycle extends DAO<DTOCycle>{
     
     public void getAllCycles() throws SQLException;
     
+    public void getCurrentCycle() throws SQLException;
+    
 }

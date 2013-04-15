@@ -30,9 +30,10 @@ import org.usac.eco.libdto.DTOSection;
  */
 public class CourseSection extends PrivateBussinessLogic {
 
-    public CourseSection(Session session) {
-        super(session);
+    public CourseSection() {
     }
+
+    
     
     public List<DTOSection> getAllSections() 
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
