@@ -16,6 +16,8 @@
  */
 package org.usac.eco.libdto;
 
+import java.util.Date;
+
 /**
  *
  * @author Brian Estrada <brianseg014@gmail.com>
@@ -26,20 +28,18 @@ public class DTOCycle extends AbstractDTO {
     
     private String cycleName;
     
-    private DTOPeriod period;
+    private Date startDate;
     
-    private int year;
+    private Date endDate;
 
     public DTOCycle() {
     }
-    
-    
 
-    public DTOCycle(int cycleId, String cycleName, DTOPeriod period, int year) {
+    public DTOCycle(int cycleId, String cycleName, Date startDate, Date endDate) {
         this.cycleId = cycleId;
         this.cycleName = cycleName;
-        this.period = period;
-        this.year = year;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public int getCycleId() {
@@ -50,12 +50,13 @@ public class DTOCycle extends AbstractDTO {
         return cycleName;
     }
 
-    public DTOPeriod getPeriod() {
-        return period;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public int getYear() {
-        return year;
+    public Date getStartDate() {
+        return startDate;
     }
+
     
 }
