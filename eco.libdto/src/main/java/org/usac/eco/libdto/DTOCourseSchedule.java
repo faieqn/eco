@@ -45,13 +45,14 @@ public class DTOCourseSchedule extends AbstractDTO {
         return day;
     }
 
-    public Date getEndDate() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public Date getStartDate() {
+    public Date getStartTime() {
         return startTime;
     }
+    
     
     
 }
