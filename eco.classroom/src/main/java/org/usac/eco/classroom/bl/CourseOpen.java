@@ -19,6 +19,7 @@ package org.usac.eco.classroom.bl;
 import com.zodiac.db.DAODriver;
 import com.zodiac.security.Session;
 import com.zodiac.soa.server.PrivateBussinessLogic;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,7 +44,8 @@ public class CourseOpen extends PrivateBussinessLogic {
     }
     
     public List<DTOCourse> getAllCoursesOpen(DTOCycle dtoCycle) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCourseOpen daoCourseOpen = getDAOCourse();
         daoCourseOpen.getAllCoursesOpen(dtoCycle);
         
@@ -74,14 +76,16 @@ public class CourseOpen extends PrivateBussinessLogic {
     }
     
     public List<DTOCourse> getCoursesOpen(DTOUser dtoUser)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCourseOpen daoCourse = getDAOCourse();
         daoCourse.getCoursesOpen(dtoUser);
         return daoCourse.getListDTO();
     }
     
     public List<DTOCourse> searchCourseOpen(DTOCourse dtoCourse)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCourseOpen daoCourseOpen = getDAOCourse();
         daoCourseOpen.searchCourseOpen(dtoCourse);
         
@@ -113,35 +117,40 @@ public class CourseOpen extends PrivateBussinessLogic {
     }
     
     public boolean subscribe(DTOUser dtoUser, DTOCourse dtoCourse) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCourseOpen daoCourse = getDAOCourse();
         daoCourse.subscribe(dtoUser, dtoCourse);
         return true;
     }
     
     public boolean publish(DTOCourse dtoCourse) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCourseOpen daoCourse = getDAOCourse();
         daoCourse.publish(dtoCourse);
         return true;
     }
     
     public boolean unpublish(DTOCourse dtoCourse) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCourseOpen daoCourse = getDAOCourse();
         daoCourse.unpublish(dtoCourse);
         return true;
     }
     
     public boolean connect(DTOCourse dtoCourse) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCourseOpen daoCourse = getDAOCourse();
         daoCourse.connectCourseOpen(dtoCourse);
         return checkStatusConnected(dtoCourse);
     }
     
     public boolean checkStatusConnected(DTOCourse dTOCourse)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCourseOpen daoCourse = getDAOCourse();
         daoCourse.getCourseOpen(dTOCourse);
         daoCourse.next();
@@ -154,7 +163,8 @@ public class CourseOpen extends PrivateBussinessLogic {
     }
     
     public int getCourseConnected(DTOCourse dtoCourse) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCourseOpen daoCourseOpen = getDAOCourse();
         daoCourseOpen.getCourseOpen(dtoCourse);
         daoCourseOpen.next();
@@ -163,14 +173,16 @@ public class CourseOpen extends PrivateBussinessLogic {
     }
     
     public boolean disable(DTOCourse dtoCourse) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException{
         DAOCourseOpen daoCourse = getDAOCourse();
         daoCourse.changeState(dtoCourse);
         return true;
     }
     
     public List<DTOCourse> getCoursesOpenSubscribed(DTOUser dtoUser) 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException {
         DAOCourseOpen daoCourseOpen = getDAOCourse();
         daoCourseOpen.getCoursesOpenSubscribed(dtoUser);
         

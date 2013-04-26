@@ -19,6 +19,7 @@ package org.usac.eco.classroom.bl;
 import com.zodiac.db.DAODriver;
 import com.zodiac.soa.server.MessageContext;
 import com.zodiac.soa.server.SessionBussinessLogic;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,7 +39,8 @@ public class Session extends SessionBussinessLogic {
     
     
     public DTOUser createSession(DTOUser dtoUser) 
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, 
+            SQLException{
         DAOUser daoUser = (DAOUser)DAODriver.getDAODriver("DAOUser");
         daoUser.getUser(dtoUser);
         

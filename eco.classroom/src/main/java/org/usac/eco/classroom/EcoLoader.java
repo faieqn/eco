@@ -49,7 +49,7 @@ public class EcoLoader {
         } catch (ClassNotFoundException ex) {
             Log.fatal("Database driver not found.", ex);
         } catch (SQLException ex) {
-            Log.fatal("Cannot connecto to database " + cs.getConnectionString() + ".", ex);
+            Log.fatal("Cannot connect to database " + cs.getConnectionString() + ".", ex);
         }
     }
     
