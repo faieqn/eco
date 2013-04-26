@@ -19,6 +19,7 @@ package org.usac.eco.classroom.bl;
 import com.zodiac.db.DAODriver;
 import com.zodiac.security.Session;
 import com.zodiac.soa.server.PrivateBussinessLogic;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 import org.usac.eco.classroom.da.DAOUser;
@@ -34,7 +35,8 @@ public class User extends PrivateBussinessLogic {
     }
     
     public List<DTOUser> getAllUsers() 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOUser daoUser = getDAOUser();
         daoUser.getAllUsers();
         return daoUser.getListDTO();

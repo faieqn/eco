@@ -19,6 +19,7 @@ package org.usac.eco.classroom.bl;
 import com.zodiac.db.DAODriver;
 import com.zodiac.security.Session;
 import com.zodiac.soa.server.PrivateBussinessLogic;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
@@ -37,7 +38,8 @@ public class Cycle extends PrivateBussinessLogic {
     
     
     public List<DTOCycle> getAllCycles() 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCycle daoCycle = getDAOCycle();
         daoCycle.getAllCycles();
         return daoCycle.getListDTO();
@@ -56,7 +58,8 @@ public class Cycle extends PrivateBussinessLogic {
     }
     
     public DTOCycle getCurrentCycle() 
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, 
+            SQLException{
         DAOCycle daoCycle = getDAOCycle();
         daoCycle.getCurrentCycle();
         daoCycle.next();
